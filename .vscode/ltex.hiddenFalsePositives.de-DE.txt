@@ -1,0 +1,4 @@
+{"rule":"GERMAN_SPELLER_RULE","sentence":"^\\QBeispielsweise gibt es Node-Link-, Adjazenzmatrix- und Hypergraph-Diagramme (vgl. [Che+19], S. 2).\\E$"}
+{"rule":"F_ANSTATT_PH","sentence":"^\\QBeispielsweise gibt es Node-Link-, Adjazenzmatrix- und Hypergraph-Diagramme (vgl. [Che+19], S. 2).\\E$"}
+{"rule":"GERMAN_SPELLER_RULE","sentence":"^\\QBeispielsweise gibt es Node-Link-, Adjazenzmatrix- und Hypergraph-Diagramme (vgl. \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, S. 2).\\E$"}
+{"rule":"F_ANSTATT_PH","sentence":"^\\QBeispielsweise gibt es Node-Link-, Adjazenzmatrix- und Hypergraph-Diagramme (vgl. \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, S. 2).\\E$"}
