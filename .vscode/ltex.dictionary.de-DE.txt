@@ -1,3 +1,5 @@
 DBpedia
 Node-Link
 Node-Link-Diagramme
+Visualisierungsoptionen
+Adjazenzmatrizen
