@@ -3,3 +3,6 @@ Node-Link
 Node-Link-Diagramme
 Visualisierungsoptionen
 Adjazenzmatrizen
+intuitivste
+Vereinfachungstechniken
+kraftbasierte
