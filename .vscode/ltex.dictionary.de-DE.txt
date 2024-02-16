@@ -6,3 +6,5 @@ Adjazenzmatrizen
 intuitivste
 Vereinfachungstechniken
 kraftbasierte
+Tree
+rasterbasiertes
