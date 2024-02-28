@@ -17,6 +17,7 @@ In dem breiten Feld der Datenvisualisierung bildet die Visualisierung von Knowle
 In den folgenden Abschnitten werden die möglichen Diagrammarten und Visualisierungstechniken, welche sich für die Darstellungen von Knowledge Graphen eignen detailliert beschrieben und erläutert.
 
 \subsection{Diagrammarten}
+\label{theory:visualization:types}
 
 Bei der Analyse von Knowledge Graphen spielt die Visualisierung eine entscheidende Rolle. Sie fördert das Verständnis der komplexen Beziehungen zwischen den Entitäten und der Struktur der Daten. Nach der Analyse der möglichen Diagrammarten stechen Node-Link Diagramme und Adjazenzmatrizen als die vielversprechendsten Kandidaten für die Visualisierung heraus. Dieses Kapitel geht auf diese beiden  Diagrammtypen ein. Es werden ihre Eigenschaften hervorgehoben und ihre Vor- und Nachteile erläutert.
 
@@ -54,6 +55,23 @@ Trotz ihrer Vorteile für die Visualisierung hierarchischer Daten stoßen Tree M
 
 \subsection{Vergleiche der Diagrammarten}
 
+Nachdem im vorangegangenen Kapitel Node-Link Diagramme und Adjazenzmatrizen ausführlich vorgestellt wurden, soll hier nun ein Vergleich folgen. In diesem Kapitel wird ein ausführlicher Vergleich von Node-Link Diagrammen mit Adjazenzmatrizen angestellt, um ihre Tauglichkeit für die Visualisierung großer Knowledge Graphen zu beurteilen. Der Vergleich erfolgt anhand folgender Kriterien: Lesbarkeit und Verständlichkeit, Skalierbarkeit, Interaktivität, Performance, Unterstützung für hierarchische Daten. Durch diesen Vergleich soll ein tiefes Verständnis für die Vor- und Nachteile jeder Visualisierungsart geschaffen werden, sodass später eine qualifizierte Auswahl einer Diagrammart getroffen werden kann. Die folgenden Punkte stützen sich auf die Erkenntnisse aus Kapitel \ref{theory:visualization:types}. Da sich die Tree Map Diagramme bereits in ihrer Vorstellung als ungeeignet gezeigt haben, werden diese im folgenden Kapitel nicht berücksichtigt.
 
+\subsubsection{Lesbarkeit und Verständlichkeit}
+
+Die Lesbarkeit und Verständlichkeit von Diagrammen sind entscheidende Faktoren für die Effektivität, mit der die Informationen an die Betrachter übermittelt werden können.
+
+Node-Link Diagramme zeichnen sich durch ihre intuitive Darstellung von Netzwerkstrukturen aus. Sie repräsentieren Knoten als Punkte und Verbindungen als Linien, was eine direkte visuelle Erfassung der Netzwerkbeziehungen ermöglicht. Diese Art der Darstellung ist besonders vorteilhaft für die Visualisierung von kleinen bis mittelgroßen Netzwerken, da sie eine klare Übersicht über Verbindungen und Knotenpunkte bietet. Allerdings kann die Lesbarkeit bei sehr großen oder dichten Netzwerken abnehmen, da Überlappungen und Kreuzungen von Linien die Verständlichkeit erschweren.
+
+Adjazenzmatrix Diagramme hingegen stellen Netzwerke in Form einer Matrix dar, wobei Zeilen und Spalten den Knoten entsprechen und die Präsenz oder Abwesenheit von Verbindungen durch Markierungen innerhalb der Matrix angezeigt wird. Diese Darstellungsform ist besonders effektiv für die Darstellung von dichter und großer Netzwerken und ermöglicht eine einfache Analyse von Beziehungen durch die Betrachtung der Matrixstruktur. Die Herausforderung bei Adjazenzmatrix Diagrammen liegt jedoch in der initialen Einarbeitung, da die Matrixdarstellung für ungeübte Betrachter weniger intuitiv ist, als die Darstellungen von Node-Link Diagrammen.
+
+Zusammenfassend lässt sich sagen, dass die Wahl zwischen Node-Link und Adjazenzmatrix Diagrammen von der Größe und Dichte des Netzwerks sowie von den Zielen und der Zielgruppe der Visualisierung abhängt. Während Node-Link Diagramme durch ihre visuelle Darstellung eine höhere Verständlichkeit bieten, können Adjazenzmatrix Diagramme in der Analyse komplexer und dichter Netzwerke Vorteile aufweisen.
+
+\subsubsection{Skalierbarkeit}
+\subsubsection{Interaktivität}
+\subsubsection{Performance}
+\subsubsection{Unterstützung für hierarchische Daten}
 
 \section{Vereinfachungstechniken}
+
+\subsection{Graph Filtering}

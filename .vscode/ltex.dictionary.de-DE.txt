@@ -8,3 +8,5 @@ Vereinfachungstechniken
 kraftbasierte
 Tree
 rasterbasiertes
+Filtering
+Visualisierungsart
