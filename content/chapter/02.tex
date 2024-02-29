@@ -58,6 +58,7 @@ Trotz ihrer Vorteile für die Visualisierung hierarchischer Daten stoßen Tree M
 Nachdem im vorangegangenen Kapitel Node-Link Diagramme und Adjazenzmatrizen ausführlich vorgestellt wurden, soll hier nun ein Vergleich folgen. In diesem Kapitel wird ein ausführlicher Vergleich von Node-Link Diagrammen mit Adjazenzmatrizen angestellt, um ihre Tauglichkeit für die Visualisierung großer Knowledge Graphen zu beurteilen. Der Vergleich erfolgt anhand folgender Kriterien: Lesbarkeit und Verständlichkeit, Skalierbarkeit, Interaktivität, Performance, Unterstützung für hierarchische Daten. Durch diesen Vergleich soll ein tiefes Verständnis für die Vor- und Nachteile jeder Visualisierungsart geschaffen werden, sodass später eine qualifizierte Auswahl einer Diagrammart getroffen werden kann. Die folgenden Punkte stützen sich auf die Erkenntnisse aus Kapitel \ref{theory:visualization:types}. Da sich die Tree Map Diagramme bereits in ihrer Vorstellung als ungeeignet gezeigt haben, werden diese im folgenden Kapitel nicht berücksichtigt.
 
 \subsubsection{Lesbarkeit und Verständlichkeit}
+\label{theory:visualization:comparison:readability}
 
 Die Lesbarkeit und Verständlichkeit von Diagrammen sind entscheidende Faktoren für die Effektivität, mit der die Informationen an die Betrachter übermittelt werden können.
 
@@ -68,7 +69,19 @@ Adjazenzmatrix Diagramme hingegen stellen Netzwerke in Form einer Matrix dar, wo
 Zusammenfassend lässt sich sagen, dass die Wahl zwischen Node-Link und Adjazenzmatrix Diagrammen von der Größe und Dichte des Netzwerks sowie von den Zielen und der Zielgruppe der Visualisierung abhängt. Während Node-Link Diagramme durch ihre visuelle Darstellung eine höhere Verständlichkeit bieten, können Adjazenzmatrix Diagramme in der Analyse komplexer und dichter Netzwerke Vorteile aufweisen.
 
 \subsubsection{Skalierbarkeit}
+
+Skalierbarkeit ist ein wesentliches Kriterium beim Vergleich von Diagrammtypen, insbesondere wenn es um die Visualisierung großer Knowledge Graphen geht. Im vorherigen Kapitel \ref{theory:visualization:comparison:readability} wurden bereit Aspekte der Skalierbarkeit angeschnitten. Dennoch lag der Fokus auf der allgemeinen Lesbarkeit der Diagrammtypen. Im Folgenden wird ein Vergleich von Node-Link Diagrammen und Adjazenzmatrizen hinsichtlich ihrer Skalierbarkeit vorgenommen.
+
+Die Art der Darstellung von Node-Link Diagrammen ist besonders vorteilhaft für die Visualisierung kleiner bis mittelgroßer Netzwerke, allerdings stößt deren Ansatz bei großen oder dichten Netzwerken an seine Grenzen. Mit zunehmender Anzahl von Knoten und Verbindungen werden die Diagramme schnell überladen und unübersichtlich, was die Lesbarkeit und die Performance erheblich einschränkt.
+
+Im Gegensatz dazu skaliert diese Darstellungsform von Adjazenzmatrizen besser mit der Größe des Netzwerks. Das liegt daran, dass sie unabhängig von der Anzahl der Knoten und Verbindungen eine gleichbleibend kompakte Darstellungsform bietet. Es müssen auch keine Kanten gezeichnet und geordnet werden, welche die Darstellung unübersichtlich machen und viel Rechenleistung für die optimale Positionierung benötigen.
+
+Beim Vergleich der Skalierbarkeit von Node-Link und Adjazenzmatrix Diagrammen zeigt sich, dass Adjazenzmatrizen deutlich besser skalieren, als Node-Link Diagramme. Adjazenzmatrix-Diagramme bleiben auch bei großer Netzwerkgröße übersichtlich.
+
 \subsubsection{Interaktivität}
+
+
+
 \subsubsection{Performance}
 \subsubsection{Unterstützung für hierarchische Daten}
 
