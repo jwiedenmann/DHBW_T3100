@@ -69,26 +69,24 @@ Adjazenzmatrix Diagramme hingegen stellen Netzwerke in Form einer Matrix dar, wo
 Zusammenfassend lässt sich sagen, dass die Wahl zwischen Node-Link und Adjazenzmatrix Diagrammen von der Größe und Dichte des Netzwerks sowie von den Zielen und der Zielgruppe der Visualisierung abhängt. Während Node-Link Diagramme durch ihre visuelle Darstellung eine höhere Verständlichkeit bieten, können Adjazenzmatrix Diagramme in der Analyse komplexer und dichter Netzwerke Vorteile aufweisen.
 
 \subsubsection{Skalierbarkeit}
+\label{theory:visualization:comparison:scalability}
 
-Skalierbarkeit ist ein wesentliches Kriterium beim Vergleich von Diagrammtypen, insbesondere wenn es um die Visualisierung großer Knowledge Graphen geht. Im vorherigen Kapitel \ref{theory:visualization:comparison:readability} wurden bereit Aspekte der Skalierbarkeit angeschnitten. Dennoch lag der Fokus auf der allgemeinen Lesbarkeit der Diagrammtypen. Im Folgenden wird ein Vergleich von Node-Link Diagrammen und Adjazenzmatrizen hinsichtlich ihrer Skalierbarkeit vorgenommen.
+Skalierbarkeit ist ein wesentliches Kriterium beim Vergleich von Diagrammtypen, insbesondere wenn es um die Visualisierung großer Knowledge Graphen geht. Im vorherigen Kapitel \ref{theory:visualization:comparison:readability} wurden bereit Aspekte der Skalierbarkeit angeschnitten. Dennoch lag der Fokus auf der allgemeinen Lesbarkeit der Diagrammtypen. Im Folgenden wird ein Vergleich von Node-Link Diagrammen und Adjazenzmatrizen hinsichtlich ihrer Skalierbarkeit vorgenommen. Das heißt, es soll die Frage beantwortet werden, wie gut lassen sich große Datenmengen darstellen und interpretieren.
 
 Die Art der Darstellung von Node-Link Diagrammen ist besonders vorteilhaft für die Visualisierung kleiner bis mittelgroßer Netzwerke, allerdings stößt deren Ansatz bei großen oder dichten Netzwerken an seine Grenzen. Mit zunehmender Anzahl von Knoten und Verbindungen werden die Diagramme schnell überladen und unübersichtlich, was die Lesbarkeit und die Performance erheblich einschränkt.
 
 Im Gegensatz dazu skaliert diese Darstellungsform von Adjazenzmatrizen besser mit der Größe des Netzwerks. Das liegt daran, dass sie unabhängig von der Anzahl der Knoten und Verbindungen eine gleichbleibend kompakte Darstellungsform bietet. Es müssen auch keine Kanten gezeichnet und geordnet werden, welche die Darstellung unübersichtlich machen und viel Rechenleistung für die optimale Positionierung benötigen.
 
-Beim Vergleich der Skalierbarkeit von Node-Link und Adjazenzmatrix Diagrammen zeigt sich, dass Adjazenzmatrizen deutlich besser skalieren, als Node-Link Diagramme. Adjazenzmatrix-Diagramme bleiben auch bei großer Netzwerkgröße übersichtlich.
-
-\subsubsection{Interaktivität}
-
-
+Beim Vergleich der Skalierbarkeit von Node-Link und Adjazenzmatrix Diagrammen zeigt sich, dass Adjazenzmatrizen deutlich besser skalieren, als Node-Link Diagramme. Adjazenzmatrix-Diagramme bleiben auch bei großer Netzwerkgröße übersichtlich. Die Performance-Aspekte großer Datenmengen werden im nächsten Kapitel \ref{theory:visualization:comparison:performance} behandelt.
 
 \subsubsection{Performance}
+\label{theory:visualization:comparison:performance}
 
+Das letzte Kriterium, was in diesem Vergleich beleuchtet werden soll, ist die Performance. Die Performance hätte bereits im vorangegangenen Kapitel \ref{theory:visualization:comparison:scalability} unter dem Gesichtspunkt der Skalierbarkeit betrachtet werden können. Allerdings wurde die bewusste Entscheidung getroffen eine Unterscheidung zwischen der allgemeinen Recheneffizienz der Diagrammarten und der Skalierbarkeit zu machen.
 
+Node-Link Diagramme sind grafische Darstellungen, bei denen Knoten durch Punkte und Beziehungen durch Linien repräsentiert werden. Bei kleineren bis mittelgroßen Netzwerken ist die benötigte Rechenleistung für das Rendering und die Interaktion mit diesen Diagrammen logischerweise gering. Die Komplexität steigt jedoch exponentiell mit der Anzahl der Knoten und Verbindungen. Das reine Zeichnen der Knoten und Verbindungen stell hierbei allerdings weniger das Problem dar. Problematisch ist die Positionierung. Um die Übersichtlichkeit zu gewährleisten, werden in der Regel Algorithmen eingesetzt, welche versuchen die Knoten optimal zu positionieren, sodass möglichst wenig Überlappungen von Kanten entstehen. Die Performance wird auch von Techniken für die Vereinfachung der Diagramme belastet. Diese Techniken haben zu Ziel die Darstellung für den Nutzer übersichtlicher zu gestalten.  Diese Algorithmen benötigen bei großen und dichten Netzwerken erhebliche Rechenressourcen. Die Performance-Probleme manifestieren sich in Form von langsamen Ladezeiten und verzögerten Interaktionen.
 
-\subsubsection{Unterstützung für hierarchische Daten}
-
-
+Adjazenzmatrix Diagramme hingegen stellen Netzwerke als Matrizen dar, in denen die Verbindungen zwischen Knoten durch die Füllung der Zellen dargestellt wird. Die Rechenleistung für das Rendering einer Adjazenzmatrix skaliert im Wesentlichen linear mit der Anzahl der Knoten, da die Darstellung unabhängig von der Anzahl der Verbindungen ist. Dadurch sind Adjazenzmatrizen effizienter in der Darstellung sehr großer Netzwerke, insbesondere wenn es sich um dichte Netzwerke handelt. 
 
 \section{Vereinfachungstechniken}
 
