@@ -29,6 +29,8 @@ Der größte Vorteil von Node-Link Diagrammen besteht in ihrer Fähigkeit, abstr
 
 Allerdings nimmt die Effektivität von Node-Link Diagrammen mit der Größe und Komplexität des Graphen ab. In dicht vernetzten oder sehr großen Graphen kann die Übersichtlichkeit schnell abnehmen. Überlappende Verbindungen und Knoten führen oft zu einem Durcheinander, das die Visualisierung unklar und verwirrend macht. Dieses Problem kann durch interaktive Visualisierungstools reduziert werden. Diese Werkzeuge erlauben es Nutzern den Graphen dynamisch zu vergrößern, zu filtern und zu durchsuchen. Dennoch bleibt die Herausforderung der Verständlichkeit bei großen Graphen bestehen (\cite{nodelink:DynamicGraph}, S. 3). Dies erfordert eine sorgfältige Planung des Diagrammdesigns und den Einsatz von Vereinfachungstechniken, wie kraftbasierte Layouts und Kantenverschmelzung, um die Lesbarkeit zu verbessern.
 
+To-do über Anordnung von Nodes schreiben
+
 \subsubsection{Adjazenzmatrizen}
 
 Einen gänzlich anderen Ansatz zur Visualisierung von Graphdaten bilden die Adjazenzmatrizen. Sie bieten eine strukturierte und analytische Perspektive auf die Daten. Adjazenzmatrizen verwenden ein rasterbasiertes Layout und eignen sich daher ausgezeichnet für die Abbildung komplexer und großflächiger Netzwerke. Bei einer Adjazenzmatrix werden die Entitäten des Graphen sowohl auf der horizontalen als auch auf der vertikalen Achse einer quadratischen Matrix aufgeführt. Die Zellen innerhalb der Matrix werden gefüllt, um die Existenz einer Beziehung zwischen den entsprechenden Entitäten zu signalisieren. Diese Herangehensweise verwandelt die Vernetzung des Graphen in ein visuelles Muster aus besetzten und unbesetzten Zellen. Eine besetzte Zelle am Kreuzungspunkt der Zeile ii und Spalte jj signalisiert eine direkte Verbindung von Entität ii zu Entität jj.
@@ -88,6 +90,12 @@ Node-Link Diagramme sind grafische Darstellungen, bei denen Knoten durch Punkte 
 
 Adjazenzmatrix Diagramme hingegen stellen Netzwerke als Matrizen dar, in denen die Verbindungen zwischen Knoten durch die Füllung der Zellen dargestellt wird. Die Rechenleistung für das Rendering einer Adjazenzmatrix skaliert im Wesentlichen linear mit der Anzahl der Knoten, da die Darstellung unabhängig von der Anzahl der Verbindungen ist. Dadurch sind Adjazenzmatrizen effizienter in der Darstellung sehr großer Netzwerke, insbesondere wenn es sich um dichte Netzwerke handelt. 
 
-\section{Vereinfachungstechniken}
+\section{Vereinfachungs- und Interaktionstechniken}
 
-\subsection{Graph Filtering}
+Im vorherigen Kapitel wurden die verschiedenen Diagrammarten, für die Visualisierung von Knowledge Graphen eingehend beleuchtet. Die Auswahl der richtigen Diagrammart ist entscheidend, um komplexe Zusammenhänge verständlich und übersichtlich darzustellen. Doch selbst mit der optimalen Diagrammart kann die Darstellung umfangreicher Knowledge Graphen schnell an Grenzen stoßen. Vor allem, wenn es darum geht, die Fülle an Informationen für den Betrachter zugänglich zu machen. In diesem Kapitel werden daher Techniken vorgestellt, die eingesetzt werden können, um diese Darstellungen zu vereinfachen und für den Betrachter zugänglicher zu machen.
+
+\subsection{Node Clustering}
+
+Node Clustering ist eine wichtige Technik bei der Vereinfachung von Node-Link Diagrammen. Die Technik zielt darauf ab, Gruppen, sogenannte Cluster, von Knoten innerhalb eines Graphen zu identifizieren. Die Elemente eines Clusters sind in irgendeiner Weise ähnlicher zueinander, als zum Rest des Graphen. Diese Ähnlichkeit kann sich auf verschiedene Aspekte beziehen, wie beispielsweise die Anzahl der Verbindungen oder die Werte der Knotenattribute. Node Clustering wird angewandt, um das visuelle Durcheinander eines Graphen zu minimieren und das menschliche Verständnis zu vertiefen (\cite{chen:SurveyGraphVisualization}, S. 634).
+
+Das Identifizieren solcher Cluster ermöglicht es uns, tiefergehende Einblicke in die Struktur und Dynamik von Netzwerken zu gewinnen. Im folgenden Kapitel werden Algorithmen zur maschinellen Erkennung von Clustern, sowie Möglichkeiten zur Visualisierung von Clustern vorgestellt.
