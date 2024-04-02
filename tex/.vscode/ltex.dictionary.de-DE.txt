@@ -12,3 +12,4 @@ Filtering
 Visualisierungsart
 Interaktionstechniken
 Node
+Clustererkennung
