@@ -1,3 +1,11 @@
+## App Svelt/.NET Core
+node_modules/
+build/
+bin/
+obj/
+
+.DS_Store
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
