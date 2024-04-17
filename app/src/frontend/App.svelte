@@ -1,11 +1,25 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from './assets/vite.svg'
+  // import svelteLogo from './assets/svelte.svg'
+  // import viteLogo from './assets/vite.svg'
   import Counter from './lib/Counter.svelte'
+
+  import LinePlot from './D3Test.svelte';
+  import * as d3 from 'd3';
+
+  let data = d3.ticks(-2, 2, 200).map(Math.sin);
+
+  function onMousemove(event) {
+		const [x, y] = d3.pointer(event);
+    data = data.slice(-200).concat(Math.atan2(x, y));
+  }
 </script>
 
 <main>
-  <div>
+  <div on:mousemove={onMousemove} role="alert">
+    <LinePlot data={data} />
+  </div>
+
+  <!-- <div>
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
       <img src={viteLogo} class="logo" alt="Vite Logo" />
     </a>
@@ -29,7 +43,7 @@
 
   <p class="read-the-docs">
     Click on the Vite and Svelte logos to learn more
-  </p>
+  </p> -->
 </main>
 
 <style global lang="postcss">
