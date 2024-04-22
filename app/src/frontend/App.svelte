@@ -2,6 +2,7 @@
   // import svelteLogo from './assets/svelte.svg'
   // import viteLogo from './assets/vite.svg'
   import Counter from './lib/Counter.svelte'
+  import Fetchtest from './fetchtest.svelte';
 
   import LinePlot from './D3Test.svelte';
   import * as d3 from 'd3';
@@ -15,9 +16,10 @@
 </script>
 
 <main>
-  <div on:mousemove={onMousemove} role="alert">
+  <!-- <div on:mousemove={onMousemove} role="alert">
     <LinePlot data={data} />
-  </div>
+  </div> -->
+  <Fetchtest/>
 
   <!-- <div>
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer">

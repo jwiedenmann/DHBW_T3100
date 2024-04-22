@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run build-vite-watch\" \"dotnet watch run --project ./src/backend/GraphVisualizer\"",
     "dev-vite": "vite",
-    "build": "concurrently \"npm run build-vite\" \"dotnet build\"",
+    "build": "concurrently \"npm run build-vite\" \"dotnet build --no-incremental && dotnet build\"",
     "build-vite": "vite build --emptyOutDir --config ./vite.config.js",
     "build-vite-watch": "vite build --emptyOutDir --config ./vite.config.js --watch",
     "preview-vite": "vite preview"
