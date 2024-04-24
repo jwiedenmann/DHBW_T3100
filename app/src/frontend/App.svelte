@@ -1,5 +1,5 @@
 <script>
-  import Fetchtest from './fetchtest.svelte';
+  import Fetchtest from './lib/fetchtest.svelte';
 </script>
 
 <main>
