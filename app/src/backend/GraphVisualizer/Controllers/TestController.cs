@@ -16,20 +16,20 @@ public class TestController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        string startingUri = "http://dbpedia.org/resource/Albert_Einstein";
+        // string startingUri = "http://dbpedia.org/resource/Albert_Einstein";
+        string startingUri = "https://dbpedia.org/ontology/deathPlace";
         Graph g = new();
 
         await _loader.LoadGraphAsync(g, new Uri(startingUri));
-        string s = ConvertGraphToJsonLd(g);
         return await Task.FromResult(Ok(ConvertGraphToJsonLd(g)));
     }
 
     public string ConvertGraphToJsonLd(IGraph graph)
     {
         var nodes = new List<object>();
-        foreach (Triple triple in graph.Triples)
+        foreach (Triple triple in graph.Triples.Distinct())
         {
-             var node = new
+            var node = new
             {
                 Subject = triple.Subject.ToString(),
                 Predicate = triple.Predicate.ToString(),
