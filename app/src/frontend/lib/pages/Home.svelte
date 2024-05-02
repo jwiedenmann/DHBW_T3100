@@ -1,7 +1,7 @@
 <script>
   import Navbar from "../components/Navbar.svelte";
   import Footer from "../components/Footer.svelte";
-  import {push} from 'svelte-spa-router';
+  import { push } from "svelte-spa-router";
 
   function handleSubmit(event) {
     event.preventDefault(); // Stop the form from submitting normally
@@ -25,7 +25,7 @@
         </h1>
         <form class="flex justify-center flex-nowrap" on:submit={handleSubmit}>
           <label
-            class="input input-bordered input-md input-primary flex items-center gap-10 rounded-md pr-0 md:w-10/12"
+            class="input input-bordered input-md input-primary flex items-center gap-10 rounded-full pr-0 md:w-10/12"
           >
             <input
               name="search"
@@ -34,7 +34,7 @@
               placeholder="I want to know about..."
             />
             <button
-              class="btn btn-primary px-5 py-3 text-base font-medium text-center rounded-none rounded-r-md"
+              class="btn btn-primary px-5 py-3 text-base font-medium text-center rounded-none rounded-r-full"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
