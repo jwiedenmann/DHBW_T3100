@@ -1,14 +1,37 @@
 <script>
+// @ts-nocheck
+
+  import { onMount } from "svelte";
+  import { themeChange } from "theme-change";
+  import SunIco from "../utils/icons/Sun.svelte";
+  import MoonIco from "../utils/icons/Moon.svelte";
+
+  onMount(() => {
+    themeChange(false);
+  });
+
   window.onload = function () {
     const currentTheme = localStorage.getItem("theme") || "light";
-    console.log(currentTheme);
-    const toggleCheckbox = document.querySelector("[data-toggle-theme]");
-    // @ts-ignore
-    toggleCheckbox.checked = currentTheme !== "light";
+    const toggleCheckboxes = document.querySelectorAll("[data-toggle-theme]");
+    toggleCheckboxes.forEach((checkbox) => {
+      // @ts-ignore
+      checkbox.checked = currentTheme !== "light";
+    });
   };
+
+  function setThemeCheckBox(isChecked) {
+    console.log(isChecked);
+    const toggleCheckboxes = document.querySelectorAll("[data-toggle-theme]");
+    toggleCheckboxes.forEach((checkbox) => {
+      // @ts-ignore
+      checkbox.checked = isChecked;
+    });
+  }
 </script>
 
-<div class="navbar bg-base-100">
+<div
+  class="navbar bg-base-100 sticky top-0 z-50 backdrop-filter backdrop-blur-sm bg-opacity-90 transition-shadow shadow-sm"
+>
   <div class="flex-1">
     <a href="/" class="btn btn-ghost text-2xl font-extrabold">
       <img src="/assets/logo.svg" alt="Logo" class="w-10" />
@@ -16,37 +39,42 @@
     </a>
   </div>
 
-  <div class="flex">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      ><circle cx="12" cy="12" r="5" /><path
-        d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
-      /></svg
-    >
+  <div class="hidden md:flex">
+    <div class="w-7 fill-current">
+      <SunIco />
+    </div>
     <input
       type="checkbox"
+      on:click={event => setThemeCheckBox(event.target.checked)}
       class="toggle theme-controller mx-1"
       data-toggle-theme="synthwave"
       data-act-class="active"
     />
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="w-6"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      ><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg
-    >
+    <div class="w-6 fill-current">
+      <MoonIco />
+    </div>
+  </div>
+  <div class="md:hidden">
+    <label class="swap swap-rotate">
+      <!-- this hidden checkbox controls the state -->
+      <input
+        type="checkbox"
+        on:click={event => setThemeCheckBox(event.target.checked)}
+        class="theme-controller"
+        data-toggle-theme="synthwave"
+        data-act-class="active"
+      />
+
+      <!-- sun icon -->
+      <div class="swap-off w-7 fill-current">
+        <SunIco />
+      </div>
+
+      <!-- moon icon -->
+      <div class="swap-on w-6 fill-current flex">
+        <MoonIco />
+      </div>
+    </label>
   </div>
 </div>
 
