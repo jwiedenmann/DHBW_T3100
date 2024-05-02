@@ -10,7 +10,14 @@ module.exports = {
     ],
     daisyui: {
         themes: [
-            "light",
+            {
+                light: {
+                    ...require("daisyui/src/theming/themes")["light"],
+                    primary: "#209CEE",
+                    "primary-focus": "#197FC3",
+                    "primary-content": "#FFFFFF",
+                },
+            },
             "dark",
             "synthwave",
         ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
