@@ -20,7 +20,6 @@
   };
 
   function setThemeCheckBox(isChecked) {
-    console.log(isChecked);
     const toggleCheckboxes = document.querySelectorAll("[data-toggle-theme]");
     toggleCheckboxes.forEach((checkbox) => {
       // @ts-ignore
