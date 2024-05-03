@@ -1,9 +1,11 @@
 <script>
   // @ts-nocheck
   export let showSearchBar = false;
+  export let searchQuery = "";
 
   import { onMount } from "svelte";
   import { themeChange } from "theme-change";
+  import { push } from "svelte-spa-router";
   import SunIco from "../utils/icons/Sun.svelte";
   import MoonIco from "../utils/icons/Moon.svelte";
 
@@ -50,7 +52,7 @@
       <label
         class="input input-bordered rounded-full flex items-center gap-2 pr-0"
       >
-        <input type="text" class="grow" placeholder="I want to know about..." />
+        <input type="text" name="search" bind:value={searchQuery} class="grow" placeholder="I want to know about..." />
         <button
           class="inline-flex flex-shrink-0 h-12 justify-center items-center px-4 rounded-full"
         >
