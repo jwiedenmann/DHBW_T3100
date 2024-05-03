@@ -30,7 +30,7 @@ app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
-    //app.UseCors(_corsOrigins);
+    app.UseCors(_corsOrigins);
 }
 
 app.MapControllers();
