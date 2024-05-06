@@ -48,7 +48,7 @@
   </div>
 
   {#if showSearchBar}
-    <form class="flex justify-center flex-nowrap" on:submit={handleSubmit}>
+    <form class="flex justify-center flex-nowrap lg:ml-4" on:submit={handleSubmit}>
       <label
         class="input input-bordered rounded-full flex items-center gap-2 pr-0"
       >

@@ -11,6 +11,8 @@ public class SparqlRepository : ISparqlRepository
     {
         _configuration = configuration;
         _httpClient = httpClient;
+
+        _httpClient.Timeout = TimeSpan.FromSeconds(120);
     }
 
     public Task<SparqlResultSet> Search(string searchTerm)
@@ -23,9 +25,9 @@ public class SparqlRepository : ISparqlRepository
             string query = $@"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?resource ?label WHERE {{
+SELECT DISTINCT ?resource ?label WHERE {{
   ?resource rdfs:label ?label .
-  FILTER(regex(?label, ""^{searchTerm}$"", ""i"") && langMatches(lang(?label), ""EN""))
+  FILTER(regex(?label, ""{searchTerm}"", ""i"") && langMatches(lang(?label), ""EN""))
 }}
 LIMIT 100";
 

@@ -1,6 +1,8 @@
 ﻿using GraphVisualizer.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using VDS.RDF.Query;
+using VDS.RDF;
+using Newtonsoft.Json;
 
 namespace GraphVisualizer.Controllers;
 
@@ -18,8 +20,19 @@ public class SparqlController : Controller
     [HttpGet("Search")]
     public async Task<IActionResult> Search([FromQuery] string searchTerm)
     {
-        //var v = await _sparqlRepository.Search(searchTerm);
+        SparqlResultSet results = await _sparqlRepository.Search(searchTerm);
+        List<object> resources = [];
 
-        return Ok(searchTerm);
+        foreach (SparqlResult result in results.Cast<SparqlResult>())
+        {
+            string label = result["label"].ToString();
+            resources.Add(new
+            {
+                Subject = result["resource"].ToString(),
+                Label = label[..^3]  // Removes the last three characters (i.e. the @en)
+            });
+        }
+
+        return Ok(JsonConvert.SerializeObject(resources, Formatting.Indented));
     }
 }

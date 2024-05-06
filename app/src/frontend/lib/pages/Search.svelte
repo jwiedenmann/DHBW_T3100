@@ -5,9 +5,9 @@
   import Footer from "../components/Footer.svelte";
   import { onMount, onDestroy } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
-  import { httpGet } from "../utils/HttpHelper";
 
   let searchQuery = null;
+  let searchResults = [];
 
   $: if (searchQuery !== null) {
     loadResults();
@@ -35,8 +35,7 @@
   function loadResults() {
     fetchResults().then(
       function (value) {
-        console.log("value");
-        console.log(value);
+        searchResults = value;
       },
       function (error) {
         console.log(error);
@@ -50,14 +49,29 @@
       import.meta.env.VITE_BASE_URL
     );
     url.searchParams.append("searchTerm", searchQuery);
-    return httpGet(url);
+    const response = await fetch(url);
+
+    if (response.ok) {
+      return response.json();
+    }
+
+    return [];
   }
 </script>
 
 <div class="h-screen flex flex-col overflow-hidden">
   <Navbar showSearchBar={true} {searchQuery} />
 
-  <main class="flex-1 flex flex-col overflow-y-auto"></main>
+  <main class="flex-1 flex flex-col overflow-y-auto">
+    {#each searchResults as searchResult}
+      <div class="ml-6 mt-4 xl:ml-18">
+        <a href="/#/graph/?uri={searchResult.Subject}" class="link link-info font-semibold text-xl"
+          >{searchResult.Label}</a
+        >
+        <p>{searchResult.Subject}</p>
+      </div>
+    {/each}
+  </main>
 
   <Footer />
 </div>

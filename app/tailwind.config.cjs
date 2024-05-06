@@ -1,7 +1,11 @@
 module.exports = {
     content: ["./src/**/*.{html,js,svelte}"],
     theme: {
-        extend: {},
+        extend: {
+            spacing: {
+                '18': '4.6rem',  // This adds a custom spacing value
+            }
+        }
     },
     plugins: [
         //order matters!

@@ -96,7 +96,7 @@ public class TestController : Controller
             const string query = @"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?resource ?label WHERE {
+SELECT DISTINCT  ?resource ?label WHERE {
   ?resource rdfs:label ?label .
   FILTER(regex(?label, ""^Berlin$"", ""i"") && langMatches(lang(?label), ""EN""))
 }
