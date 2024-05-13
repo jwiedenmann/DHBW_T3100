@@ -35,4 +35,29 @@ public class SparqlController : Controller
 
         return Ok(JsonConvert.SerializeObject(resources, Formatting.Indented));
     }
+
+    [HttpGet("Graph")]
+    public async Task<IActionResult> Graph([FromQuery] string uri)
+    {
+        Graph graph = await _sparqlRepository.Get(uri);
+        return await Task.FromResult(Ok(ConvertGraphToJsonLd(graph)));
+    }
+
+    public string ConvertGraphToJsonLd(IGraph graph)
+    {
+        var nodes = new List<object>();
+        foreach (Triple triple in graph.Triples.Distinct())
+        {
+            var node = new
+            {
+                Subject = triple.Subject.ToString(),
+                Predicate = triple.Predicate.ToString(),
+                Object = triple.Object.ToString()
+            };
+            nodes.Add(node);
+        }
+
+        string json = JsonConvert.SerializeObject(nodes, Formatting.Indented);
+        return json;
+    }
 }

@@ -1,9 +1,10 @@
-﻿using VDS.RDF.Query;
+﻿using VDS.RDF;
+using VDS.RDF.Query;
 
 namespace GraphVisualizer.DataAccess;
 
 public interface ISparqlRepository
 {
-    void Get(string resource);
+    Task<Graph> Get(string uri);
     Task<SparqlResultSet> Search(string searchTerm);
 }

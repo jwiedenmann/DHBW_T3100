@@ -1,4 +1,6 @@
-﻿using VDS.RDF.Query;
+﻿using VDS.RDF;
+using VDS.RDF.Parsing;
+using VDS.RDF.Query;
 
 namespace GraphVisualizer.DataAccess;
 
@@ -6,6 +8,7 @@ public class SparqlRepository : ISparqlRepository
 {
     private readonly IConfiguration _configuration;
     private readonly HttpClient _httpClient;
+    private readonly Loader _loader;
 
     public SparqlRepository(IConfiguration configuration, HttpClient httpClient)
     {
@@ -13,6 +16,7 @@ public class SparqlRepository : ISparqlRepository
         _httpClient = httpClient;
 
         _httpClient.Timeout = TimeSpan.FromSeconds(120);
+        _loader = new Loader(_httpClient);
     }
 
     public Task<SparqlResultSet> Search(string searchTerm)
@@ -39,9 +43,10 @@ LIMIT 100";
         }
     }
 
-    public void Get(string resource)
+    public async Task<Graph> Get(string uri)
     {
-
-        throw new NotImplementedException();
+        Graph graph = new();
+        await _loader.LoadGraphAsync(graph, new Uri(uri));
+        return graph;
     }
 }
