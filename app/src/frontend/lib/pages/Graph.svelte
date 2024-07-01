@@ -50,9 +50,11 @@
   <main class="flex-1 flex flex-col overflow-y-auto">
     {#each graphResults as graphResult}
       <div class="ml-6 mt-4 xl:ml-18">
-        <h1
-          class="font-semibold text-xl">{graphResult.Subject} {graphResult.Predicate} {graphResult.Object}</h1
-        >
+        <h1 class="font-semibold text-xl">
+          {graphResult.Subject}
+          {graphResult.Predicate}
+          {graphResult.Object}
+        </h1>
       </div>
     {/each}
   </main>
