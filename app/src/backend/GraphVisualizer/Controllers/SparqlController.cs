@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using VDS.RDF.Query;
 using VDS.RDF;
 using Newtonsoft.Json;
+using GraphVisualizer.Utils;
 
 namespace GraphVisualizer.Controllers;
 
@@ -40,24 +41,6 @@ public class SparqlController : Controller
     public async Task<IActionResult> Graph([FromQuery] string uri)
     {
         Graph graph = await _sparqlRepository.Get(uri);
-        return await Task.FromResult(Ok(ConvertGraphToJsonLd(graph)));
-    }
-
-    public string ConvertGraphToJsonLd(IGraph graph)
-    {
-        var nodes = new List<object>();
-        foreach (Triple triple in graph.Triples.Distinct())
-        {
-            var node = new
-            {
-                Subject = triple.Subject.ToString(),
-                Predicate = triple.Predicate.ToString(),
-                Object = triple.Object.ToString()
-            };
-            nodes.Add(node);
-        }
-
-        string json = JsonConvert.SerializeObject(nodes, Formatting.Indented);
-        return json;
+        return await Task.FromResult(Ok(GraphHelper.ConvertGraphToJsonLd(graph)));
     }
 }
