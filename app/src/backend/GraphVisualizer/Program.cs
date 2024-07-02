@@ -17,6 +17,11 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddMemoryCache();
+
 builder.Services.AddHttpClient<SparqlRepository>();
 
 builder.Services.AddTransient<ISparqlRepository, SparqlRepository>();
@@ -30,6 +35,8 @@ app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.UseCors(_corsOrigins);
 }
 
