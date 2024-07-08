@@ -46,7 +46,7 @@
     const nodesCopy = Array.from(nodes);
     let count = 0;
     for (const node of nodesCopy) {
-      if (count === 0) return;
+      if (count === 2) return;
 
       console.log(nodesCopy);
       console.log(node);
@@ -68,7 +68,12 @@
 
     nodeGraph.Nodes.forEach((node) => {
       const existingNode = nodeUriMap.get(node.Uri);
-      if (!existingNode || Object.keys(existingNode.Links).length === 0) {
+      if (
+        !existingNode ||
+        Object.values(existingNode.Links).every(
+          (linkList) => linkList.length === 0
+        )
+      ) {
         nodeUriMap.set(node.Uri, node);
       }
     });
@@ -92,11 +97,13 @@
       properties: node.Properties,
     }));
     const links = graphResults.Nodes.flatMap((node) =>
-      Object.entries(node.Links).map(([key, value]) => ({
-        source: node.Uri,
-        target: value,
-        predicate: key,
-      }))
+      Object.entries(node.Links).flatMap(([key, values]) =>
+        values.map((value) => ({
+          source: node.Uri,
+          target: value,
+          predicate: key,
+        }))
+      )
     );
 
     const simulation = d3
@@ -105,7 +112,7 @@
         "link",
         d3.forceLink(links).id((d) => d.id)
       )
-      .force("charge", d3.forceManyBody().strength(-1))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(width / 2, height / 2));
 
     const link = svg
@@ -195,17 +202,17 @@
     <div id="tooltip" class="tooltip"></div>
   </main>
 
-  <main class="flex-1 flex flex-col overflow-y-auto">
+  <!-- <main class="flex-1 flex flex-col overflow-y-auto">
     {#each graphResults.Nodes as node}
       <div class="ml-6 mt-4 xl:ml-18">
         <h1 class="font-semibold text-xl">
           {node.Uri}
           {Object.keys(node.Links).join(", ")}
-          {Object.values(node.Links).join(", ")}
+          {Object.values(node.Links).flat().join(", ")}
         </h1>
       </div>
     {/each}
-  </main>
+  </main> -->
 
   <Footer />
 </div>

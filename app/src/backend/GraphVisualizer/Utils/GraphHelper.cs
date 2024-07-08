@@ -38,7 +38,6 @@ public static class GraphHelper
             string predicate = triple.Predicate.ToString();
             string obj = triple.Object.ToString();
 
-
             if (!nodeDictionary.TryGetValue(subject, out Node? subjectNode))
             {
                 subjectNode = new Node { Uri = subject };
@@ -65,8 +64,15 @@ public static class GraphHelper
                 continue;
             }
 
-            // add links to the linked nodes
-            subjectNode.Links.TryAdd(predicate, obj);
+            // check if predicate already exists
+            if (!subjectNode.Links.TryGetValue(predicate, out List<string>? links))
+            {
+                links = [];
+                subjectNode.Links.Add(predicate, links);
+            }
+
+            // add link to node
+            links.Add(obj);
 
             // add the linked node to the node dictionary
             nodeDictionary.TryAdd(obj, new Node { Uri = obj });
