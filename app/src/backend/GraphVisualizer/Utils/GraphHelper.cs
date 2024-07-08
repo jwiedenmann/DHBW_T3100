@@ -1,11 +1,14 @@
 ﻿using GraphVisualizer.Data;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using VDS.RDF;
 
 namespace GraphVisualizer.Utils;
 
 public static class GraphHelper
 {
+    private static readonly Regex _isTextRegex = new("@([a-zA-Z]{2})$", RegexOptions.Compiled);
+
     public static string ConvertGraphToJsonLd(IGraph graph)
     {
         var nodes = new List<object>();
@@ -42,16 +45,25 @@ public static class GraphHelper
                 nodeDictionary.Add(subject, subjectNode);
             }
 
-            if (predicate == "http://www.w3.org/2000/01/rdf-schema#label" && obj.EndsWith("@en")) // Assuming "label" is the predicate for label
+            if (_isTextRegex.IsMatch(obj))
             {
-                subjectNode.Label = obj[..^3];
+                if (obj.EndsWith("@en"))
+                {
+                    if (predicate == "http://www.w3.org/2000/01/rdf-schema#label")
+                    {
+                        subjectNode.Label = obj[..^3];
+                    }
+                    else
+                    {
+                        subjectNode.Properties.TryAdd(predicate, obj);
+                    }
+
+                    continue;
+                }
+
+                // skip non english texts
                 continue;
             }
-            // TODO add filter for predicates
-            //else
-            //{
-            //    value.Properties[predicate] = obj;
-            //}
 
             // add links to the linked nodes
             subjectNode.Links.TryAdd(predicate, obj);

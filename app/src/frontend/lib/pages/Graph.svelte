@@ -101,9 +101,11 @@
       .append("circle")
       .attr("r", 5)
       .attr("fill", "steelblue")
-      .call(drag(simulation));
+      .call(drag(simulation))
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut);
 
-    node.append("title").text((d) => d.id);
+    node.append("title").text((d) => d.label);
 
     simulation.on("tick", () => {
       link
@@ -139,6 +141,24 @@
         .on("drag", dragged)
         .on("end", dragended);
     }
+
+    function handleMouseOver(event, d) {
+      const tooltip = d3.select("#tooltip");
+      tooltip.transition().duration(200).style("opacity", 0.9);
+      tooltip
+        .html(
+          `<div><strong>URI:</strong> <span class="nowrap">${d.id}</span></div>
+                    <div><strong>Label:</strong> ${d.label}</div>
+                    <div><strong>Properties:</strong> ${JSON.stringify(d.properties)}</div>`
+        )
+        .style("left", event.pageX + 5 + "px")
+        .style("top", event.pageY - 28 + "px");
+    }
+
+    function handleMouseOut(event, d) {
+      const tooltip = d3.select("#tooltip");
+      tooltip.transition().duration(500).style("opacity", 0);
+    }
   }
 </script>
 
@@ -147,6 +167,7 @@
 
   <main class="flex-1 flex flex-col overflow-y-auto">
     <svg id="graphSvg"></svg>
+    <div id="tooltip" class="tooltip"></div>
   </main>
 
   <main class="flex-1 flex flex-col overflow-y-auto">
@@ -165,4 +186,25 @@
 </div>
 
 <style global lang="postcss">
+  .tooltip {
+    opacity: 0;
+    position: absolute;
+    text-align: left;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .tooltip .nowrap {
+    white-space: nowrap;
+  }
+
+  .tooltip strong {
+    font-weight: bold;
+  }
 </style>
