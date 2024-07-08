@@ -46,7 +46,7 @@
     const nodesCopy = Array.from(nodes);
     let count = 0;
     for (const node of nodesCopy) {
-      if (count === 2) return;
+      if (count === 10) return;
 
       console.log(nodesCopy);
       console.log(node);
@@ -82,8 +82,10 @@
   }
 
   function drawGraph() {
-    const width = 800;
-    const height = 400;
+    const container = d3.select("#graphContainer");
+    const width = container.node().clientWidth;
+    const height = container.node().clientHeight;
+
     const svg = d3
       .select("#graphSvg")
       .attr("width", width)
@@ -112,7 +114,7 @@
         "link",
         d3.forceLink(links).id((d) => d.id)
       )
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-2))
       .force("center", d3.forceCenter(width / 2, height / 2));
 
     const link = svg
@@ -197,7 +199,7 @@
 <div class="h-screen flex flex-col overflow-hidden">
   <Navbar showSearchBar={false} />
 
-  <main class="flex-1 flex flex-col overflow-y-auto">
+  <main id="graphContainer" class="flex-1 flex flex-col overflow-y-auto">
     <svg id="graphSvg"></svg>
     <div id="tooltip" class="tooltip"></div>
   </main>
@@ -218,6 +220,12 @@
 </div>
 
 <style global lang="postcss">
+  #graphContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
   .tooltip {
     opacity: 0;
     position: absolute;
