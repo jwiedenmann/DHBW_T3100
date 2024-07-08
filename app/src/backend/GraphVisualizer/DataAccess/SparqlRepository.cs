@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using GraphVisualizer.Data;
+using GraphVisualizer.Utils;
+using Microsoft.Extensions.Caching.Memory;
 using VDS.RDF;
 using VDS.RDF.Parsing;
 using VDS.RDF.Query;
@@ -46,7 +48,7 @@ LIMIT 100";
         }
     }
 
-    public async Task<Graph> Get(string uri)
+    public async Task<KnowledgeGraph> Get(string uri)
     {
         if (!_memoryCache.TryGetValue(_graphCacheKey, out Dictionary<string, Graph>? graphDictionary))
         {
@@ -56,13 +58,13 @@ LIMIT 100";
 
         if (graphDictionary!.TryGetValue(uri, out Graph? graph))
         {
-            return graph;
+            return GraphHelper.ConvertGraphToKnowledgeGraph(graph);
         }
 
-        graph = new();
+        graph = new Graph();
         await _loader.LoadGraphAsync(graph, new Uri(uri));
         graphDictionary.Add(uri, graph);
 
-        return graph;
+        return GraphHelper.ConvertGraphToKnowledgeGraph(graph);
     }
 }

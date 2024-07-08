@@ -4,6 +4,7 @@ using VDS.RDF.Query;
 using VDS.RDF;
 using Newtonsoft.Json;
 using GraphVisualizer.Utils;
+using GraphVisualizer.Data;
 
 namespace GraphVisualizer.Controllers;
 
@@ -40,7 +41,7 @@ public class SparqlController : Controller
     [HttpGet("Graph")]
     public async Task<IActionResult> Graph([FromQuery] string uri)
     {
-        Graph graph = await _sparqlRepository.Get(uri);
-        return await Task.FromResult(Ok(GraphHelper.ConvertGraphToJsonLd(graph)));
+        KnowledgeGraph graph = await _sparqlRepository.Get(uri);
+        return await Task.FromResult(Ok(JsonConvert.SerializeObject(graph, Formatting.Indented)));
     }
 }

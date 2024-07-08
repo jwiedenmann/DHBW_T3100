@@ -8,7 +8,7 @@
   import * as d3 from "d3";
 
   let uri = null;
-  let graphResults = [];
+  let graphResults = { Nodes: [] };
 
   onMount(() => {
     const params = getURLSearchParams();
@@ -16,10 +16,8 @@
       uri = params.get("uri");
       loadResults();
     }
-
-    // graphResults = getSampleData();
   });
-  
+
   function loadResults() {
     fetchResults().then(
       function (value) {
@@ -44,71 +42,77 @@
       return response.json();
     }
 
-    return [];
-  }
-
-  function getSampleData() {
-    return [
-      { Subject: "A", Predicate: "relatedTo", Object: "B" },
-      { Subject: "A", Predicate: "relatedTo", Object: "C" },
-      { Subject: "B", Predicate: "relatedTo", Object: "D" },
-      { Subject: "C", Predicate: "relatedTo", Object: "D" },
-      { Subject: "D", Predicate: "relatedTo", Object: "E" }
-    ];
+    return { Nodes: [] };
   }
 
   function drawGraph() {
     const width = 800;
     const height = 400;
-    const svg = d3.select("#graphSvg")
+    const svg = d3.select("#graphSvg");
+
+    // Clear the previous graph
+    svg.selectAll("*").remove();
+
+    svg
       .attr("width", width)
       .attr("height", height)
       .style("border", "1px solid black");
 
-    const links = graphResults.map(d => ({
-      source: d.Subject,
-      target: d.Object,
+    const nodes = graphResults.Nodes.map((node) => ({
+      id: node.Uri,
+      label: node.Label,
+      properties: node.Properties,
     }));
 
-    const nodes = Array.from(new Set(links.flatMap(l => [l.source, l.target])))
-      .map(id => ({ id }));
+    const links = graphResults.Nodes.flatMap((node) =>
+      Object.entries(node.Links).map(([key, value]) => ({
+        source: node.Uri,
+        target: value,
+        predicate: key,
+      }))
+    );
 
-    const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id))
+    const simulation = d3
+      .forceSimulation(nodes)
+      .force(
+        "link",
+        d3.forceLink(links).id((d) => d.id)
+      )
       .force("charge", d3.forceManyBody().strength(-400))
       .force("center", d3.forceCenter(width / 2, height / 2));
 
-    const link = svg.append("g")
+    const link = svg
+      .append("g")
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
       .selectAll("line")
       .data(links)
-      .enter().append("line")
-      .attr("stroke-width", d => Math.sqrt(d.value));
+      .enter()
+      .append("line")
+      .attr("stroke-width", (d) => Math.sqrt(d.value));
 
-    const node = svg.append("g")
+    const node = svg
+      .append("g")
       .attr("stroke", "#fff")
       .attr("stroke-width", 1.5)
       .selectAll("circle")
       .data(nodes)
-      .enter().append("circle")
+      .enter()
+      .append("circle")
       .attr("r", 5)
       .attr("fill", "steelblue")
       .call(drag(simulation));
 
-    node.append("title")
-      .text(d => d.id);
+    node.append("title").text((d) => d.id);
 
     simulation.on("tick", () => {
       link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+        .attr("x1", (d) => d.source.x)
+        .attr("y1", (d) => d.source.y)
+        .attr("x2", (d) => d.target.x)
+        .attr("y2", (d) => d.target.y);
 
-      node
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
+      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
     });
 
     function drag(simulation) {
@@ -129,7 +133,8 @@
         event.subject.fy = null;
       }
 
-      return d3.drag()
+      return d3
+        .drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended);
@@ -145,12 +150,12 @@
   </main>
 
   <main class="flex-1 flex flex-col overflow-y-auto">
-    {#each graphResults as graphResult}
+    {#each graphResults.Nodes as node}
       <div class="ml-6 mt-4 xl:ml-18">
         <h1 class="font-semibold text-xl">
-          {graphResult.Subject}
-          {graphResult.Predicate}
-          {graphResult.Object}
+          {node.Uri}
+          {Object.keys(node.Links).join(", ")}
+          {Object.values(node.Links).join(", ")}
         </h1>
       </div>
     {/each}
