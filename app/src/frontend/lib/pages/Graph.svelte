@@ -120,10 +120,14 @@
       .forceSimulation(nodes)
       .force(
         "link",
-        d3.forceLink(links).id((d) => d.id)
+        d3
+          .forceLink(links)
+          .id((d) => d.id)
+          .distance(50) // Set a target distance between linked nodes
       )
-      .force("charge", d3.forceManyBody().strength(-100))
-      .force("center", d3.forceCenter(width / 2, height / 2));
+      .force("charge", d3.forceManyBody().strength(-30)) // Adjust the charge force
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide().radius(20)); // Prevent nodes from overlapping
 
     const link = g
       .append("g")
@@ -191,8 +195,8 @@
       tooltip
         .html(
           `<div><strong>URI:</strong> <span class="nowrap">${d.id}</span></div>
-                    <div><strong>Label:</strong> ${d.label}</div>
-                    <div><strong>Properties:</strong> ${JSON.stringify(d.properties)}</div>`
+                <div><strong>Label:</strong> ${d.label}</div>
+                <div><strong>Properties:</strong> ${JSON.stringify(d.properties)}</div>`
         )
         .style("left", event.pageX + 5 + "px")
         .style("top", event.pageY - 28 + "px");
