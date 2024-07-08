@@ -93,6 +93,14 @@
       .style("border", "1px solid black");
     svg.selectAll("*").remove();
 
+    const g = svg.append("g");
+
+    const zoom = d3.zoom().on("zoom", (event) => {
+      g.attr("transform", event.transform);
+    });
+
+    svg.call(zoom);
+
     const nodes = graphResults.Nodes.map((node) => ({
       id: node.Uri,
       label: node.Label,
@@ -114,10 +122,10 @@
         "link",
         d3.forceLink(links).id((d) => d.id)
       )
-      .force("charge", d3.forceManyBody().strength(-2))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(width / 2, height / 2));
 
-    const link = svg
+    const link = g
       .append("g")
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
@@ -127,7 +135,7 @@
       .append("line")
       .attr("stroke-width", (d) => Math.sqrt(d.value));
 
-    const node = svg
+    const node = g
       .append("g")
       .attr("stroke", "#fff")
       .attr("stroke-width", 1.5)
@@ -203,18 +211,6 @@
     <svg id="graphSvg"></svg>
     <div id="tooltip" class="tooltip"></div>
   </main>
-
-  <!-- <main class="flex-1 flex flex-col overflow-y-auto">
-    {#each graphResults.Nodes as node}
-      <div class="ml-6 mt-4 xl:ml-18">
-        <h1 class="font-semibold text-xl">
-          {node.Uri}
-          {Object.keys(node.Links).join(", ")}
-          {Object.values(node.Links).flat().join(", ")}
-        </h1>
-      </div>
-    {/each}
-  </main> -->
 
   <Footer />
 </div>
