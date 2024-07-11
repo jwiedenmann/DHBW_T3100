@@ -9,6 +9,10 @@
 
   let uri = null;
   let graphResults = { Nodes: [] };
+  let chargeStrength = -30;
+  let linkDistance = 50;
+  let radius = 20;
+  let sidebarOpen = true;
 
   onMount(() => {
     const params = getURLSearchParams();
@@ -86,11 +90,9 @@
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;
 
-    const svg = d3
-      .select("#graphSvg")
-      .attr("width", width)
-      .attr("height", height)
-      .style("border", "1px solid black");
+    const svg = d3.select("#graphSvg");
+    svg.attr("viewBox", [0, 0, width, height]);
+    svg.style("border", "1px solid black");
     svg.selectAll("*").remove();
 
     const g = svg.append("g");
@@ -123,11 +125,11 @@
         d3
           .forceLink(links)
           .id((d) => d.id)
-          .distance(50) // Set a target distance between linked nodes
+          .distance(linkDistance) // Set a target distance between linked nodes
       )
-      .force("charge", d3.forceManyBody().strength(-30)) // Adjust the charge force
+      .force("charge", d3.forceManyBody().strength(chargeStrength)) // Adjust the charge force
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(20)); // Prevent nodes from overlapping
+      .force("collision", d3.forceCollide().radius(radius)); // Prevent nodes from overlapping
 
     const link = g
       .append("g")
@@ -206,26 +208,96 @@
       d3.select("#tooltip").transition().duration(500).style("opacity", 0);
     }
   }
+
+  function updateGraph() {
+    drawGraph();
+  }
+
+  function toggleSidebar() {
+    sidebarOpen = !sidebarOpen;
+  }
 </script>
 
 <div class="h-screen flex flex-col overflow-hidden">
   <Navbar showSearchBar={false} />
 
-  <main id="graphContainer" class="flex-1 flex flex-col overflow-y-auto">
-    <svg id="graphSvg"></svg>
-    <div id="tooltip" class="tooltip"></div>
-  </main>
+  <div class="h-screen flex flex-row">
+    <div
+      class={`flex ${sidebarOpen ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
+    >
+      <div class="flex flex-col h-full w-full bg-base-200">
+        <button class="btn btn-primary m-2 z-50" on:click={toggleSidebar}>
+          {#if sidebarOpen}
+            Hide
+          {:else}
+            Show
+          {/if}
+        </button>
+        {#if sidebarOpen}
+          <div class="p-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Node Size</span>
+              </label>
+              <input
+                type="range"
+                min="5"
+                max="50"
+                value={radius}
+                on:input={(e) => {
+                  radius = +e.target.value;
+                  updateGraph();
+                }}
+                class="range range-primary"
+              />
+            </div>
+            <div class="form-control mt-4">
+              <label class="label">
+                <span class="label-text">Charge Strength</span>
+              </label>
+              <input
+                type="range"
+                min="-100"
+                max="0"
+                value={chargeStrength}
+                on:input={(e) => {
+                  chargeStrength = +e.target.value;
+                  updateGraph();
+                }}
+                class="range range-primary"
+              />
+            </div>
+            <div class="form-control mt-4">
+              <label class="label">
+                <span class="label-text">Link Distance</span>
+              </label>
+              <input
+                type="range"
+                min="10"
+                max="200"
+                value={linkDistance}
+                on:input={(e) => {
+                  linkDistance = +e.target.value;
+                  updateGraph();
+                }}
+                class="range range-primary"
+              />
+            </div>
+          </div>
+        {/if}
+      </div>
+    </div>
+
+    <main id="graphContainer" class="flex-1 flex flex-col overflow-y-auto">
+      <svg id="graphSvg"></svg>
+      <div id="tooltip" class="tooltip"></div>
+    </main>
+  </div>
 
   <Footer />
 </div>
 
 <style global lang="postcss">
-  #graphContainer {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
   .tooltip {
     opacity: 0;
     position: absolute;
