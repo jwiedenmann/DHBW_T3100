@@ -3,9 +3,12 @@
 
   import Navbar from "../components/Navbar.svelte";
   import Footer from "../components/Footer.svelte";
+  import HamburgerIco from "../utils/icons/Hamburger.svelte";
+  import XIco from "../utils/icons/X.svelte";
   import { onMount } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
   import * as d3 from "d3";
+  import Hamburger from "../utils/icons/Hamburger.svelte";
 
   let uri = null;
   let graphResults = { Nodes: [] };
@@ -92,7 +95,6 @@
 
     const svg = d3.select("#graphSvg");
     svg.attr("viewBox", [0, 0, width, height]);
-    svg.style("border", "1px solid black");
     svg.selectAll("*").remove();
 
     const g = svg.append("g");
@@ -222,17 +224,24 @@
   <Navbar showSearchBar={false} />
 
   <div class="h-screen flex flex-row">
+    <button
+      class={`w-6 m-2 z-50 absolute ${sidebarOpen ? 'hidden' : 'visible'}`}
+      on:click={toggleSidebar}
+    >
+      <HamburgerIco />
+    </button>
     <div
       class={`flex ${sidebarOpen ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
     >
       <div class="flex flex-col h-full w-full bg-base-200">
-        <button class="btn btn-primary m-2 z-50" on:click={toggleSidebar}>
-          {#if sidebarOpen}
-            Hide
-          {:else}
-            Show
-          {/if}
-        </button>
+        <div class="flex justify-end">
+          <button
+            class="w-6 m-2  fill-current"
+            on:click={toggleSidebar}
+          >
+            <XIco />
+          </button>
+        </div>
         {#if sidebarOpen}
           <div class="p-4">
             <div class="form-control">
