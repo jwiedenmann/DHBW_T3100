@@ -225,7 +225,7 @@
 
   <div class="h-screen flex flex-row">
     <button
-      class={`w-6 m-2 z-50 absolute ${sidebarOpen ? 'hidden' : 'visible'}`}
+      class={`w-6 m-6 z-10 absolute ${sidebarOpen ? "hidden" : "visible"}`}
       on:click={toggleSidebar}
     >
       <HamburgerIco />
@@ -233,10 +233,22 @@
     <div
       class={`flex ${sidebarOpen ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
     >
-      <div class="flex flex-col h-full w-full bg-base-200">
-        <div class="flex justify-end">
+      <div class="flex flex-col h-full w-full z-20 bg-base-200">
+        <div class="flex flex-row">
+          {#if sidebarOpen}
+            <details class="dropdown flex-1">
+              <summary class="btn btn-primary m-3">open or close</summary>
+              <ul
+                class="menu dropdown-content bg-base-100 rounded-box w-52 p-2 shadow"
+              >
+                <li><a>Item 1</a></li>
+                <li><a>Item 2</a></li>
+              </ul>
+            </details>
+          {/if}
+
           <button
-            class="w-6 m-2  fill-current"
+            class={`w-6 m-2 mr-6 fill-current ${sidebarOpen ? "visible" : "hidden"}`}
             on:click={toggleSidebar}
           >
             <XIco />
