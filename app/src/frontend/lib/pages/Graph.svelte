@@ -5,10 +5,10 @@
   import Footer from "../components/Footer.svelte";
   import HamburgerIco from "../utils/icons/Hamburger.svelte";
   import XIco from "../utils/icons/X.svelte";
+  import NodeLinkDiagram from "../components/NodeLinkDiagram.svelte";
+  import AdjacencyMatrix from "../components/AdjacencyMatrix.svelte";
   import { onMount } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
-  import * as d3 from "d3";
-  import Hamburger from "../utils/icons/Hamburger.svelte";
 
   let uri = null;
   let graphResults = { Nodes: [] };
@@ -16,6 +16,7 @@
   let linkDistance = 50;
   let radius = 20;
   let sidebarOpen = true;
+  let selectedDiagram = "nodeLink";
 
   onMount(() => {
     const params = getURLSearchParams();
@@ -28,7 +29,6 @@
   async function loadInitialGraph() {
     try {
       graphResults = await fetchGraph(uri);
-      drawGraph();
       await loadNodeGraphs(graphResults.Nodes);
     } catch (error) {
       console.log(error);
@@ -49,19 +49,14 @@
   }
 
   async function loadNodeGraphs(nodes) {
-    // copy array and iterate over it
     const nodesCopy = Array.from(nodes);
     let count = 0;
     for (const node of nodesCopy) {
       if (count === 10) return;
 
-      console.log(nodesCopy);
-      console.log(node);
-      console.log(graphResults.Nodes);
       try {
         const nodeGraph = await fetchGraph(node.Uri);
         mergeGraphs(graphResults, nodeGraph);
-        drawGraph();
       } catch (error) {
         console.log(`Failed to load graph for node ${node.Uri}: `, error);
       }
@@ -86,133 +81,6 @@
     });
 
     mainGraph.Nodes = Array.from(nodeUriMap.values());
-  }
-
-  function drawGraph() {
-    const container = d3.select("#graphContainer");
-    const width = container.node().clientWidth;
-    const height = container.node().clientHeight;
-
-    const svg = d3.select("#graphSvg");
-    svg.attr("viewBox", [0, 0, width, height]);
-    svg.selectAll("*").remove();
-
-    const g = svg.append("g");
-
-    const zoom = d3.zoom().on("zoom", (event) => {
-      g.attr("transform", event.transform);
-    });
-
-    svg.call(zoom);
-
-    const nodes = graphResults.Nodes.map((node) => ({
-      id: node.Uri,
-      label: node.Label,
-      properties: node.Properties,
-    }));
-    const links = graphResults.Nodes.flatMap((node) =>
-      Object.entries(node.Links).flatMap(([key, values]) =>
-        values.map((value) => ({
-          source: node.Uri,
-          target: value,
-          predicate: key,
-        }))
-      )
-    );
-
-    const simulation = d3
-      .forceSimulation(nodes)
-      .force(
-        "link",
-        d3
-          .forceLink(links)
-          .id((d) => d.id)
-          .distance(linkDistance) // Set a target distance between linked nodes
-      )
-      .force("charge", d3.forceManyBody().strength(chargeStrength)) // Adjust the charge force
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(radius)); // Prevent nodes from overlapping
-
-    const link = g
-      .append("g")
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(links)
-      .enter()
-      .append("line")
-      .attr("stroke-width", (d) => Math.sqrt(d.value));
-
-    const node = g
-      .append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
-      .selectAll("circle")
-      .data(nodes)
-      .enter()
-      .append("circle")
-      .attr("r", 5)
-      .attr("fill", "steelblue")
-      .call(drag(simulation))
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
-
-    node.append("title").text((d) => d.label);
-
-    simulation.on("tick", () => {
-      link
-        .attr("x1", (d) => d.source.x)
-        .attr("y1", (d) => d.source.y)
-        .attr("x2", (d) => d.target.x)
-        .attr("y2", (d) => d.target.y);
-      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-    });
-
-    function drag(simulation) {
-      function dragstarted(event) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        event.subject.fx = event.subject.x;
-        event.subject.fy = event.subject.y;
-      }
-
-      function dragged(event) {
-        event.subject.fx = event.x;
-        event.subject.fy = event.y;
-      }
-
-      function dragended(event) {
-        if (!event.active) simulation.alphaTarget(0);
-        event.subject.fx = null;
-        event.subject.fy = null;
-      }
-
-      return d3
-        .drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
-    }
-
-    function handleMouseOver(event, d) {
-      const tooltip = d3.select("#tooltip");
-      tooltip.transition().duration(200).style("opacity", 0.9);
-      tooltip
-        .html(
-          `<div><strong>URI:</strong> <span class="nowrap">${d.id}</span></div>
-                <div><strong>Label:</strong> ${d.label}</div>
-                <div><strong>Properties:</strong> ${JSON.stringify(d.properties)}</div>`
-        )
-        .style("left", event.pageX + 5 + "px")
-        .style("top", event.pageY - 28 + "px");
-    }
-
-    function handleMouseOut() {
-      d3.select("#tooltip").transition().duration(500).style("opacity", 0);
-    }
-  }
-
-  function updateGraph() {
-    drawGraph();
   }
 
   function toggleSidebar() {
@@ -241,8 +109,16 @@
               <ul
                 class="menu dropdown-content bg-base-100 rounded-box w-52 p-2 shadow"
               >
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
+                <li>
+                  <a on:click={() => (selectedDiagram = "nodeLink")}
+                    >Node Link Diagram</a
+                  >
+                </li>
+                <li>
+                  <a on:click={() => (selectedDiagram = "adjacencyMatrix")}
+                    >Adjacency Matrix</a
+                  >
+                </li>
               </ul>
             </details>
           {/if}
@@ -267,7 +143,6 @@
                 value={radius}
                 on:input={(e) => {
                   radius = +e.target.value;
-                  updateGraph();
                 }}
                 class="range range-primary"
               />
@@ -283,7 +158,6 @@
                 value={chargeStrength}
                 on:input={(e) => {
                   chargeStrength = +e.target.value;
-                  updateGraph();
                 }}
                 class="range range-primary"
               />
@@ -299,7 +173,6 @@
                 value={linkDistance}
                 on:input={(e) => {
                   linkDistance = +e.target.value;
-                  updateGraph();
                 }}
                 class="range range-primary"
               />
@@ -310,8 +183,17 @@
     </div>
 
     <main id="graphContainer" class="flex-1 flex flex-col overflow-y-auto">
-      <svg id="graphSvg"></svg>
-      <div id="tooltip" class="tooltip"></div>
+      {#if selectedDiagram === "nodeLink"}
+        <NodeLinkDiagram
+          {graphResults}
+          {chargeStrength}
+          {linkDistance}
+          {radius}
+        />
+      {/if}
+      {#if selectedDiagram === "adjacencyMatrix"}
+        <AdjacencyMatrix {graphResults} />
+      {/if}
     </main>
   </div>
 
