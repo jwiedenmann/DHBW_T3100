@@ -17,6 +17,7 @@
   let radius = 20;
   let sidebarOpen = true;
   let selectedDiagram = "nodeLink";
+  let diagramLabel = "Node Link Diagram";
 
   onMount(() => {
     const params = getURLSearchParams();
@@ -57,6 +58,7 @@
       try {
         const nodeGraph = await fetchGraph(node.Uri);
         mergeGraphs(graphResults, nodeGraph);
+        console.log("merge " + count.toString())
       } catch (error) {
         console.log(`Failed to load graph for node ${node.Uri}: `, error);
       }
@@ -86,6 +88,11 @@
   function toggleSidebar() {
     sidebarOpen = !sidebarOpen;
   }
+
+  function selectDiagram(type, label) {
+    selectedDiagram = type;
+    diagramLabel = label;
+  }
 </script>
 
 <div class="h-screen flex flex-col overflow-hidden">
@@ -105,17 +112,21 @@
         <div class="flex flex-row">
           {#if sidebarOpen}
             <details class="dropdown flex-1">
-              <summary class="btn btn-primary m-3">open or close</summary>
+              <summary class="btn btn-primary m-3">{diagramLabel}</summary>
               <ul
                 class="menu dropdown-content bg-base-100 rounded-box w-52 p-2 shadow"
               >
                 <li>
-                  <a on:click={() => (selectedDiagram = "nodeLink")}
+                  <a
+                    on:click={() =>
+                      selectDiagram("nodeLink", "Node Link Diagram")}
                     >Node Link Diagram</a
                   >
                 </li>
                 <li>
-                  <a on:click={() => (selectedDiagram = "adjacencyMatrix")}
+                  <a
+                    on:click={() =>
+                      selectDiagram("adjacencyMatrix", "Adjacency Matrix")}
                     >Adjacency Matrix</a
                   >
                 </li>
