@@ -10,7 +10,7 @@
     drawMatrix();
   });
 
-  $: if (graphResults.Nodes.length > 0) {
+  $: if (svg && graphResults.Nodes.length > 0) {
     drawMatrix();
   }
 

@@ -9,6 +9,7 @@
   import AdjacencyMatrix from "../components/AdjacencyMatrix.svelte";
   import { onMount } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
+  import { writable } from "svelte/store";
 
   let uri = null;
   let graphResults = { Nodes: [] };
@@ -18,6 +19,7 @@
   let sidebarOpen = true;
   let selectedDiagram = "nodeLink";
   let diagramLabel = "Node Link Diagram";
+  const dropdownOpen = writable(false);
 
   onMount(() => {
     const params = getURLSearchParams();
@@ -90,8 +92,11 @@
   }
 
   function selectDiagram(type, label) {
+    console.log(type);
+    console.log(label);
     selectedDiagram = type;
     diagramLabel = label;
+    dropdownOpen.set(false);
   }
 </script>
 
@@ -111,7 +116,7 @@
       <div class="flex flex-col h-full w-full z-20 bg-base-200">
         <div class="flex flex-row">
           {#if sidebarOpen}
-            <details class="dropdown flex-1">
+            <details class="dropdown flex-1" bind:open={$dropdownOpen}>
               <summary class="btn btn-primary m-3">{diagramLabel}</summary>
               <ul
                 class="menu dropdown-content bg-base-100 rounded-box w-52 p-2 shadow"
