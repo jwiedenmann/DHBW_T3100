@@ -60,7 +60,7 @@
       try {
         const nodeGraph = await fetchGraph(node.Uri);
         mergeGraphs(graphResults, nodeGraph);
-        console.log("merge " + count.toString())
+        graphResults = { ...graphResults }; // Trigger reactivity
       } catch (error) {
         console.log(`Failed to load graph for node ${node.Uri}: `, error);
       }
