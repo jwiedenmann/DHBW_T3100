@@ -18,12 +18,14 @@
   }
 
   function drawGraph() {
-    const container = d3.select(svg);
+    const container = d3.select(svg.parentNode);
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;
 
     const svgSelection = d3.select(svg);
     svgSelection.attr("viewBox", [0, 0, width, height]);
+    svgSelection.attr("width", width);
+    svgSelection.attr("height", height);
     svgSelection.selectAll("*").remove();
 
     const g = svgSelection.append("g");
@@ -145,6 +147,11 @@
 <div id="tooltip" class="tooltip"></div>
 
 <style>
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
   .tooltip {
     opacity: 0;
     position: absolute;
