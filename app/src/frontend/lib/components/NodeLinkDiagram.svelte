@@ -10,14 +10,22 @@
   let svg;
 
   onMount(() => {
-    drawGraph();
+    console.log("mount");
+    drawGraph(graphResults, chargeStrength, linkDistance, radius);
   });
 
-  $: if (svg && graphResults.Nodes.length > 0) {
-    drawGraph();
+  $: if (svg) {
+    drawGraph(graphResults, chargeStrength, linkDistance, radius);
   }
 
-  function drawGraph() {
+  /**
+   * @param {{ Nodes: any; }} [graphResults]
+   * @param {number} [chargeStrength]
+   * @param {number} [linkDistance]
+   * @param {number} [radius]
+   */
+  function drawGraph(graphResults, chargeStrength, linkDistance, radius) {
+    console.log("drwa");
     const container = d3.select(svg.parentNode);
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;

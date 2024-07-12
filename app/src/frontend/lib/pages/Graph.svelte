@@ -92,8 +92,6 @@
   }
 
   function selectDiagram(type, label) {
-    console.log(type);
-    console.log(label);
     selectedDiagram = type;
     diagramLabel = label;
     dropdownOpen.set(false);
@@ -148,51 +146,44 @@
         </div>
         {#if sidebarOpen}
           <div class="p-4">
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Node Size</span>
-              </label>
-              <input
-                type="range"
-                min="5"
-                max="50"
-                value={radius}
-                on:input={(e) => {
-                  radius = +e.target.value;
-                }}
-                class="range range-primary"
-              />
-            </div>
-            <div class="form-control mt-4">
-              <label class="label">
-                <span class="label-text">Charge Strength</span>
-              </label>
-              <input
-                type="range"
-                min="-100"
-                max="0"
-                value={chargeStrength}
-                on:input={(e) => {
-                  chargeStrength = +e.target.value;
-                }}
-                class="range range-primary"
-              />
-            </div>
-            <div class="form-control mt-4">
-              <label class="label">
-                <span class="label-text">Link Distance</span>
-              </label>
-              <input
-                type="range"
-                min="10"
-                max="200"
-                value={linkDistance}
-                on:input={(e) => {
-                  linkDistance = +e.target.value;
-                }}
-                class="range range-primary"
-              />
-            </div>
+            {#if selectedDiagram === "nodeLink"}
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Node Size</span>
+                </label>
+                <input
+                  type="range"
+                  min="5"
+                  max="50"
+                  bind:value={radius}
+                  class="range range-primary"
+                />
+              </div>
+              <div class="form-control mt-4">
+                <label class="label">
+                  <span class="label-text">Charge Strength</span>
+                </label>
+                <input
+                  type="range"
+                  min="-100"
+                  max="0"
+                  bind:value={chargeStrength}
+                  class="range range-primary"
+                />
+              </div>
+              <div class="form-control mt-4">
+                <label class="label">
+                  <span class="label-text">Link Distance</span>
+                </label>
+                <input
+                  type="range"
+                  min="10"
+                  max="200"
+                  bind:value={linkDistance}
+                  class="range range-primary"
+                />
+              </div>
+            {/if}
           </div>
         {/if}
       </div>
