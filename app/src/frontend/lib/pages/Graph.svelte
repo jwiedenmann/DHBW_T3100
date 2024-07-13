@@ -7,6 +7,7 @@
   import XIco from "../utils/icons/X.svelte";
   import NodeLinkDiagram from "../components/NodeLinkDiagram.svelte";
   import AdjacencyMatrix from "../components/AdjacencyMatrix.svelte";
+  import Menu from "../components/GraphSettings.svelte";
   import { onMount } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
   import { writable } from "svelte/store";
@@ -146,44 +147,12 @@
         </div>
         {#if sidebarOpen}
           <div class="p-4">
-            {#if selectedDiagram === "nodeLink"}
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Node Size</span>
-                </label>
-                <input
-                  type="range"
-                  min="5"
-                  max="50"
-                  bind:value={radius}
-                  class="range range-primary"
-                />
-              </div>
-              <div class="form-control mt-4">
-                <label class="label">
-                  <span class="label-text">Charge Strength</span>
-                </label>
-                <input
-                  type="range"
-                  min="-100"
-                  max="0"
-                  bind:value={chargeStrength}
-                  class="range range-primary"
-                />
-              </div>
-              <div class="form-control mt-4">
-                <label class="label">
-                  <span class="label-text">Link Distance</span>
-                </label>
-                <input
-                  type="range"
-                  min="10"
-                  max="200"
-                  bind:value={linkDistance}
-                  class="range range-primary"
-                />
-              </div>
-            {/if}
+            <Menu
+              {selectedDiagram}
+              bind:radius
+              bind:chargeStrength
+              bind:linkDistance
+            />
           </div>
         {/if}
       </div>
