@@ -23,6 +23,7 @@
   let selectedDiagram = "nodeLink";
   let diagramLabel = "Node Link Diagram";
   const dropdownOpen = writable(false);
+  let loading = writable(true);
 
   onMount(() => {
     const params = getURLSearchParams();
@@ -34,10 +35,13 @@
 
   async function loadInitialGraph() {
     try {
+      loading.set(true);
       graphResults = await fetchGraph(uri);
       await loadNodeGraphs(graphResults.Nodes);
     } catch (error) {
       console.log(error);
+    } finally {
+      loading.set(false);
     }
   }
 
@@ -173,17 +177,23 @@
     </div>
 
     <main id="graphContainer" class="flex-1 flex flex-col overflow-y-auto">
-      {#if selectedDiagram === "nodeLink"}
-        <NodeLinkDiagram
-          {graphResults}
-          {nodeSize}
-          {chargeStrength}
-          {linkDistance}
-          {collisionRadius}
-        />
-      {/if}
-      {#if selectedDiagram === "adjacencyMatrix"}
-        <AdjacencyMatrix {graphResults} />
+      {#if $loading}
+        <div class="flex justify-center items-center h-full">
+          <span class="loading loading-spinner loading-lg"></span>
+        </div>
+      {:else}
+        {#if selectedDiagram === "nodeLink"}
+          <NodeLinkDiagram
+            {graphResults}
+            {nodeSize}
+            {chargeStrength}
+            {linkDistance}
+            {collisionRadius}
+          />
+        {/if}
+        {#if selectedDiagram === "adjacencyMatrix"}
+          <AdjacencyMatrix {graphResults} />
+        {/if}
       {/if}
     </main>
   </div>
