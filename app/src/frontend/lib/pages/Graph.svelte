@@ -14,9 +14,11 @@
 
   let uri = null;
   let graphResults = { Nodes: [] };
+  let graphLoadingIterations = 3;
+  let nodeSize = 5;
   let chargeStrength = -30;
   let linkDistance = 50;
-  let radius = 20;
+  let collisionRadius = 20;
   let sidebarOpen = true;
   let selectedDiagram = "nodeLink";
   let diagramLabel = "Node Link Diagram";
@@ -147,9 +149,21 @@
         </div>
         {#if sidebarOpen}
           <div class="p-4">
+            <div class="flex items-center">
+              <label for="integer-input" class="label whitespace-nowrap mr-1"
+                ><span class="label-text">Loading Iterations:</span></label
+              >
+              <input
+                id="integer-input"
+                bind:value={graphLoadingIterations}
+                class="input input-bordered flex-shrink w-full max-w-xs min-w-0"
+              />
+            </div>
+
             <Menu
               {selectedDiagram}
-              bind:radius
+              bind:nodeSize
+              bind:collisionRadius
               bind:chargeStrength
               bind:linkDistance
             />
@@ -162,9 +176,10 @@
       {#if selectedDiagram === "nodeLink"}
         <NodeLinkDiagram
           {graphResults}
+          {nodeSize}
           {chargeStrength}
           {linkDistance}
-          {radius}
+          {collisionRadius}
         />
       {/if}
       {#if selectedDiagram === "adjacencyMatrix"}

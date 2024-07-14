@@ -5,23 +5,25 @@
   export let graphResults = { Nodes: [] };
   export let chargeStrength = -30;
   export let linkDistance = 50;
-  export let radius = 20;
+  export let collisionRadius = 20;
+  export let nodeSize = 5;
 
   let svg;
 
   onMount(() => {
-    drawGraph(graphResults, chargeStrength, linkDistance, radius);
+    drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
   });
 
-  $: drawGraph(graphResults, chargeStrength, linkDistance, radius);
+  $: drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
 
   /**
    * @param {{ Nodes: any; }} [graphResults]
    * @param {number} [chargeStrength]
    * @param {number} [linkDistance]
-   * @param {number} [radius]
+   * @param {number} [collisionRadius]
+   * @param {number} [nodeSize]
    */
-  function drawGraph(graphResults, chargeStrength, linkDistance, radius) {
+  function drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize) {
     if (!svg) return;
 
     const container = d3.select(svg.parentNode);
@@ -68,7 +70,7 @@
       )
       .force("charge", d3.forceManyBody().strength(chargeStrength))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(radius));
+      .force("collision", d3.forceCollide().radius(collisionRadius));
 
     const link = g
       .append("g")
@@ -88,7 +90,7 @@
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", 5)
+      .attr("r", nodeSize)
       .attr("fill", "steelblue")
       .call(drag(simulation))
       .on("mouseover", handleMouseOver)
