@@ -27,7 +27,7 @@ public static class GraphHelper
         return json;
     }
 
-    public static KnowledgeGraph ConvertGraphToKnowledgeGraph(Graph graph)
+    public static KnowledgeGraph ConvertGraphToKnowledgeGraph(Graph graph, int limit)
     {
         KnowledgeGraph knowledgeGraph = new();
         Dictionary<string, Node> nodeDictionary = [];
@@ -38,10 +38,14 @@ public static class GraphHelper
             string predicate = triple.Predicate.ToString();
             string obj = triple.Object.ToString();
 
-            if (!nodeDictionary.TryGetValue(subject, out Node? subjectNode))
+            if (!nodeDictionary.TryGetValue(subject, out Node? subjectNode) && nodeDictionary.Count < limit)
             {
                 subjectNode = new Node { Uri = subject };
                 nodeDictionary.Add(subject, subjectNode);
+            }
+            else if (subjectNode is null)
+            {
+                continue;
             }
 
             if (_isTextRegex.IsMatch(obj))
@@ -61,6 +65,11 @@ public static class GraphHelper
                 }
 
                 // skip non english texts
+                continue;
+            }
+
+            if (nodeDictionary.Count >= limit)
+            {
                 continue;
             }
 

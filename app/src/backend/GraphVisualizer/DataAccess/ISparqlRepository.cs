@@ -5,7 +5,7 @@ namespace GraphVisualizer.DataAccess;
 
 public interface ISparqlRepository
 {
-    Task<KnowledgeGraph> Get(string uri, int loadingDepth);
+    Task<KnowledgeGraph> Get(string uri, int loadingDepth, int limit);
 
     Task<SparqlResultSet> Search(string searchTerm);
 }

@@ -48,7 +48,7 @@ LIMIT 100";
         }
     }
 
-    public async Task<KnowledgeGraph> Get(string uri, int loadingDepth)
+    public async Task<KnowledgeGraph> Get(string uri, int loadingDepth, int limit)
     {
         if (!_memoryCache.TryGetValue(_graphCacheKey, out Dictionary<string, Graph>? graphDictionary))
         {
@@ -59,33 +59,37 @@ LIMIT 100";
         if (!graphDictionary!.TryGetValue(uri, out Graph? graph))
         {
             graph = new Graph();
+
             try
             {
-                await _loader.LoadGraphAsync(graph, new Uri(uri));
+                await _loader.LoadGraphAsync(graph, new Uri(uri), new RdfAParser(), new CancellationTokenSource(2000).Token);
             }
             catch (Exception ex)
             {
                 // Log the exception (using your preferred logging approach)
                 Console.WriteLine($"Failed to load graph for URI: {uri}. Exception: {ex.Message}");
-                return new KnowledgeGraph(); // Return an empty graph on failure
+                return new KnowledgeGraph()
+                {
+                    Nodes = [new Node() { Uri = uri }]
+                };
             }
+
             graphDictionary[uri] = graph;
         }
 
-        KnowledgeGraph knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph);
+        KnowledgeGraph knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph, limit);
         System.Console.WriteLine("initial load finished: " + knowledgeGraph.Nodes.Count);
 
         if (loadingDepth > 1)
         {
-            await LoadSubGraphsAsync(knowledgeGraph, loadingDepth - 1, graphDictionary);
+            await LoadSubGraphsAsync(knowledgeGraph, loadingDepth - 1, limit, graphDictionary);
         }
 
         System.Console.WriteLine("Graph load finished: " + knowledgeGraph.Nodes.Count);
-
         return knowledgeGraph;
     }
 
-    private async Task LoadSubGraphsAsync(KnowledgeGraph knowledgeGraph, int remainingDepth, Dictionary<string, Graph> graphDictionary)
+    private async Task LoadSubGraphsAsync(KnowledgeGraph knowledgeGraph, int remainingDepth, int limit, Dictionary<string, Graph> graphDictionary)
     {
         var tasks = new List<Task>();
 
@@ -97,7 +101,7 @@ LIMIT 100";
                 {
                     try
                     {
-                        var subGraph = await Get(node.Uri, remainingDepth);
+                        var subGraph = await Get(node.Uri, remainingDepth, limit);
                         System.Console.WriteLine("subgraph finished: " + subGraph.Nodes.Count);
                         lock (knowledgeGraph.Nodes)
                         {
