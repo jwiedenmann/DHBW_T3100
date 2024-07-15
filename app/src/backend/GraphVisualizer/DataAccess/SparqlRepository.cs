@@ -48,7 +48,7 @@ LIMIT 100";
         }
     }
 
-    public async Task<KnowledgeGraph> Get(string uri)
+    public async Task<KnowledgeGraph> Get(string uri, int loadingDepth)
     {
         if (!_memoryCache.TryGetValue(_graphCacheKey, out Dictionary<string, Graph>? graphDictionary))
         {
@@ -56,15 +56,64 @@ LIMIT 100";
             _memoryCache.Set(_graphCacheKey, graphDictionary);
         }
 
-        if (graphDictionary!.TryGetValue(uri, out Graph? graph))
+        if (!graphDictionary!.TryGetValue(uri, out Graph? graph))
         {
-            return GraphHelper.ConvertGraphToKnowledgeGraph(graph);
+            graph = new Graph();
+            try
+            {
+                await _loader.LoadGraphAsync(graph, new Uri(uri));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (using your preferred logging approach)
+                Console.WriteLine($"Failed to load graph for URI: {uri}. Exception: {ex.Message}");
+                return new KnowledgeGraph(); // Return an empty graph on failure
+            }
+            graphDictionary[uri] = graph;
         }
 
-        graph = new Graph();
-        await _loader.LoadGraphAsync(graph, new Uri(uri));
-        graphDictionary.Add(uri, graph);
+        KnowledgeGraph knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph);
+        System.Console.WriteLine("initial load finished: " + knowledgeGraph.Nodes.Count);
 
-        return GraphHelper.ConvertGraphToKnowledgeGraph(graph);
+        if (loadingDepth > 1)
+        {
+            await LoadSubGraphsAsync(knowledgeGraph, loadingDepth - 1, graphDictionary);
+        }
+
+        System.Console.WriteLine("Graph load finished: " + knowledgeGraph.Nodes.Count);
+
+        return knowledgeGraph;
     }
+
+    private async Task LoadSubGraphsAsync(KnowledgeGraph knowledgeGraph, int remainingDepth, Dictionary<string, Graph> graphDictionary)
+    {
+        var tasks = new List<Task>();
+
+        foreach (var node in knowledgeGraph.Nodes)
+        {
+            tasks.Add(Task.Run(async () =>
+            {
+                if (!graphDictionary.ContainsKey(node.Uri))
+                {
+                    try
+                    {
+                        var subGraph = await Get(node.Uri, remainingDepth);
+                        System.Console.WriteLine("subgraph finished: " + subGraph.Nodes.Count);
+                        lock (knowledgeGraph.Nodes)
+                        {
+                            knowledgeGraph.Nodes.AddRange(subGraph.Nodes);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception (using your preferred logging approach)
+                        Console.WriteLine($"Failed to load subgraph for URI: {node.Uri}. Exception: {ex.Message}");
+                    }
+                }
+            }));
+        }
+
+        await Task.WhenAll(tasks);
+    }
+
 }
