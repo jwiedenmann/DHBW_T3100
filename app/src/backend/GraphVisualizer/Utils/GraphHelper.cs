@@ -87,8 +87,37 @@ public static class GraphHelper
             nodeDictionary.TryAdd(obj, new Node { Uri = obj });
         }
 
-        knowledgeGraph.Nodes = nodeDictionary.Values.ToList();
+        knowledgeGraph.Nodes = nodeDictionary;
 
         return knowledgeGraph;
+    }
+
+    public static void MergeNodes(Node targetNode, Node sourceNode)
+    {
+        foreach (var property in sourceNode.Properties)
+        {
+            if (!targetNode.Properties.ContainsKey(property.Key))
+            {
+                targetNode.Properties[property.Key] = property.Value;
+            }
+        }
+
+        foreach (var link in sourceNode.Links)
+        {
+            if (targetNode.Links.TryGetValue(link.Key, out var existingLinks))
+            {
+                foreach (var linkValue in link.Value)
+                {
+                    if (!existingLinks.Contains(linkValue))
+                    {
+                        existingLinks.Add(linkValue);
+                    }
+                }
+            }
+            else
+            {
+                targetNode.Links[link.Key] = new List<string>(link.Value);
+            }
+        }
     }
 }
