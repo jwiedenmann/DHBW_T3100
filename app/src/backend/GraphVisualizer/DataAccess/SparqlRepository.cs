@@ -62,12 +62,17 @@ LIMIT 100";
 
             try
             {
-                await _loader.LoadGraphAsync(graph, new Uri(uri), new RdfAParser(), new CancellationTokenSource(2000).Token);
+                graph = (Graph?)await LoadGraphAsync(uri);
             }
             catch (Exception ex)
             {
                 // Log the exception (using your preferred logging approach)
                 Console.WriteLine($"Failed to load graph for URI: {uri}. Exception: {ex.Message}");
+                graph = null;
+            }
+
+            if (graph == null)
+            {
                 return new KnowledgeGraph()
                 {
                     Nodes = [new Node() { Uri = uri }]
@@ -120,4 +125,29 @@ LIMIT 100";
         await Task.WhenAll(tasks);
     }
 
+    public Task<IGraph> LoadGraphAsync(string uri)
+    {
+        try
+        {
+            Uri endpointUri = new(_configuration.GetValue<string>("Sparql:BaseUrl") ?? string.Empty);
+            SparqlQueryClient sparqlQueryClient = new(_httpClient, endpointUri);
+
+            string query = $@"
+                CONSTRUCT {{
+                    ?s ?p ?o .
+                }}
+                WHERE {{
+                    ?s ?p ?o .
+                    FILTER(?s = <{uri}>)
+                }}";
+
+            // Create a CancellationTokenSource
+            CancellationTokenSource tokenSource = new(2000);
+            return sparqlQueryClient.QueryWithResultGraphAsync(query, tokenSource.Token);
+        }
+        catch
+        {
+            return Task.FromResult((IGraph)new Graph());
+        }
+    }
 }
