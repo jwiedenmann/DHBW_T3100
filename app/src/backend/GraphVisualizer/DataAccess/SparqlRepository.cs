@@ -2,7 +2,6 @@
 using GraphVisualizer.Utils;
 using Microsoft.Extensions.Caching.Memory;
 using VDS.RDF;
-using VDS.RDF.Parsing;
 using VDS.RDF.Query;
 
 namespace GraphVisualizer.DataAccess;
@@ -13,7 +12,6 @@ public class SparqlRepository : ISparqlRepository
     private readonly IConfiguration _configuration;
     private readonly IMemoryCache _memoryCache;
     private readonly HttpClient _httpClient;
-    private readonly Loader _loader;
 
     public SparqlRepository(IConfiguration configuration, IMemoryCache memoryCache, HttpClient httpClient)
     {
@@ -21,7 +19,6 @@ public class SparqlRepository : ISparqlRepository
         _memoryCache = memoryCache;
         _httpClient = httpClient;
         _httpClient.Timeout = TimeSpan.FromSeconds(120);
-        _loader = new Loader(_httpClient);
     }
 
     public Task<SparqlResultSet> Search(string searchTerm)
@@ -58,8 +55,6 @@ LIMIT 100";
 
         if (!graphDictionary!.TryGetValue(uri, out Graph? graph))
         {
-            graph = new Graph();
-
             try
             {
                 graph = (Graph?)await LoadGraphAsync(uri);
@@ -102,22 +97,19 @@ LIMIT 100";
         {
             tasks.Add(Task.Run(async () =>
             {
-                if (!graphDictionary.ContainsKey(node.Uri))
+                try
                 {
-                    try
+                    var subGraph = await Get(node.Uri, remainingDepth, limit);
+                    System.Console.WriteLine("subgraph finished: " + subGraph.Nodes.Count);
+                    lock (knowledgeGraph.Nodes)
                     {
-                        var subGraph = await Get(node.Uri, remainingDepth, limit);
-                        System.Console.WriteLine("subgraph finished: " + subGraph.Nodes.Count);
-                        lock (knowledgeGraph.Nodes)
-                        {
-                            knowledgeGraph.Nodes.AddRange(subGraph.Nodes);
-                        }
+                        knowledgeGraph.Nodes.AddRange(subGraph.Nodes);
                     }
-                    catch (Exception ex)
-                    {
-                        // Log the exception (using your preferred logging approach)
-                        Console.WriteLine($"Failed to load subgraph for URI: {node.Uri}. Exception: {ex.Message}");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (using your preferred logging approach)
+                    Console.WriteLine($"Failed to load subgraph for URI: {node.Uri}. Exception: {ex.Message}");
                 }
             }));
         }
