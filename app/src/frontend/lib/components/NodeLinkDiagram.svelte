@@ -14,7 +14,7 @@
     drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
   });
 
-  $: drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
+  // $: drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
 
   /**
    * @param {{ Nodes: any; }} [graphResults]

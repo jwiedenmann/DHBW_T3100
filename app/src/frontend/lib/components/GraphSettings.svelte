@@ -32,7 +32,7 @@
       class="range range-primary"
     />
   </div>
-  <div class="form-control mt-4">
+  <div class="form-control">
     <label class="label"
       ><span class="label-text">Charge Strength: {chargeStrength}</span></label
     >
@@ -44,7 +44,7 @@
       class="range range-primary"
     />
   </div>
-  <div class="form-control mt-4">
+  <div class="form-control">
     <label class="label"
       ><span class="label-text">Link Distance: {linkDistance}</span></label
     >

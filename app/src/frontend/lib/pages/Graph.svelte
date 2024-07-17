@@ -5,6 +5,7 @@
   import Footer from "../components/Footer.svelte";
   import HamburgerIco from "../utils/icons/Hamburger.svelte";
   import XIco from "../utils/icons/X.svelte";
+  import ReloadIco from "../utils/icons/Reload.svelte";
   import NodeLinkDiagram from "../components/NodeLinkDiagram.svelte";
   import AdjacencyMatrix from "../components/AdjacencyMatrix.svelte";
   import Menu from "../components/GraphSettings.svelte";
@@ -14,7 +15,8 @@
 
   let uri = null;
   let graphResults = { Nodes: [] };
-  let graphLoadingIterations = 3;
+  let graphLoadingDepth = 2;
+  let limit = 100;
   let nodeSize = 5;
   let chargeStrength = -30;
   let linkDistance = 50;
@@ -36,8 +38,9 @@
   async function loadInitialGraph() {
     try {
       loading.set(true);
-      graphResults = await fetchGraph(uri);
-      await loadNodeGraphs(graphResults.Nodes);
+      graphResults = await fetchGraph(uri, graphLoadingDepth, limit);
+      console.log(graphResults);
+      graphResults = { ...graphResults }; // Trigger reactivity
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,53 +48,19 @@
     }
   }
 
-  async function fetchGraph(uri) {
+  async function fetchGraph(uri, graphLoadingDepth, limit) {
     const url = new URL(
       import.meta.env.VITE_ROUTE_Sparql_Graph,
       import.meta.env.VITE_BASE_URL
     );
     url.searchParams.append("uri", uri);
+    url.searchParams.append("loadingDepth", graphLoadingDepth);
+    url.searchParams.append("lmit", limit);
     const response = await fetch(url);
     if (response.ok) {
       return response.json();
     }
     return { Nodes: [] };
-  }
-
-  async function loadNodeGraphs(nodes) {
-    const nodesCopy = Array.from(nodes);
-    let count = 0;
-    for (const node of nodesCopy) {
-      if (count === 10) return;
-
-      try {
-        const nodeGraph = await fetchGraph(node.Uri);
-        mergeGraphs(graphResults, nodeGraph);
-        graphResults = { ...graphResults }; // Trigger reactivity
-      } catch (error) {
-        console.log(`Failed to load graph for node ${node.Uri}: `, error);
-      }
-
-      count++;
-    }
-  }
-
-  function mergeGraphs(mainGraph, nodeGraph) {
-    const nodeUriMap = new Map(mainGraph.Nodes.map((node) => [node.Uri, node]));
-
-    nodeGraph.Nodes.forEach((node) => {
-      const existingNode = nodeUriMap.get(node.Uri);
-      if (
-        !existingNode ||
-        Object.values(existingNode.Links).every(
-          (linkList) => linkList.length === 0
-        )
-      ) {
-        nodeUriMap.set(node.Uri, node);
-      }
-    });
-
-    mainGraph.Nodes = Array.from(nodeUriMap.values());
   }
 
   function toggleSidebar() {
@@ -145,6 +114,13 @@
           {/if}
 
           <button
+            class={`w-6 m-2 mr-6 fill-current`}
+            on:click={loadInitialGraph}
+          >
+            <ReloadIco />
+          </button>
+
+          <button
             class={`w-6 m-2 mr-6 fill-current ${sidebarOpen ? "visible" : "hidden"}`}
             on:click={toggleSidebar}
           >
@@ -153,15 +129,42 @@
         </div>
         {#if sidebarOpen}
           <div class="p-4">
+            <!-- Divider -->
+            <div class="relative flex pb-5 items-center">
+              <div class="flex-grow border-t border-gray-300"></div>
+              <span class="flex-shrink mx-4 text-gray-400">Data Settings</span>
+              <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            <!-- Loading Depth Settings -->
             <div class="flex items-center">
               <label for="integer-input" class="label whitespace-nowrap mr-1"
                 ><span class="label-text">Loading Iterations:</span></label
               >
               <input
                 id="integer-input"
-                bind:value={graphLoadingIterations}
-                class="input input-bordered flex-shrink w-full max-w-xs min-w-0"
+                bind:value={graphLoadingDepth}
+                class="input input-bordered text-right flex-shrink w-full max-w-xs min-w-0"
               />
+            </div>
+
+            <!-- Limit Settings -->
+            <div class="flex items-center mt-2">
+              <label for="integer-input" class="label whitespace-nowrap mr-1"
+                ><span class="label-text">Node Limit:</span></label
+              >
+              <input
+                id="integer-input"
+                bind:value={limit}
+                class="input input-bordered text-right flex-shrink w-full max-w-xs min-w-0"
+              />
+            </div>
+
+            <!-- Divider -->
+            <div class="relative flex py-5 items-center">
+              <div class="flex-grow border-t border-gray-300"></div>
+              <span class="flex-shrink mx-4 text-gray-400">Graph Settings</span>
+              <div class="flex-grow border-t border-gray-300"></div>
             </div>
 
             <Menu
