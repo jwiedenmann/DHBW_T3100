@@ -11,7 +11,13 @@
   let svg;
 
   onMount(() => {
-    drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
+    drawGraph(
+      graphResults,
+      chargeStrength,
+      linkDistance,
+      collisionRadius,
+      nodeSize
+    );
   });
 
   // $: drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
@@ -23,7 +29,13 @@
    * @param {number} [collisionRadius]
    * @param {number} [nodeSize]
    */
-  function drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize) {
+  function drawGraph(
+    graphResults,
+    chargeStrength,
+    linkDistance,
+    collisionRadius,
+    nodeSize
+  ) {
     if (!svg) return;
 
     const container = d3.select(svg.parentNode);
@@ -91,7 +103,7 @@
       .enter()
       .append("circle")
       .attr("r", nodeSize)
-      .attr("fill", "steelblue")
+      .attr("fill", (d, i) => (i === 0 ? "red" : "steelblue")) // Coloring the first node differently
       .call(drag(simulation))
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
