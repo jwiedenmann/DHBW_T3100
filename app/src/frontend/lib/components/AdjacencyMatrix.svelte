@@ -1,58 +1,104 @@
 <script>
-  import * as d3 from "d3";
   import { onMount } from "svelte";
-
   export let graphResults = { Nodes: [] };
 
-  let svg;
+  // Extract links from the graphResults.Nodes
+  const links = graphResults.Nodes.flatMap((node) =>
+    Object.entries(node.Links).flatMap(([key, values]) =>
+      values.map((value) => ({
+        source: node.Uri,
+        target: value,
+        predicate: key,
+      }))
+    )
+  );
 
-  onMount(() => {
-    drawMatrix();
+  // Create an adjacency matrix
+  const nodeUris = graphResults.Nodes.map((node) => node.Uri);
+  const nodeCount = nodeUris.length;
+  const adjacencyMatrix = Array.from({ length: nodeCount }, () =>
+    Array(nodeCount).fill(0)
+  );
+
+  links.forEach((link) => {
+    const sourceIndex = nodeUris.indexOf(link.source);
+    const targetIndex = nodeUris.indexOf(link.target);
+    if (sourceIndex !== -1 && targetIndex !== -1) {
+      adjacencyMatrix[sourceIndex][targetIndex] = 1; // Link from source to target
+      adjacencyMatrix[targetIndex][sourceIndex] = 1; // Link from target to source
+    }
   });
 
-  $: if (svg && graphResults.Nodes.length > 0) {
-    drawMatrix();
+  let svg;
+  let zoomLevel = 1;
+  let offsetX = 0;
+  let offsetY = 0;
+  let isPanning = false;
+  let startX, startY;
+
+  function handleWheel(event) {
+    event.preventDefault();
+    const scaleFactor = 0.001; // Smaller scale factor for more gradual zooming
+    zoomLevel += event.deltaY * -scaleFactor;
+    zoomLevel = Math.min(Math.max(0.125, zoomLevel), 4);
+    updateTransform();
   }
 
-  function drawMatrix() {
-    const container = d3.select(svg);
-    const width = container.node().clientWidth;
-    const height = container.node().clientHeight;
-
-    const svgSelection = d3.select(svg);
-    svgSelection.attr("viewBox", [0, 0, width, height]);
-    svgSelection.selectAll("*").remove();
-
-    const nodes = graphResults.Nodes.map((node) => node.Uri);
-    const matrix = Array(nodes.length)
-      .fill(0)
-      .map(() => Array(nodes.length).fill(0));
-
-    graphResults.Nodes.forEach((node, i) => {
-      Object.entries(node.Links).forEach(([key, values]) => {
-        values.forEach((value) => {
-          const j = nodes.indexOf(value);
-          matrix[i][j] = 1;
-        });
-      });
-    });
-
-    const xScale = d3.scaleBand().domain(nodes).range([0, width]);
-    const yScale = d3.scaleBand().domain(nodes).range([0, height]);
-
-    const g = svgSelection.append("g");
-
-    g.selectAll("rect")
-      .data(matrix.flatMap((row, i) => row.map((cell, j) => ({ i, j, cell }))))
-      .enter()
-      .append("rect")
-      .attr("x", (d) => xScale(nodes[d.j]))
-      .attr("y", (d) => yScale(nodes[d.i]))
-      .attr("width", xScale.bandwidth())
-      .attr("height", yScale.bandwidth())
-      .attr("fill", (d) => (d.cell ? "steelblue" : "white"))
-      .attr("stroke", "black");
+  function handleMouseDown(event) {
+    isPanning = true;
+    startX = event.clientX - offsetX;
+    startY = event.clientY - offsetY;
   }
+
+  function handleMouseMove(event) {
+    if (!isPanning) return;
+    offsetX = event.clientX - startX;
+    offsetY = event.clientY - startY;
+    updateTransform();
+  }
+
+  function handleMouseUp() {
+    isPanning = false;
+  }
+
+  function updateTransform() {
+    svg.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
+  }
+
+  onMount(() => {
+    svg.addEventListener("wheel", handleWheel);
+    svg.addEventListener("mousedown", handleMouseDown);
+    svg.addEventListener("mousemove", handleMouseMove);
+    svg.addEventListener("mouseup", handleMouseUp);
+    svg.addEventListener("mouseleave", handleMouseUp);
+  });
 </script>
 
-<svg bind:this={svg}></svg>
+<div class="w-full h-full overflow-hidden relative">
+  <svg
+    bind:this={svg}
+    class="absolute top-0 left-0"
+    viewBox="0 0 {nodeCount} {nodeCount}"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {#each adjacencyMatrix as row, rowIndex}
+      {#each row as cell, colIndex}
+        <rect
+          x={colIndex}
+          y={rowIndex}
+          width="1"
+          height="1"
+          fill={cell === 1 ? "red" : "blue"}
+        />
+      {/each}
+    {/each}
+  </svg>
+</div>
+
+<style>
+  svg {
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+</style>
