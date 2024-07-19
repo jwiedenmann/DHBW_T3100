@@ -87,10 +87,10 @@
     <div
       class={`flex ${sidebarOpen ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
     >
-      <div class="flex flex-col h-full w-full z-20 bg-base-200">
+      <div class="flex flex-col h-full w-full z-50 bg-base-200">
         <div class="flex flex-row">
           {#if sidebarOpen}
-            <details class="dropdown flex-1" bind:open={$dropdownOpen}>
+            <details class="dropdown flex-1 z-50" bind:open={$dropdownOpen}>
               <summary class="btn btn-primary m-3">{diagramLabel}</summary>
               <ul
                 class="menu dropdown-content bg-base-100 rounded-box w-52 p-2 shadow"
