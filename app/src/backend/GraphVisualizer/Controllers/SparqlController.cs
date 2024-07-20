@@ -39,7 +39,7 @@ public class SparqlController : Controller
     }
 
     [HttpGet("Graph")]
-    public async Task<IActionResult> Graph([FromQuery] string uri, int loadingDepth = 1, int limit = 100)
+    public async Task<IActionResult> Graph([FromQuery] string uri, [FromQuery] int loadingDepth = 1, [FromQuery] int limit = 100)
     {
         KnowledgeGraph graph = await _sparqlRepository.Get(uri, loadingDepth, limit);
         return Ok(JsonConvert.SerializeObject(new { Nodes = graph.Nodes.Values }, Formatting.Indented));
