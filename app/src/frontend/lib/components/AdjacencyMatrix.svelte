@@ -83,13 +83,9 @@
   >
     {#each adjacencyMatrix as row, rowIndex}
       {#each row as cell, colIndex}
-        <rect
-          x={colIndex}
-          y={rowIndex}
-          width="1"
-          height="1"
-          fill={cell === 1 ? "red" : "blue"}
-        />
+        {#if cell === 1}
+          <rect x={colIndex} y={rowIndex} width="1" height="1" fill="red" />
+        {/if}
       {/each}
     {/each}
   </svg>
