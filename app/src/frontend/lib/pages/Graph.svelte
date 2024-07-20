@@ -15,15 +15,23 @@
 
   let uri = null;
   let graphResults = { Nodes: [] };
-  let graphLoadingDepth = 2;
-  let limit = 100;
+
+  // Data Settings
+  let graphLoadingDepth = 1;
+  let limit = 10;
+
+  // NodeLinkDiagram Settings
   let nodeSize = 5;
   let chargeStrength = -30;
   let linkDistance = 50;
   let collisionRadius = 20;
+  
+  // AdjacencyMatrix Settings
+  let showGrid= true;
+
   let sidebarOpen = true;
-  let selectedDiagram = "nodeLink";
-  let diagramLabel = "Node Link Diagram";
+  let selectedDiagram = "adjacencyMatrix";
+  let diagramLabel = "Adjacency Matrix";
   const dropdownOpen = writable(false);
   let loading = writable(true);
 
@@ -55,7 +63,7 @@
     );
     url.searchParams.append("uri", uri);
     url.searchParams.append("loadingDepth", graphLoadingDepth);
-    url.searchParams.append("lmit", limit);
+    url.searchParams.append("limit", limit);
     const response = await fetch(url);
     if (response.ok) {
       return response.json();
@@ -173,6 +181,7 @@
               bind:collisionRadius
               bind:chargeStrength
               bind:linkDistance
+              bind:showGrid
             />
           </div>
         {/if}
@@ -195,7 +204,7 @@
           />
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}
-          <AdjacencyMatrix {graphResults} />
+          <AdjacencyMatrix {graphResults} {showGrid} />
         {/if}
       {/if}
     </main>

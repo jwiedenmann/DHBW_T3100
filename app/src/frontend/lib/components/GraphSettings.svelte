@@ -1,9 +1,12 @@
 <script>
+  // NodeLinkDiagram
   export let selectedDiagram;
   export let nodeSize;
   export let collisionRadius;
   export let chargeStrength;
   export let linkDistance;
+  // AdjacencyMatrix
+  export let showGrid;
 </script>
 
 {#if selectedDiagram === "nodeLink"}
@@ -57,5 +60,14 @@
     />
   </div>
 {:else if selectedDiagram === "adjacencyMatrix"}
-  <div></div>
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <span class="label-text">Show Border</span>
+      <input
+        type="checkbox"
+        bind:checked={showGrid}
+        class="checkbox checkbox-primary"
+      />
+    </label>
+  </div>
 {/if}

@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   export let graphResults = { Nodes: [] };
+  export let showGrid;
 
   // Extract links from the graphResults.Nodes
   const links = graphResults.Nodes.flatMap((node) =>
@@ -83,8 +84,27 @@
   >
     {#each adjacencyMatrix as row, rowIndex}
       {#each row as cell, colIndex}
+        <!-- Cell border -->
+        {#if showGrid === true}
+          <rect
+            x={colIndex}
+            y={rowIndex}
+            width="1"
+            height="1"
+            fill="none"
+            stroke={"#999"}
+            stroke-width="0.01"
+          />
+        {/if}
+        <!-- Cell fill -->
         {#if cell === 1}
-          <rect x={colIndex} y={rowIndex} width="1" height="1" fill="red" />
+          <rect
+            x={colIndex}
+            y={rowIndex}
+            width="1"
+            height="1"
+            fill="steelblue"
+          />
         {/if}
       {/each}
     {/each}
