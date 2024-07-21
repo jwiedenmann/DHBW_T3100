@@ -25,9 +25,12 @@
   let chargeStrength = -30;
   let linkDistance = 50;
   let collisionRadius = 20;
-  
+
   // AdjacencyMatrix Settings
-  let showGrid= true;
+  let showGrid = true;
+
+  // General Settings
+  let showPerformanceMetrics = true;
 
   let sidebarOpen = true;
   let selectedDiagram = "adjacencyMatrix";
@@ -183,6 +186,27 @@
               bind:linkDistance
               bind:showGrid
             />
+
+            <!-- Divider -->
+            <div class="relative flex py-5 items-center">
+              <div class="flex-grow border-t border-gray-300"></div>
+              <span class="flex-shrink mx-4 text-gray-400"
+                >General Settings</span
+              >
+              <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            <!-- Performance Visibility Settings -->
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">Show Performance Metrics</span>
+                <input
+                  type="checkbox"
+                  bind:checked={showPerformanceMetrics}
+                  class="checkbox checkbox-primary"
+                />
+              </label>
+            </div>
           </div>
         {/if}
       </div>
@@ -201,10 +225,11 @@
             {chargeStrength}
             {linkDistance}
             {collisionRadius}
+            {showPerformanceMetrics}
           />
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}
-          <AdjacencyMatrix {graphResults} {showGrid} />
+          <AdjacencyMatrix {graphResults} {showGrid} {showPerformanceMetrics} />
         {/if}
       {/if}
     </main>
