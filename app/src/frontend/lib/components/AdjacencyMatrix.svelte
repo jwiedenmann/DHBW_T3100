@@ -7,7 +7,6 @@
   export let showPerformanceMetrics;
 
   // Performance metrics
-  let svgRenderTime = 0;
   let lastFrameTime = 0;
   let frameCount = 0;
   let fps = 0;
@@ -56,14 +55,11 @@
   }
 
   function updateTransform() {
-    const transformStart = performance.now();
     requestAnimationFrame(() => {
       d3.select(svg).attr(
         "transform",
         `translate(${offsetX}, ${offsetY}) scale(${zoomLevel})`
       );
-      const transformEnd = performance.now();
-      svgRenderTime = transformEnd - transformStart;
     });
   }
 
@@ -160,7 +156,7 @@
       .attr("y", (d) => d.y)
       .attr("width", (d) => d.width)
       .attr("height", (d) => d.height)
-      .style("fill", (d) => (d.weight > 0 ? "steelblue" : "#fff"))
+      .style("fill", (d) => (d.weight > 0 ? "steelblue" : "#00000000"))
       .style("stroke", (d) => (showGrid ? "#999" : "none"));
   }
 </script>
@@ -171,7 +167,6 @@
       <div class="alert alert-info">
         <div class="text-primary-content">
           <div>FPS: {fps.toFixed(2)}</div>
-          <div>Last SVG render time: {svgRenderTime.toFixed(2)} ms</div>
         </div>
       </div>
     </div>
