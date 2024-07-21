@@ -1,5 +1,7 @@
 <script>
   import { onMount } from "svelte";
+  import * as d3 from "d3";
+
   export let graphResults = { Nodes: [] };
   export let showGrid;
   export let showPerformanceMetrics;
@@ -20,22 +22,6 @@
       }))
     )
   );
-
-  // Create an adjacency matrix
-  const nodeUris = graphResults.Nodes.map((node) => node.Uri);
-  const nodeCount = nodeUris.length;
-  const adjacencyMatrix = Array.from({ length: nodeCount }, () =>
-    Array(nodeCount).fill(0)
-  );
-
-  links.forEach((link) => {
-    const sourceIndex = nodeUris.indexOf(link.source);
-    const targetIndex = nodeUris.indexOf(link.target);
-    if (sourceIndex !== -1 && targetIndex !== -1) {
-      adjacencyMatrix[sourceIndex][targetIndex] = 1; // Link from source to target
-      adjacencyMatrix[targetIndex][sourceIndex] = 1; // Link from target to source
-    }
-  });
 
   let svg;
   let zoomLevel = 1;
@@ -72,14 +58,22 @@
   function updateTransform() {
     const transformStart = performance.now();
     requestAnimationFrame(() => {
-      svg.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
+      d3.select(svg).attr(
+        "transform",
+        `translate(${offsetX}, ${offsetY}) scale(${zoomLevel})`
+      );
       const transformEnd = performance.now();
       svgRenderTime = transformEnd - transformStart;
     });
   }
 
   onMount(() => {
-    svg.addEventListener("wheel", handleWheel);
+    d3.select(svg).call(
+      d3.zoom().on("zoom", (event) => {
+        d3.select(svg).attr("transform", event.transform);
+      })
+    );
+
     svg.addEventListener("mousedown", handleMouseDown);
     svg.addEventListener("mousemove", handleMouseMove);
     svg.addEventListener("mouseup", handleMouseUp);
@@ -88,6 +82,8 @@
     // Start the frame rate monitoring
     lastFrameTime = performance.now();
     requestAnimationFrame(updateFrameRate);
+
+    drawMatrix();
   });
 
   function updateFrameRate() {
@@ -101,6 +97,71 @@
 
     // Continue monitoring
     requestAnimationFrame(updateFrameRate);
+  }
+
+  function drawMatrix() {
+    const nodeUris = graphResults.Nodes.map((node) => node.Uri);
+    const nodes = nodeUris.map((uri, i) => ({ id: uri, index: i }));
+    const edges = links.map((link) => ({
+      source: nodeUris.indexOf(link.source),
+      target: nodeUris.indexOf(link.target),
+      weight: 1,
+    }));
+
+    const size = [500, 500];
+    const nodeWidth = size[0] / nodes.length;
+    const nodeHeight = size[1] / nodes.length;
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, nodes.length])
+      .range([0, size[0]]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, nodes.length])
+      .range([0, size[1]]);
+
+    const edgeHash = {};
+    edges.forEach((edge) => {
+      const id = `${edge.source}-${edge.target}`;
+      const reverseId = `${edge.target}-${edge.source}`;
+      edgeHash[id] = edge;
+      edgeHash[reverseId] = edge;
+    });
+
+    const matrix = [];
+    nodes.forEach((sourceNode, a) => {
+      nodes.forEach((targetNode, b) => {
+        const grid = {
+          id: `${sourceNode.id}-${targetNode.id}`,
+          source: sourceNode,
+          target: targetNode,
+          x: xScale(b),
+          y: yScale(a),
+          weight: edgeHash[`${sourceNode.index}-${targetNode.index}`] ? 1 : 0,
+          height: nodeHeight,
+          width: nodeWidth,
+        };
+        matrix.push(grid);
+      });
+    });
+
+    const row = d3
+      .select(svg)
+      .selectAll(".row")
+      .data(matrix)
+      .enter()
+      .append("g")
+      .attr("class", "row");
+
+    row
+      .append("rect")
+      .attr("class", "cell")
+      .attr("x", (d) => d.x)
+      .attr("y", (d) => d.y)
+      .attr("width", (d) => d.width)
+      .attr("height", (d) => d.height)
+      .style("fill", (d) => (d.weight > 0 ? "steelblue" : "#fff"))
+      .style("stroke", (d) => (showGrid ? "#999" : "none"));
   }
 </script>
 
@@ -119,36 +180,9 @@
   <svg
     bind:this={svg}
     class="absolute top-0 left-0"
-    viewBox="0 0 {nodeCount} {nodeCount}"
+    viewBox="0 0 500 500"
     xmlns="http://www.w3.org/2000/svg"
-  >
-    {#each adjacencyMatrix as row, rowIndex}
-      {#each row as cell, colIndex}
-        <!-- Cell border -->
-        {#if showGrid === true}
-          <rect
-            x={colIndex}
-            y={rowIndex}
-            width="1"
-            height="1"
-            fill="none"
-            stroke={"#999"}
-            stroke-width="0.01"
-          />
-        {/if}
-        <!-- Cell fill -->
-        {#if cell === 1}
-          <rect
-            x={colIndex}
-            y={rowIndex}
-            width="1"
-            height="1"
-            fill="steelblue"
-          />
-        {/if}
-      {/each}
-    {/each}
-  </svg>
+  ></svg>
 </div>
 
 <style>
@@ -156,5 +190,9 @@
     width: 100%;
     height: 100%;
     touch-action: none;
+  }
+
+  .cell {
+    shape-rendering: crispEdges;
   }
 </style>

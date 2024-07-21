@@ -30,7 +30,7 @@
   let showGrid = true;
 
   // General Settings
-  let showPerformanceMetrics = true;
+  let showPerformanceMetrics = false;
 
   let sidebarOpen = true;
   let selectedDiagram = "adjacencyMatrix";
