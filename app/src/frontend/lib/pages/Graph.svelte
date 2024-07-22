@@ -8,6 +8,7 @@
   import ReloadIco from "../utils/icons/Reload.svelte";
   import NodeLinkDiagram from "../components/NodeLinkDiagram.svelte";
   import AdjacencyMatrix from "../components/AdjacencyMatrix.svelte";
+  import ClusteringNodeLinkDiagram from "../components/ClusteringNodeLinkDiagram.svelte";
   import Menu from "../components/GraphSettings.svelte";
   import { onMount } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
@@ -33,8 +34,8 @@
   let showPerformanceMetrics = false;
 
   let sidebarOpen = true;
-  let selectedDiagram = "adjacencyMatrix";
-  let diagramLabel = "Adjacency Matrix";
+  let selectedDiagram = "nodeLink";
+  let diagramLabel = "Node Link Diagram";
   const dropdownOpen = writable(false);
   let loading = writable(true);
 
@@ -118,6 +119,15 @@
                     on:click={() =>
                       selectDiagram("adjacencyMatrix", "Adjacency Matrix")}
                     >Adjacency Matrix</a
+                  >
+                </li>
+                <li>
+                  <a
+                    on:click={() =>
+                      selectDiagram(
+                        "clusteringNodeLink",
+                        "Clustering Based Node Link Diagram"
+                      )}>Clustering Node Link</a
                   >
                 </li>
               </ul>
@@ -230,6 +240,16 @@
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}
           <AdjacencyMatrix {graphResults} {showGrid} {showPerformanceMetrics} />
+        {/if}
+        {#if selectedDiagram === "clusteringNodeLink"}
+          <ClusteringNodeLinkDiagram
+            {graphResults}
+            {nodeSize}
+            {chargeStrength}
+            {linkDistance}
+            {collisionRadius}
+            {showPerformanceMetrics}
+          />
         {/if}
       {/if}
     </main>
