@@ -7,6 +7,7 @@
   export let linkDistance = 50;
   export let collisionRadius = 20;
   export let nodeSize = 5;
+  export let clusteringAlgorithm = "noClustering";
 
   let svg;
 

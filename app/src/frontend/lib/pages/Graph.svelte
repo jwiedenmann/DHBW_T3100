@@ -26,6 +26,7 @@
   let chargeStrength = -30;
   let linkDistance = 50;
   let collisionRadius = 20;
+  let clusteringAlgorithm = "noClustering";
 
   // AdjacencyMatrix Settings
   let showGrid = true;
@@ -236,6 +237,7 @@
             {linkDistance}
             {collisionRadius}
             {showPerformanceMetrics}
+            {clusteringAlgorithm}
           />
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}

@@ -5,11 +5,17 @@
   export let collisionRadius;
   export let chargeStrength;
   export let linkDistance;
+  export let clusteringAlgorithm;
   // AdjacencyMatrix
   export let showGrid;
 </script>
 
 {#if selectedDiagram === "nodeLink"}
+  <select class="select select-bordered w-full max-w-xs" bind:value={clusteringAlgorithm}>
+    <option value="noClustering" selected>No Clustering</option>
+    <option value="louvain">Louvain Method</option>
+    <option value="hcs">HCS Clustering</option>
+  </select>
   <div class="form-control">
     <label class="label"
       ><span class="label-text">Node Size: {nodeSize}</span></label
