@@ -28,6 +28,7 @@
     "dotenv": "^16.4.5",
     "graphology": "^0.25.4",
     "graphology-communities-louvain": "^2.0.1",
+    "graphology-components": "^1.5.4",
     "svelte-spa-router": "^4.0.1",
     "theme-change": "^2.5.0"
   }

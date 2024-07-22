@@ -8,7 +8,6 @@
   import ReloadIco from "../utils/icons/Reload.svelte";
   import NodeLinkDiagram from "../components/NodeLinkDiagram.svelte";
   import AdjacencyMatrix from "../components/AdjacencyMatrix.svelte";
-  import ClusteringNodeLinkDiagram from "../components/ClusteringNodeLinkDiagram.svelte";
   import Menu from "../components/GraphSettings.svelte";
   import { onMount } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
@@ -122,15 +121,6 @@
                     >Adjacency Matrix</a
                   >
                 </li>
-                <li>
-                  <a
-                    on:click={() =>
-                      selectDiagram(
-                        "clusteringNodeLink",
-                        "Clustering Based Node Link Diagram"
-                      )}>Clustering Node Link</a
-                  >
-                </li>
               </ul>
             </details>
           {/if}
@@ -196,6 +186,7 @@
               bind:chargeStrength
               bind:linkDistance
               bind:showGrid
+              bind:clusteringAlgorithm
             />
 
             <!-- Divider -->
@@ -242,16 +233,6 @@
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}
           <AdjacencyMatrix {graphResults} {showGrid} {showPerformanceMetrics} />
-        {/if}
-        {#if selectedDiagram === "clusteringNodeLink"}
-          <ClusteringNodeLinkDiagram
-            {graphResults}
-            {nodeSize}
-            {chargeStrength}
-            {linkDistance}
-            {collisionRadius}
-            {showPerformanceMetrics}
-          />
         {/if}
       {/if}
     </main>

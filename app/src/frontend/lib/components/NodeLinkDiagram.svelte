@@ -1,6 +1,9 @@
 <script>
   import * as d3 from "d3";
   import { onMount } from "svelte";
+  import Graph from "graphology";
+  import louvain from "graphology-communities-louvain";
+  import { connectedComponents } from "graphology-components";
 
   export let graphResults = { Nodes: [] };
   export let chargeStrength = -30;
@@ -17,25 +20,77 @@
       chargeStrength,
       linkDistance,
       collisionRadius,
-      nodeSize
+      nodeSize,
+      clusteringAlgorithm
     );
   });
 
-  // $: drawGraph(graphResults, chargeStrength, linkDistance, collisionRadius, nodeSize);
+  $: drawGraph(
+    graphResults,
+    chargeStrength,
+    linkDistance,
+    collisionRadius,
+    nodeSize,
+    clusteringAlgorithm
+  );
 
-  /**
-   * @param {{ Nodes: any; }} [graphResults]
-   * @param {number} [chargeStrength]
-   * @param {number} [linkDistance]
-   * @param {number} [collisionRadius]
-   * @param {number} [nodeSize]
-   */
+  function hcs(graph) {
+    const communities = {};
+    let communityIndex = 0;
+
+    function recursiveHcs(subgraph) {
+      const components = connectedComponents(subgraph);
+      if (components.length === 1 && subgraph.order > 1) {
+        const cut = findMinCut(subgraph);
+        if (cut) {
+          const [subgraph1, subgraph2] = cut;
+          recursiveHcs(subgraph1);
+          recursiveHcs(subgraph2);
+        } else {
+          assignCommunity(subgraph);
+        }
+      } else {
+        components.forEach((component) => {
+          const subgraphComponent = subgraph.copy();
+          component.forEach((node) => {
+            if (!subgraph.hasNode(node)) {
+              subgraphComponent.dropNode(node);
+            }
+          });
+          assignCommunity(subgraphComponent);
+        });
+      }
+    }
+
+    function findMinCut(subgraph) {
+      const nodes = subgraph.nodes();
+      if (nodes.length <= 2) return null;
+      const mid = Math.floor(nodes.length / 2);
+      const subgraph1 = subgraph.copy();
+      const subgraph2 = subgraph.copy();
+      nodes.slice(0, mid).forEach((node) => subgraph2.dropNode(node));
+      nodes.slice(mid).forEach((node) => subgraph1.dropNode(node));
+      return [subgraph1, subgraph2];
+    }
+
+    function assignCommunity(subgraph) {
+      subgraph.forEachNode((node) => {
+        communities[node] = communityIndex;
+      });
+      communityIndex++;
+    }
+
+    recursiveHcs(graph);
+    return communities;
+  }
+
   function drawGraph(
     graphResults,
     chargeStrength,
     linkDistance,
     collisionRadius,
-    nodeSize
+    nodeSize,
+    clusteringAlgorithm
   ) {
     if (!svg) return;
 
@@ -72,6 +127,27 @@
       )
     );
 
+    const graph = new Graph();
+    nodes.forEach((node) => graph.addNode(node.id, node));
+    links.forEach((link) => graph.addEdge(link.source, link.target));
+
+    let communities = {};
+    if (clusteringAlgorithm === "louvain") {
+      communities = louvain(graph);
+    } else if (clusteringAlgorithm === "hcs") {
+      communities = hcs(graph);
+    } else {
+      nodes.forEach((node, index) => {
+        communities[node.id] = index; // Unique community for each node
+      });
+    }
+
+    nodes.forEach((node) => {
+      node.community = communities[node.id];
+    });
+
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
     const simulation = d3
       .forceSimulation(nodes)
       .force(
@@ -95,6 +171,7 @@
       .append("line")
       .attr("stroke-width", (d) => Math.sqrt(d.value));
 
+      console.log(clusteringAlgorithm)
     const node = g
       .append("g")
       .attr("stroke", "#fff")
@@ -104,7 +181,11 @@
       .enter()
       .append("circle")
       .attr("r", nodeSize)
-      .attr("fill", (d, i) => (i === 0 ? "red" : "steelblue")) // Coloring the first node differently
+      .attr("fill", (d, i) =>
+        clusteringAlgorithm === "noClustering"
+          ? (i === 0 ? "red" : "steelblue")
+          : color(d.community)
+      ) // Coloring nodes
       .call(drag(simulation))
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
