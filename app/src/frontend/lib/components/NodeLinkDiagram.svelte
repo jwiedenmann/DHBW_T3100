@@ -117,13 +117,25 @@
       label: node.Label,
       properties: node.Properties,
     }));
+
+    // Create a Set to track unique edges
+    const edgeSet = new Set();
     const links = graphResults.Nodes.flatMap((node) =>
       Object.entries(node.Links).flatMap(([key, values]) =>
-        values.map((value) => ({
-          source: node.Uri,
-          target: value,
-          predicate: key,
-        }))
+        values
+          .map((value) => {
+            const edgeKey = `${node.Uri}-${value}`;
+            if (!edgeSet.has(edgeKey)) {
+              edgeSet.add(edgeKey);
+              return {
+                source: node.Uri,
+                target: value,
+                predicate: key,
+              };
+            }
+            return null;
+          })
+          .filter((link) => link !== null)
       )
     );
 
@@ -171,7 +183,6 @@
       .append("line")
       .attr("stroke-width", (d) => Math.sqrt(d.value));
 
-      console.log(clusteringAlgorithm)
     const node = g
       .append("g")
       .attr("stroke", "#fff")
