@@ -1,8 +1,8 @@
 <script>
   import * as d3 from "d3";
   import { onMount } from "svelte";
-  import louvain from "graphology-communities-louvain";
   import Graph from "graphology";
+  import louvain from "graphology-communities-louvain";
 
   export let graphResults = { Nodes: [] };
   export let chargeStrength = -30;
@@ -54,13 +54,25 @@
       label: node.Label,
       properties: node.Properties,
     }));
+
+    // Create a Set to track unique edges
+    const edgeSet = new Set();
     const links = graphResults.Nodes.flatMap((node) =>
       Object.entries(node.Links).flatMap(([key, values]) =>
-        values.map((value) => ({
-          source: node.Uri,
-          target: value,
-          predicate: key,
-        }))
+        values
+          .map((value) => {
+            const edgeKey = `${node.Uri}-${value}`;
+            if (!edgeSet.has(edgeKey)) {
+              edgeSet.add(edgeKey);
+              return {
+                source: node.Uri,
+                target: value,
+                predicate: key,
+              };
+            }
+            return null;
+          })
+          .filter((link) => link !== null)
       )
     );
 
