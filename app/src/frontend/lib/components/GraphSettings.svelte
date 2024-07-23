@@ -15,6 +15,7 @@
     <option value="noClustering" selected>No Clustering</option>
     <option value="louvain">Louvain Method</option>
     <option value="hcs">HCS Clustering</option>
+    <option value="mcl">MCL Clustering</option>
   </select>
   <div class="form-control">
     <label class="label"

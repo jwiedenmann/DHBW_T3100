@@ -2,7 +2,8 @@
 import * as d3 from "d3";
 import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
-import { hcs } from "./Hcs";
+import { hcs } from "./hcs";
+import { mclAlgorithm } from "./mcl"; // Import the MCL algorithm
 
 export function drawGraph(
     svg,
@@ -70,6 +71,8 @@ export function drawGraph(
         communities = louvain(graph);
     } else if (clusteringAlgorithm === "hcs") {
         communities = hcs(graph);
+    } else if (clusteringAlgorithm === "mcl") {
+        communities = mclAlgorithm(graph); // Use the MCL algorithm
     } else {
         nodes.forEach((node, index) => {
             communities[node.id] = index; // Unique community for each node
