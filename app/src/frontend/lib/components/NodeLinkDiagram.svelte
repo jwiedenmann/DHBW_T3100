@@ -11,6 +11,13 @@
   export let collisionRadius = 20;
   export let nodeSize = 5;
   export let clusteringAlgorithm = "noClustering";
+  export let showPerformanceMetrics;
+
+  // Performance metrics
+  let fps = 0;
+  let lastFrameTime = Date.now();
+  let nodeCount = 0;
+  let edgeCount = 0;
 
   let svg;
 
@@ -194,7 +201,9 @@
       .attr("r", nodeSize)
       .attr("fill", (d, i) =>
         clusteringAlgorithm === "noClustering"
-          ? (i === 0 ? "red" : "steelblue")
+          ? i === 0
+            ? "red"
+            : "steelblue"
           : color(d.community)
       ) // Coloring nodes
       .call(drag(simulation))
@@ -203,6 +212,9 @@
 
     node.append("title").text((d) => d.label);
 
+    nodeCount = nodes.length;
+    edgeCount = links.length;
+
     simulation.on("tick", () => {
       link
         .attr("x1", (d) => d.source.x)
@@ -210,6 +222,12 @@
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y);
       node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+      // Calculate and update FPS
+      const now = Date.now();
+      const delta = (now - lastFrameTime) / 1000;
+      fps = 1 / delta;
+      lastFrameTime = now;
     });
 
     function drag(simulation) {
@@ -255,6 +273,20 @@
     }
   }
 </script>
+
+{#if showPerformanceMetrics === true}
+  <div class="relative">
+    <div class="toast toast-top toast-end absolute z-50 top-4 right-4">
+      <div class="alert alert-info">
+        <div class="text-primary-content">
+          <div>FPS: {fps.toFixed(2)}</div>
+          <div>Nodes: {nodeCount}</div>
+          <div>Edges: {edgeCount}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{/if}
 
 <svg bind:this={svg} id="graphSvg"></svg>
 <div id="tooltip" class="tooltip"></div>
