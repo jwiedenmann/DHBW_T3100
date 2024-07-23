@@ -80,7 +80,8 @@ export function drawGraph(
         node.community = communities[node.id];
     });
 
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const uniqueCommunities = [...new Set(Object.values(communities))];
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
 
     const simulation = d3
         .forceSimulation(nodes)
@@ -114,12 +115,10 @@ export function drawGraph(
         .enter()
         .append("circle")
         .attr("r", nodeSize)
-        .attr("fill", (d, i) =>
+        .attr("fill", (d) =>
             clusteringAlgorithm === "noClustering"
-                ? i === 0
-                    ? "red"
-                    : "steelblue"
-                : color(d.community)
+                ? "steelblue"
+                : colorScale(d.community)
         ) // Coloring nodes
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
