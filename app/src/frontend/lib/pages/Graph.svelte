@@ -86,10 +86,10 @@
   }
 </script>
 
-<div class="h-screen flex flex-col overflow-hidden">
+<div class="h-screen flex flex-col">
   <Navbar showSearchBar={false} />
 
-  <div class="h-screen flex flex-row">
+  <div class="flex flex-1 overflow-hidden">
     <button
       class={`w-6 m-6 z-10 absolute ${sidebarOpen ? "hidden" : "visible"}`}
       on:click={toggleSidebar}
@@ -140,7 +140,7 @@
           </button>
         </div>
         {#if sidebarOpen}
-          <div class="p-4">
+          <div class="p-4 overflow-y-auto">
             <!-- Divider -->
             <div class="relative flex pb-5 items-center">
               <div class="flex-grow border-t border-gray-300"></div>
@@ -238,7 +238,7 @@
     </main>
   </div>
 
-  <Footer />
+  <Footer class="flex-shrink-0" />
 </div>
 
 <style global lang="postcss">
