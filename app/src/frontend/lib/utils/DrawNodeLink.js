@@ -1,4 +1,3 @@
-// src/utils/drawGraph.js
 import * as d3 from "d3";
 import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
@@ -99,6 +98,19 @@ export function drawGraph(
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(collisionRadius));
 
+    // Draw community hulls
+    const hulls = g
+        .append("g")
+        .attr("class", "hulls")
+        .selectAll("path")
+        .data(uniqueCommunities)
+        .enter()
+        .append("path")
+        .attr("fill", (d) => colorScale(d))
+        .attr("stroke", (d) => colorScale(d))
+        .attr("stroke-width", 2)
+        .attr("opacity", 0.2);
+
     const link = g
         .append("g")
         .attr("stroke", "#999")
@@ -138,6 +150,16 @@ export function drawGraph(
             .attr("x2", (d) => d.target.x)
             .attr("y2", (d) => d.target.y);
         node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+        // Update community hulls
+        hulls.attr("d", (community) => {
+            const communityNodes = nodes.filter((d) => d.community === community);
+            if (communityNodes.length > 2) { // A convex hull needs at least 3 points
+                const hull = d3.polygonHull(communityNodes.map((d) => [d.x, d.y]));
+                return hull ? "M" + hull.join("L") + "Z" : null;
+            }
+            return null;
+        });
     });
 
     // FPS calculation using requestAnimationFrame
