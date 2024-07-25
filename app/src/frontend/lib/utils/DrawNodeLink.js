@@ -85,18 +85,60 @@ export function drawGraph(
     const uniqueCommunities = [...new Set(Object.values(communities))];
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
 
+    // Calculate initial centroids for each community
+    const centroids = {};
+    uniqueCommunities.forEach(community => {
+        centroids[community] = { x: width / 2, y: height / 2 };
+    });
+
     const simulation = d3
         .forceSimulation(nodes)
-        .force(
-            "link",
-            d3
-                .forceLink(links)
-                .id((d) => d.id)
-                .distance(linkDistance)
-        )
+        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance))
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(collisionRadius));
+        .force("collision", d3.forceCollide().radius(collisionRadius))
+        .on("tick", ticked);
+
+    function ticked() {
+        // Update community centroids
+        uniqueCommunities.forEach(community => {
+            const communityNodes = nodes.filter(d => d.community === community);
+            const centroid = calculateCentroid(communityNodes);
+            centroids[community] = centroid;
+        });
+
+        // Apply forces to nodes based on their community centroids
+        nodes.forEach(node => {
+            const centroid = centroids[node.community];
+            node.vx += (centroid.x - node.x) * 0.1; // Adjust this value to control the "tightness"
+            node.vy += (centroid.y - node.y) * 0.1;
+        });
+
+        // Update the positions of nodes and links
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        node.attr("cx", d => d.x).attr("cy", d => d.y);
+
+        // Update community hulls
+        hulls.attr("d", (community) => {
+            const communityNodes = nodes.filter((d) => d.community === community);
+            if (communityNodes.length > 2) { // A convex hull needs at least 3 points
+                const hull = d3.polygonHull(communityNodes.map((d) => [d.x, d.y]));
+                return hull ? "M" + hull.join("L") + "Z" : null;
+            }
+            return null;
+        });
+    }
+
+    function calculateCentroid(nodes) {
+        const x = d3.mean(nodes, d => d.x);
+        const y = d3.mean(nodes, d => d.y);
+        return { x, y };
+    }
 
     // Draw community hulls
     const hulls = g
@@ -106,8 +148,8 @@ export function drawGraph(
         .data(uniqueCommunities)
         .enter()
         .append("path")
-        .attr("fill", (d) => colorScale(d))
-        .attr("stroke", (d) => colorScale(d))
+        .attr("fill", d => colorScale(d))
+        .attr("stroke", d => colorScale(d))
         .attr("stroke-width", 2)
         .attr("opacity", 0.2);
 
@@ -119,7 +161,7 @@ export function drawGraph(
         .data(links)
         .enter()
         .append("line")
-        .attr("stroke-width", (d) => Math.sqrt(d.value));
+        .attr("stroke-width", d => Math.sqrt(d.value));
 
     const node = g
         .append("g")
@@ -130,7 +172,7 @@ export function drawGraph(
         .enter()
         .append("circle")
         .attr("r", nodeSize)
-        .attr("fill", (d) =>
+        .attr("fill", d =>
             clusteringAlgorithm === "noClustering"
                 ? "steelblue"
                 : colorScale(d.community)
@@ -139,28 +181,9 @@ export function drawGraph(
         .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut);
 
-    node.append("title").text((d) => d.label);
+    node.append("title").text(d => d.label);
 
     updateMetrics(nodes.length, links.length);
-
-    simulation.on("tick", () => {
-        link
-            .attr("x1", (d) => d.source.x)
-            .attr("y1", (d) => d.source.y)
-            .attr("x2", (d) => d.target.x)
-            .attr("y2", (d) => d.target.y);
-        node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-
-        // Update community hulls
-        hulls.attr("d", (community) => {
-            const communityNodes = nodes.filter((d) => d.community === community);
-            if (communityNodes.length > 2) { // A convex hull needs at least 3 points
-                const hull = d3.polygonHull(communityNodes.map((d) => [d.x, d.y]));
-                return hull ? "M" + hull.join("L") + "Z" : null;
-            }
-            return null;
-        });
-    });
 
     // FPS calculation using requestAnimationFrame
     let lastFrameTime = Date.now();

@@ -17,7 +17,7 @@
   let graphResults = { Nodes: [] };
 
   // Data Settings
-  let graphLoadingDepth = 1;
+  let graphLoadingDepth = 3;
   let limit = 10;
 
   // NodeLinkDiagram Settings
