@@ -25,7 +25,6 @@
       linkDistance,
       collisionRadius,
       nodeSize,
-      clusteringAlgorithm,
       updateMetrics
     );
   });
@@ -37,7 +36,6 @@
     linkDistance,
     collisionRadius,
     nodeSize,
-    clusteringAlgorithm,
     updateMetrics
   );
 

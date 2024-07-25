@@ -1,5 +1,8 @@
 import * as d3 from "d3";
 import Graph from "graphology";
+import louvain from "graphology-communities-louvain";
+import { hcs } from "./hcs";
+import { mclAlgorithm } from "./mcl"; // Import the MCL algorithm
 
 export function drawGraph(
     svg,
@@ -8,6 +11,7 @@ export function drawGraph(
     linkDistance,
     collisionRadius,
     nodeSize,
+    clusteringAlgorithm,
     updateMetrics
 ) {
     if (!svg) return;
@@ -61,6 +65,32 @@ export function drawGraph(
     nodes.forEach((node) => graph.addNode(node.id, node));
     links.forEach((link) => graph.addEdge(link.source, link.target));
 
+    let communities = {};
+    if (clusteringAlgorithm === "louvain") {
+        communities = louvain(graph);
+    } else if (clusteringAlgorithm === "hcs") {
+        communities = hcs(graph);
+    } else if (clusteringAlgorithm === "mcl") {
+        communities = mclAlgorithm(graph); // Use the MCL algorithm
+    } else {
+        nodes.forEach((node, index) => {
+            communities[node.id] = index; // Unique community for each node
+        });
+    }
+
+    nodes.forEach((node) => {
+        node.community = communities[node.id];
+    });
+
+    const uniqueCommunities = [...new Set(Object.values(communities))];
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
+
+    // Calculate initial centroids for each community
+    const centroids = {};
+    uniqueCommunities.forEach(community => {
+        centroids[community] = { x: width / 2, y: height / 2 };
+    });
+
     const simulation = d3
         .forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance))
@@ -70,6 +100,21 @@ export function drawGraph(
         .on("tick", ticked);
 
     function ticked() {
+        // Update community centroids
+        uniqueCommunities.forEach(community => {
+            const communityNodes = nodes.filter(d => d.community === community);
+            const centroid = calculateCentroid(communityNodes);
+            centroids[community] = centroid;
+        });
+
+        // Apply forces to nodes based on their community centroids
+        nodes.forEach(node => {
+            const centroid = centroids[node.community];
+            node.vx += (centroid.x - node.x) * 0.1; // Adjust this value to control the "tightness"
+            node.vy += (centroid.y - node.y) * 0.1;
+        });
+
+        // Update the positions of nodes and links
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -77,7 +122,36 @@ export function drawGraph(
             .attr("y2", d => d.target.y);
 
         node.attr("cx", d => d.x).attr("cy", d => d.y);
+
+        // Update community hulls
+        hulls.attr("d", (community) => {
+            const communityNodes = nodes.filter((d) => d.community === community);
+            if (communityNodes.length > 2) { // A convex hull needs at least 3 points
+                const hull = d3.polygonHull(communityNodes.map((d) => [d.x, d.y]));
+                return hull ? "M" + hull.join("L") + "Z" : null;
+            }
+            return null;
+        });
     }
+
+    function calculateCentroid(nodes) {
+        const x = d3.mean(nodes, d => d.x);
+        const y = d3.mean(nodes, d => d.y);
+        return { x, y };
+    }
+
+    // Draw community hulls
+    const hulls = g
+        .append("g")
+        .attr("class", "hulls")
+        .selectAll("path")
+        .data(uniqueCommunities)
+        .enter()
+        .append("path")
+        .attr("fill", d => colorScale(d))
+        .attr("stroke", d => colorScale(d))
+        .attr("stroke-width", 2)
+        .attr("opacity", 0.2);
 
     const link = g
         .append("g")
@@ -98,7 +172,11 @@ export function drawGraph(
         .enter()
         .append("circle")
         .attr("r", nodeSize)
-        .attr("fill", "steelblue") // Uniform color for all nodes
+        .attr("fill", d =>
+            clusteringAlgorithm === "noClustering"
+                ? "steelblue"
+                : colorScale(d.community)
+        ) // Coloring nodes
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut);
