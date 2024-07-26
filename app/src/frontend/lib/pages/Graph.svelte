@@ -238,7 +238,7 @@
     </main>
   </div>
 
-  <Footer class="flex-shrink-0" />
+  <Footer />
 </div>
 
 <style global lang="postcss">
