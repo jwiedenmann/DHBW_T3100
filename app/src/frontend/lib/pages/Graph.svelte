@@ -26,6 +26,7 @@
   let linkDistance = 50;
   let collisionRadius = 20;
   let clusteringAlgorithm = "noClustering";
+  let colorAndSizeByLinks  = false;
 
   // AdjacencyMatrix Settings
   let showGrid = true;
@@ -187,6 +188,7 @@
               bind:linkDistance
               bind:showGrid
               bind:clusteringAlgorithm
+              bind:colorAndSizeByLinks 
             />
 
             <!-- Divider -->
@@ -229,6 +231,7 @@
             {collisionRadius}
             {showPerformanceMetrics}
             {clusteringAlgorithm}
+            {colorAndSizeByLinks}
           />
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}

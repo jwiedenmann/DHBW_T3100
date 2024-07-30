@@ -8,6 +8,7 @@
   export let collisionRadius = 20;
   export let nodeSize = 5;
   export let clusteringAlgorithm = "noClustering";
+  export let colorAndSizeByLinks = false;
   export let showPerformanceMetrics;
 
   // Performance metrics
@@ -25,6 +26,7 @@
       linkDistance,
       collisionRadius,
       nodeSize,
+      colorAndSizeByLinks,
       updateMetrics
     );
   });
@@ -36,6 +38,7 @@
     linkDistance,
     collisionRadius,
     nodeSize,
+    colorAndSizeByLinks,
     updateMetrics
   );
 

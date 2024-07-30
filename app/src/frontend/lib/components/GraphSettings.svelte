@@ -6,12 +6,16 @@
   export let chargeStrength;
   export let linkDistance;
   export let clusteringAlgorithm;
+  export let colorAndSizeByLinks;
   // AdjacencyMatrix
   export let showGrid;
 </script>
 
 {#if selectedDiagram === "nodeLink"}
-  <select class="select select-bordered w-full max-w-xs" bind:value={clusteringAlgorithm}>
+  <select
+    class="select select-bordered w-full max-w-xs"
+    bind:value={clusteringAlgorithm}
+  >
     <option value="noClustering" selected>No Clustering</option>
     <option value="louvain">Louvain Method</option>
     <option value="hcs">HCS Clustering</option>
@@ -65,6 +69,16 @@
       bind:value={linkDistance}
       class="range range-primary"
     />
+  </div>
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <span class="label-text">Color Nodes by Links</span>
+      <input
+        type="checkbox"
+        bind:checked={colorAndSizeByLinks}
+        class="checkbox checkbox-primary"
+      />
+    </label>
   </div>
 {:else if selectedDiagram === "adjacencyMatrix"}
   <div class="form-control">

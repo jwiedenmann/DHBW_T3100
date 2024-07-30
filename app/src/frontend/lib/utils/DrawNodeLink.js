@@ -8,6 +8,7 @@ export function drawGraph(
     linkDistance,
     collisionRadius,
     nodeSize,
+    colorAndSizeByLinks,
     updateMetrics
 ) {
     if (!svg) return;
@@ -34,6 +35,7 @@ export function drawGraph(
         id: node.Uri,
         label: node.Label,
         properties: node.Properties,
+        links: Object.values(node.Links).flat().length, // Count of links for each node
     }));
 
     // Create a Set to track unique edges
@@ -89,6 +91,14 @@ export function drawGraph(
         .append("line")
         .attr("stroke-width", d => Math.sqrt(d.value));
 
+    const colorScale = d3.scaleLinear()
+        .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
+        .range(["#FCA728", "#E91E64"]);
+
+    const sizeScale = d3.scaleLinear()
+        .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
+        .range([nodeSize, nodeSize * 4]);
+
     const node = g
         .append("g")
         .attr("stroke", "#fff")
@@ -97,8 +107,8 @@ export function drawGraph(
         .data(nodes)
         .enter()
         .append("circle")
-        .attr("r", nodeSize)
-        .attr("fill", "steelblue") // Uniform color for all nodes
+        .attr("r", d => colorAndSizeByLinks ? sizeScale(d.links) : nodeSize)
+        .attr("fill", d => colorAndSizeByLinks ? colorScale(d.links) : "steelblue")
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut);
