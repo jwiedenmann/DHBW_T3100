@@ -17,6 +17,9 @@ export function drawGraph(
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;
 
+    // Local variable to control the spread
+    const spreadFactor = 1.6; // Increase for more horizontal spread, decrease for more vertical spread
+
     const svgSelection = d3.select(svg);
     svgSelection.attr("viewBox", [0, 0, width, height]);
     svgSelection.attr("width", width);
@@ -31,11 +34,13 @@ export function drawGraph(
 
     svgSelection.call(zoom);
 
-    const nodes = graphResults.Nodes.map((node) => ({
+    const nodes = graphResults.Nodes.map((node, i) => ({
         id: node.Uri,
         label: node.Label,
         properties: node.Properties,
         links: Object.values(node.Links).flat().length, // Count of links for each node
+        x: (i % Math.sqrt(graphResults.Nodes.length)) * (width / Math.sqrt(graphResults.Nodes.length)) * spreadFactor, // Spread nodes horizontally
+        y: (Math.floor(i / Math.sqrt(graphResults.Nodes.length))) * (height / Math.sqrt(graphResults.Nodes.length)) / spreadFactor // Spread nodes vertically
     }));
 
     // Create a Set to track unique edges
@@ -69,17 +74,8 @@ export function drawGraph(
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(collisionRadius))
+        .alpha(1) // Ensure the simulation starts with a high alpha value
         .on("tick", ticked);
-
-    function ticked() {
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
-
-        node.attr("cx", d => d.x).attr("cy", d => d.y);
-    }
 
     const link = g
         .append("g")
@@ -92,13 +88,10 @@ export function drawGraph(
         .attr("stroke-width", d => Math.sqrt(d.value));
 
     const colorScale = d3.scaleLinear()
-        // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
-        // @ts-ignore
         .range(["#FCA728", "#E91E64"]);
 
     const sizeScale = d3.scaleLinear()
-        // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
         .range([nodeSize, nodeSize * 4]);
 
@@ -119,6 +112,16 @@ export function drawGraph(
     node.append("title").text(d => d.label);
 
     updateMetrics(nodes.length, links.length);
+
+    function ticked() {
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        node.attr("cx", d => d.x).attr("cy", d => d.y);
+    }
 
     // FPS calculation using requestAnimationFrame
     let lastFrameTime = Date.now();
