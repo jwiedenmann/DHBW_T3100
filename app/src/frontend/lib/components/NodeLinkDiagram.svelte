@@ -7,6 +7,7 @@
   export let linkDistance = 50;
   export let collisionRadius = 20;
   export let nodeSize = 5;
+  export let alphaDecay = 100;
   export let clusteringAlgorithm = "noClustering";
   export let colorAndSizeByLinks = false;
   export let showPerformanceMetrics;
@@ -26,6 +27,7 @@
       linkDistance,
       collisionRadius,
       nodeSize,
+      alphaDecay,
       colorAndSizeByLinks,
       updateMetrics
     );
@@ -38,6 +40,7 @@
     linkDistance,
     collisionRadius,
     nodeSize,
+    alphaDecay,
     colorAndSizeByLinks,
     updateMetrics
   );

@@ -5,6 +5,7 @@
   export let collisionRadius;
   export let chargeStrength;
   export let linkDistance;
+  export let alphaDecay;
   export let clusteringAlgorithm;
   export let colorAndSizeByLinks;
   // AdjacencyMatrix
@@ -67,6 +68,18 @@
       min="10"
       max="200"
       bind:value={linkDistance}
+      class="range range-primary"
+    />
+  </div>
+  <div class="form-control">
+    <label class="label"
+      ><span class="label-text">Alpha Decay: {alphaDecay}</span></label
+    >
+    <input
+      type="range"
+      min="1"
+      max="500"
+      bind:value={alphaDecay}
       class="range range-primary"
     />
   </div>

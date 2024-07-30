@@ -8,6 +8,7 @@ export function drawGraph(
     linkDistance,
     collisionRadius,
     nodeSize,
+    alphaDecay,
     colorAndSizeByLinks,
     updateMetrics
 ) {
@@ -18,7 +19,7 @@ export function drawGraph(
     const height = container.node().clientHeight;
 
     // Local variable to control the spread
-    const spreadFactor = 1.6; // Increase for more horizontal spread, decrease for more vertical spread
+    const spreadFactor = 1.5; // Increase for more horizontal spread, decrease for more vertical spread
 
     const svgSelection = d3.select(svg);
     svgSelection.attr("viewBox", [0, 0, width, height]);
@@ -75,6 +76,7 @@ export function drawGraph(
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(collisionRadius))
         .alpha(1) // Ensure the simulation starts with a high alpha value
+        .alphaDecay(alphaDecay / 10000) // Decrease this value to slow down the simulation
         .on("tick", ticked);
 
     const link = g
@@ -88,10 +90,13 @@ export function drawGraph(
         .attr("stroke-width", d => Math.sqrt(d.value));
 
     const colorScale = d3.scaleLinear()
+        // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
+        // @ts-ignore
         .range(["#FCA728", "#E91E64"]);
 
     const sizeScale = d3.scaleLinear()
+        // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
         .range([nodeSize, nodeSize * 4]);
 

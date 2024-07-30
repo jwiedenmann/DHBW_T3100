@@ -25,6 +25,7 @@
   let chargeStrength = -30;
   let linkDistance = 50;
   let collisionRadius = 20;
+  let alphaDecay = 100;
   let clusteringAlgorithm = "noClustering";
   let colorAndSizeByLinks  = false;
 
@@ -186,6 +187,7 @@
               bind:collisionRadius
               bind:chargeStrength
               bind:linkDistance
+              bind:alphaDecay
               bind:showGrid
               bind:clusteringAlgorithm
               bind:colorAndSizeByLinks 
@@ -228,6 +230,7 @@
             {nodeSize}
             {chargeStrength}
             {linkDistance}
+            {alphaDecay}
             {collisionRadius}
             {showPerformanceMetrics}
             {clusteringAlgorithm}
