@@ -22,6 +22,9 @@ export function drawGraph(
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;
 
+    // Local variable to control the spread
+    const spreadFactor = 1.5; // Increase for more horizontal spread, decrease for more vertical spread
+
     const svgSelection = d3.select(svg);
     svgSelection.attr("viewBox", [0, 0, width, height]);
     svgSelection.attr("width", width);
@@ -36,10 +39,13 @@ export function drawGraph(
 
     svgSelection.call(zoom);
 
-    const nodes = graphResults.Nodes.map((node) => ({
+    const nodes = graphResults.Nodes.map((node, i) => ({
         id: node.Uri,
         label: node.Label,
         properties: node.Properties,
+        links: Object.values(node.Links).flat().length, // Count of links for each node
+        x: (i % Math.sqrt(graphResults.Nodes.length)) * (width / Math.sqrt(graphResults.Nodes.length)) * spreadFactor, // Spread nodes horizontally
+        y: (Math.floor(i / Math.sqrt(graphResults.Nodes.length))) * (height / Math.sqrt(graphResults.Nodes.length)) / spreadFactor // Spread nodes vertically
     }));
 
     // Create a Set to track unique edges
@@ -99,6 +105,8 @@ export function drawGraph(
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(collisionRadius))
+        .alpha(1) // Ensure the simulation starts with a high alpha value
+        .alphaDecay(alphaDecay / 10000) // Decrease this value to slow down the simulation
         .on("tick", ticked);
 
     function ticked() {
@@ -165,6 +173,17 @@ export function drawGraph(
         .append("line")
         .attr("stroke-width", d => Math.sqrt(d.value));
 
+    const colorScaleLinks = d3.scaleLinear()
+        // @ts-ignore
+        .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
+        // @ts-ignore
+        .range(["#FCA728", "#E91E64"]);
+
+    const sizeScale = d3.scaleLinear()
+        // @ts-ignore
+        .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
+        .range([nodeSize, nodeSize * 4]);
+
     const node = g
         .append("g")
         .attr("stroke", "#fff")
@@ -173,12 +192,8 @@ export function drawGraph(
         .data(nodes)
         .enter()
         .append("circle")
-        .attr("r", nodeSize)
-        .attr("fill", d =>
-            clusteringAlgorithm === "noClustering"
-                ? "steelblue"
-                : colorScale(d.community)
-        ) // Coloring nodes
+        .attr("r", d => colorAndSizeByLinks ? sizeScale(d.links) : nodeSize)
+        .attr("fill", d => colorAndSizeByLinks ? colorScaleLinks(d.links) : "steelblue")
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut);

@@ -30,6 +30,7 @@
       nodeSize,
       alphaDecay,
       colorAndSizeByLinks,
+      clusteringAlgorithm,
       updateMetrics
     );
   });
@@ -43,6 +44,7 @@
     nodeSize,
     alphaDecay,
     colorAndSizeByLinks,
+    clusteringAlgorithm,
     updateMetrics
   );
 
@@ -55,6 +57,7 @@
     nodeSize,
     alphaDecay,
     colorAndSizeByLinks,
+    clusteringAlgorithm,
     updateMetrics
   ) {
     if (clusteringAlgorithm === "noClustering") {
