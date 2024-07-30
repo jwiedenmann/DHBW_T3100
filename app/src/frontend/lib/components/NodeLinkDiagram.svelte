@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
-  import { drawGraph } from "../utils/DrawNodeLink";
+  import { drawGraph as drawNodeLinkGraph } from "../utils/DrawNodeLink";
+  import { drawGraph as drawNodeLinkGraphClustered } from "../utils/DrawNodeLinkClustered";
 
   export let graphResults = { Nodes: [] };
   export let chargeStrength = -30;
@@ -44,6 +45,45 @@
     colorAndSizeByLinks,
     updateMetrics
   );
+
+  function drawGraph(
+    svg,
+    graphResults,
+    chargeStrength,
+    linkDistance,
+    collisionRadius,
+    nodeSize,
+    alphaDecay,
+    colorAndSizeByLinks,
+    updateMetrics
+  ) {
+    if (clusteringAlgorithm === "noClustering") {
+      drawNodeLinkGraph(
+        svg,
+        graphResults,
+        chargeStrength,
+        linkDistance,
+        collisionRadius,
+        nodeSize,
+        alphaDecay,
+        colorAndSizeByLinks,
+        updateMetrics
+      );
+    } else {
+      drawNodeLinkGraphClustered(
+        svg,
+        graphResults,
+        chargeStrength,
+        linkDistance,
+        collisionRadius,
+        nodeSize,
+        alphaDecay,
+        colorAndSizeByLinks,
+        clusteringAlgorithm,
+        updateMetrics
+      );
+    }
+  }
 
   function updateMetrics(nodes, edges, frameRate) {
     nodeCount = nodes;

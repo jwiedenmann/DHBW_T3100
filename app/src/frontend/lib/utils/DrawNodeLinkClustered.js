@@ -11,6 +11,8 @@ export function drawGraph(
     linkDistance,
     collisionRadius,
     nodeSize,
+    alphaDecay,
+    colorAndSizeByLinks,
     clusteringAlgorithm,
     updateMetrics
 ) {
