@@ -92,10 +92,13 @@ export function drawGraph(
         .attr("stroke-width", d => Math.sqrt(d.value));
 
     const colorScale = d3.scaleLinear()
+        // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
+        // @ts-ignore
         .range(["#FCA728", "#E91E64"]);
 
     const sizeScale = d3.scaleLinear()
+        // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
         .range([nodeSize, nodeSize * 4]);
 
