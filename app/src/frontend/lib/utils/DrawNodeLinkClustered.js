@@ -7,13 +7,7 @@ import { mclAlgorithm } from "./mcl"; // Import the MCL algorithm
 export function drawGraph(
     svg,
     graphResults,
-    chargeStrength,
-    linkDistance,
-    collisionRadius,
-    nodeSize,
-    alphaDecay,
-    colorAndSizeByLinks,
-    clusteringAlgorithm,
+    nodeLinkSettings,
     updateMetrics
 ) {
     if (!svg) return;
@@ -74,11 +68,11 @@ export function drawGraph(
     links.forEach((link) => graph.addEdge(link.source, link.target));
 
     let communities = {};
-    if (clusteringAlgorithm === "louvain") {
+    if (nodeLinkSettings.clusteringAlgorithm === "louvain") {
         communities = louvain(graph);
-    } else if (clusteringAlgorithm === "hcs") {
+    } else if (nodeLinkSettings.clusteringAlgorithm === "hcs") {
         communities = hcs(graph);
-    } else if (clusteringAlgorithm === "mcl") {
+    } else if (nodeLinkSettings.clusteringAlgorithm === "mcl") {
         communities = mclAlgorithm(graph); // Use the MCL algorithm
     } else {
         nodes.forEach((node, index) => {
@@ -101,12 +95,12 @@ export function drawGraph(
 
     const simulation = d3
         .forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance))
-        .force("charge", d3.forceManyBody().strength(chargeStrength))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(nodeLinkSettings.linkDistance))
+        .force("charge", d3.forceManyBody().strength(nodeLinkSettings.chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(collisionRadius))
+        .force("collision", d3.forceCollide().radius(nodeLinkSettings.collisionRadius))
         .alpha(1) // Ensure the simulation starts with a high alpha value
-        .alphaDecay(alphaDecay / 10000) // Decrease this value to slow down the simulation
+        .alphaDecay(nodeLinkSettings.alphaDecay / 10000) // Decrease this value to slow down the simulation
         .on("tick", ticked);
 
     function ticked() {
@@ -182,7 +176,7 @@ export function drawGraph(
     const sizeScale = d3.scaleLinear()
         // @ts-ignore
         .domain([d3.min(nodes, d => d.links), d3.max(nodes, d => d.links)])
-        .range([nodeSize, nodeSize * 4]);
+        .range([nodeLinkSettings.nodeSize, nodeLinkSettings.nodeSize * 4]);
 
     const node = g
         .append("g")
@@ -192,8 +186,8 @@ export function drawGraph(
         .data(nodes)
         .enter()
         .append("circle")
-        .attr("r", d => colorAndSizeByLinks ? sizeScale(d.links) : nodeSize)
-        .attr("fill", d => colorAndSizeByLinks ? colorScaleLinks(d.links) : "steelblue")
+        .attr("r", d => nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize)
+        .attr("fill", d => nodeLinkSettings.colorAndSizeByLinks ? colorScaleLinks(d.links) : "steelblue")
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut);

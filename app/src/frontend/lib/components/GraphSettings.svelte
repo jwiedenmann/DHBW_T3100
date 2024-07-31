@@ -1,21 +1,13 @@
 <script>
-  // NodeLinkDiagram
   export let selectedDiagram;
-  export let nodeSize;
-  export let collisionRadius;
-  export let chargeStrength;
-  export let linkDistance;
-  export let alphaDecay;
-  export let clusteringAlgorithm;
-  export let colorAndSizeByLinks;
-  // AdjacencyMatrix
-  export let showGrid;
+  export let nodeLinkSettings;
+  export let adjacencyMatrixSettings;
 </script>
 
 {#if selectedDiagram === "nodeLink"}
   <select
     class="select select-bordered w-full max-w-xs"
-    bind:value={clusteringAlgorithm}
+    bind:value={nodeLinkSettings.clusteringAlgorithm}
   >
     <option value="noClustering" selected>No Clustering</option>
     <option value="louvain">Louvain Method</option>
@@ -24,62 +16,62 @@
   </select>
   <div class="form-control">
     <label class="label"
-      ><span class="label-text">Node Size: {nodeSize}</span></label
+      ><span class="label-text">Node Size: {nodeLinkSettings.nodeSize}</span></label
     >
     <input
       type="range"
       min="1"
       max="30"
-      bind:value={nodeSize}
+      bind:value={nodeLinkSettings.nodeSize}
       class="range range-primary"
     />
   </div>
   <div class="form-control">
     <label class="label"
-      ><span class="label-text">Collision Radius: {collisionRadius}</span
+      ><span class="label-text">Collision Radius: {nodeLinkSettings.collisionRadius}</span
       ></label
     >
     <input
       type="range"
       min="5"
       max="50"
-      bind:value={collisionRadius}
+      bind:value={nodeLinkSettings.collisionRadius}
       class="range range-primary"
     />
   </div>
   <div class="form-control">
     <label class="label"
-      ><span class="label-text">Charge Strength: {chargeStrength}</span></label
+      ><span class="label-text">Charge Strength: {nodeLinkSettings.chargeStrength}</span></label
     >
     <input
       type="range"
       min="-100"
       max="0"
-      bind:value={chargeStrength}
+      bind:value={nodeLinkSettings.chargeStrength}
       class="range range-primary"
     />
   </div>
   <div class="form-control">
     <label class="label"
-      ><span class="label-text">Link Distance: {linkDistance}</span></label
+      ><span class="label-text">Link Distance: {nodeLinkSettings.linkDistance}</span></label
     >
     <input
       type="range"
       min="10"
       max="200"
-      bind:value={linkDistance}
+      bind:value={nodeLinkSettings.linkDistance}
       class="range range-primary"
     />
   </div>
   <div class="form-control">
     <label class="label"
-      ><span class="label-text">Alpha Decay: {alphaDecay}</span></label
+      ><span class="label-text">Alpha Decay: {nodeLinkSettings.alphaDecay}</span></label
     >
     <input
       type="range"
       min="1"
       max="500"
-      bind:value={alphaDecay}
+      bind:value={nodeLinkSettings.alphaDecay}
       class="range range-primary"
     />
   </div>
@@ -88,7 +80,7 @@
       <span class="label-text">Color Nodes by Links</span>
       <input
         type="checkbox"
-        bind:checked={colorAndSizeByLinks}
+        bind:checked={nodeLinkSettings.colorAndSizeByLinks}
         class="checkbox checkbox-primary"
       />
     </label>
@@ -99,7 +91,7 @@
       <span class="label-text">Show Border</span>
       <input
         type="checkbox"
-        bind:checked={showGrid}
+        bind:checked={adjacencyMatrixSettings.showGrid}
         class="checkbox checkbox-primary"
       />
     </label>

@@ -4,14 +4,8 @@
   import { drawGraph as drawNodeLinkGraphClustered } from "../utils/DrawNodeLinkClustered";
 
   export let graphResults = { Nodes: [] };
-  export let chargeStrength = -30;
-  export let linkDistance = 50;
-  export let collisionRadius = 20;
-  export let nodeSize = 5;
-  export let alphaDecay = 100;
-  export let clusteringAlgorithm = "noClustering";
-  export let colorAndSizeByLinks = false;
-  export let showPerformanceMetrics;
+  export let nodeLinkSettings;
+  export let generalSettings;
 
   // Performance metrics
   let fps = 0;
@@ -24,13 +18,7 @@
     drawGraph(
       svg,
       graphResults,
-      chargeStrength,
-      linkDistance,
-      collisionRadius,
-      nodeSize,
-      alphaDecay,
-      colorAndSizeByLinks,
-      clusteringAlgorithm,
+      nodeLinkSettings,
       updateMetrics
     );
   });
@@ -38,51 +26,28 @@
   $: drawGraph(
     svg,
     graphResults,
-    chargeStrength,
-    linkDistance,
-    collisionRadius,
-    nodeSize,
-    alphaDecay,
-    colorAndSizeByLinks,
-    clusteringAlgorithm,
+    nodeLinkSettings,
     updateMetrics
   );
 
   function drawGraph(
     svg,
     graphResults,
-    chargeStrength,
-    linkDistance,
-    collisionRadius,
-    nodeSize,
-    alphaDecay,
-    colorAndSizeByLinks,
-    clusteringAlgorithm,
+    nodeLinkSettings,
     updateMetrics
   ) {
-    if (clusteringAlgorithm === "noClustering") {
+    if (nodeLinkSettings.clusteringAlgorithm === "noClustering") {
       drawNodeLinkGraph(
         svg,
         graphResults,
-        chargeStrength,
-        linkDistance,
-        collisionRadius,
-        nodeSize,
-        alphaDecay,
-        colorAndSizeByLinks,
+        nodeLinkSettings,
         updateMetrics
       );
     } else {
       drawNodeLinkGraphClustered(
         svg,
         graphResults,
-        chargeStrength,
-        linkDistance,
-        collisionRadius,
-        nodeSize,
-        alphaDecay,
-        colorAndSizeByLinks,
-        clusteringAlgorithm,
+        nodeLinkSettings,
         updateMetrics
       );
     }
@@ -95,7 +60,7 @@
   }
 </script>
 
-{#if showPerformanceMetrics === true}
+{#if generalSettings.showPerformanceMetrics === true}
   <div class="relative">
     <div class="toast toast-top toast-end absolute z-50 top-4 right-4">
       <div class="alert alert-info">

@@ -16,24 +16,28 @@
   let uri = null;
   let graphResults = { Nodes: [] };
 
-  // Data Settings
-  let graphLoadingDepth = 3;
-  let limit = 10;
-
-  // NodeLinkDiagram Settings
-  let nodeSize = 5;
-  let chargeStrength = -30;
-  let linkDistance = 50;
-  let collisionRadius = 20;
-  let alphaDecay = 100;
-  let clusteringAlgorithm = "noClustering";
-  let colorAndSizeByLinks  = false;
-
-  // AdjacencyMatrix Settings
-  let showGrid = true;
-
-  // General Settings
-  let showPerformanceMetrics = false;
+  // Graph Settings
+  let graphSettings = {
+    dataSettings: {
+      graphLoadingDepth: 3,
+      limit: 10,
+    },
+    nodeLinkSettings: {
+      nodeSize: 5,
+      chargeStrength: -30,
+      linkDistance: 50,
+      collisionRadius: 20,
+      alphaDecay: 100,
+      clusteringAlgorithm: "noClustering",
+      colorAndSizeByLinks: false,
+    },
+    adjacencyMatrixSettings: {
+      showGrid: true,
+    },
+    generalSettings: {
+      showPerformanceMetrics: false,
+    },
+  };
 
   let sidebarOpen = true;
   let selectedDiagram = "nodeLink";
@@ -52,7 +56,11 @@
   async function loadInitialGraph() {
     try {
       loading.set(true);
-      graphResults = await fetchGraph(uri, graphLoadingDepth, limit);
+      graphResults = await fetchGraph(
+        uri,
+        graphSettings.dataSettings.graphLoadingDepth,
+        graphSettings.dataSettings.limit
+      );
       console.log(graphResults);
       graphResults = { ...graphResults }; // Trigger reactivity
     } catch (error) {
@@ -152,24 +160,28 @@
 
             <!-- Loading Depth Settings -->
             <div class="flex items-center">
-              <label for="integer-input" class="label whitespace-nowrap mr-1"
+              <label
+                for="integer-input-depth"
+                class="label whitespace-nowrap mr-1"
                 ><span class="label-text">Loading Iterations:</span></label
               >
               <input
-                id="integer-input"
-                bind:value={graphLoadingDepth}
+                id="integer-input-depth"
+                bind:value={graphSettings.dataSettings.graphLoadingDepth}
                 class="input input-bordered text-right flex-shrink w-full max-w-xs min-w-0"
               />
             </div>
 
             <!-- Limit Settings -->
             <div class="flex items-center mt-2">
-              <label for="integer-input" class="label whitespace-nowrap mr-1"
+              <label
+                for="integer-input-limit"
+                class="label whitespace-nowrap mr-1"
                 ><span class="label-text">Node Limit:</span></label
               >
               <input
-                id="integer-input"
-                bind:value={limit}
+                id="integer-input-limit"
+                bind:value={graphSettings.dataSettings.limit}
                 class="input input-bordered text-right flex-shrink w-full max-w-xs min-w-0"
               />
             </div>
@@ -183,14 +195,8 @@
 
             <Menu
               {selectedDiagram}
-              bind:nodeSize
-              bind:collisionRadius
-              bind:chargeStrength
-              bind:linkDistance
-              bind:alphaDecay
-              bind:showGrid
-              bind:clusteringAlgorithm
-              bind:colorAndSizeByLinks 
+              bind:nodeLinkSettings={graphSettings.nodeLinkSettings}
+              bind:adjacencyMatrixSettings={graphSettings.adjacencyMatrixSettings}
             />
 
             <!-- Divider -->
@@ -208,7 +214,8 @@
                 <span class="label-text">Show Performance Metrics</span>
                 <input
                   type="checkbox"
-                  bind:checked={showPerformanceMetrics}
+                  bind:checked={graphSettings.generalSettings
+                    .showPerformanceMetrics}
                   class="checkbox checkbox-primary"
                 />
               </label>
@@ -227,18 +234,16 @@
         {#if selectedDiagram === "nodeLink"}
           <NodeLinkDiagram
             {graphResults}
-            {nodeSize}
-            {chargeStrength}
-            {linkDistance}
-            {alphaDecay}
-            {collisionRadius}
-            {showPerformanceMetrics}
-            {clusteringAlgorithm}
-            {colorAndSizeByLinks}
+            nodeLinkSettings={graphSettings.nodeLinkSettings}
+            generalSettings={graphSettings.generalSettings}
           />
         {/if}
         {#if selectedDiagram === "adjacencyMatrix"}
-          <AdjacencyMatrix {graphResults} {showGrid} {showPerformanceMetrics} />
+          <AdjacencyMatrix
+            {graphResults}
+            adjacencyMatrixSettings={graphSettings.adjacencyMatrixSettings}
+            generalSettings={graphSettings.generalSettings}
+          />
         {/if}
       {/if}
     </main>

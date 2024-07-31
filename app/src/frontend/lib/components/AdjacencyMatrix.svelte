@@ -3,8 +3,8 @@
   import * as d3 from "d3";
 
   export let graphResults = { Nodes: [] };
-  export let showGrid;
-  export let showPerformanceMetrics;
+  export let adjacencyMatrixSettings;
+  export let generalSettings;
 
   // Performance metrics
   let lastFrameTime = 0;
@@ -157,12 +157,14 @@
       .attr("width", (d) => d.width)
       .attr("height", (d) => d.height)
       .style("fill", (d) => (d.weight > 0 ? "steelblue" : "#00000000"))
-      .style("stroke", (d) => (showGrid ? "#999" : "none"));
+      .style("stroke", (d) =>
+        adjacencyMatrixSettings.showGrid ? "#999" : "none"
+      );
   }
 </script>
 
 <div class="relative w-full h-full overflow-hidden">
-  {#if showPerformanceMetrics === true}
+  {#if generalSettings.showPerformanceMetrics === true}
     <div class="toast toast-top toast-end absolute z-50 top-4 right-4">
       <div class="alert alert-info">
         <div class="text-primary-content">
