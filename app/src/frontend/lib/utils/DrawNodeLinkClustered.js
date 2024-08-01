@@ -16,8 +16,9 @@ export function drawGraph(
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;
 
-    // Local variable to control the spread
+    // Local variable to control the spread and clustering toggle
     const spreadFactor = 1.5; // Increase for more horizontal spread, decrease for more vertical spread
+    const toggleClustering = true;
 
     const svgSelection = d3.select(svg);
     svgSelection.attr("viewBox", [0, 0, width, height]);
@@ -37,9 +38,9 @@ export function drawGraph(
         id: node.Uri,
         label: node.Label,
         properties: node.Properties,
-        links: Object.values(node.Links).flat().length, // Count of links for each node
-        x: (i % Math.sqrt(graphResults.Nodes.length)) * (width / Math.sqrt(graphResults.Nodes.length)) * spreadFactor, // Spread nodes horizontally
-        y: (Math.floor(i / Math.sqrt(graphResults.Nodes.length))) * (height / Math.sqrt(graphResults.Nodes.length)) / spreadFactor // Spread nodes vertically
+        links: Object.values(node.Links).flat().length,
+        x: (i % Math.sqrt(graphResults.Nodes.length)) * (width / Math.sqrt(graphResults.Nodes.length)) * spreadFactor,
+        y: (Math.floor(i / Math.sqrt(graphResults.Nodes.length))) * (height / Math.sqrt(graphResults.Nodes.length)) / spreadFactor
     }));
 
     // Create a Set to track unique edges
@@ -73,7 +74,7 @@ export function drawGraph(
     } else if (nodeLinkSettings.clusteringAlgorithm === "hcs") {
         communities = hcs(graph);
     } else if (nodeLinkSettings.clusteringAlgorithm === "mcl") {
-        communities = mclAlgorithm(graph); // Use the MCL algorithm
+        communities = mclAlgorithm(graph);
     } else {
         nodes.forEach((node, index) => {
             communities[node.id] = index; // Unique community for each node
@@ -87,51 +88,129 @@ export function drawGraph(
     const uniqueCommunities = [...new Set(Object.values(communities))];
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
 
-    const simulation = d3
-        .forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(nodeLinkSettings.linkDistance))
-        .force("charge", d3.forceManyBody().strength(nodeLinkSettings.chargeStrength))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(nodeLinkSettings.collisionRadius))
-        .alpha(1) // Ensure the simulation starts with a high alpha value
-        .alphaDecay(nodeLinkSettings.alphaDecay / 10000) // Decrease this value to slow down the simulation
-        .on("tick", ticked);
+    if (toggleClustering) {
+        // Aggregate nodes into single large nodes for each community
+        const communityNodes = uniqueCommunities.map(community => {
+            const communityNodes = nodes.filter(node => node.community === community);
+            const centroid = {
+                x: d3.mean(communityNodes, d => d.x),
+                y: d3.mean(communityNodes, d => d.y)
+            };
+            const area = d3.sum(communityNodes, d => Math.PI * Math.pow(nodeLinkSettings.nodeSize, 2));
+            const radius = Math.sqrt(area / Math.PI);
+            return {
+                id: `community-${community}`,
+                label: `Community ${community}`,
+                community: community,
+                x: centroid.x,
+                y: centroid.y,
+                r: radius,
+                originalNodes: communityNodes.map(n => n.id)
+            };
+        });
 
-    function ticked() {
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+        const communityLinks = links.filter(link =>
+            communityNodes.some(node => node.originalNodes.includes(link.source) || node.originalNodes.includes(link.target))
+        ).map(link => {
+            const sourceCommunity = communityNodes.find(node => node.originalNodes.includes(link.source));
+            const targetCommunity = communityNodes.find(node => node.originalNodes.includes(link.target));
+            return {
+                source: sourceCommunity ? sourceCommunity.id : link.source,
+                target: targetCommunity ? targetCommunity.id : link.target
+            };
+        });
 
-        node.attr("cx", d => d.x).attr("cy", d => d.y);
+        const simulation = d3
+            .forceSimulation(communityNodes)
+            .force("link", d3.forceLink(communityLinks).id(d => d.id).distance(nodeLinkSettings.linkDistance))
+            .force("charge", d3.forceManyBody().strength(nodeLinkSettings.chargeStrength))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(d => d.r))
+            .alpha(1)
+            .alphaDecay(nodeLinkSettings.alphaDecay / 10000)
+            .on("tick", ticked);
+
+        function ticked() {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node.attr("cx", d => d.x).attr("cy", d => d.y).attr("r", d => d.r);
+        }
+
+        const link = g
+            .append("g")
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", 0.6)
+            .selectAll("line")
+            .data(communityLinks)
+            .enter()
+            .append("line")
+            .attr("stroke-width", d => Math.sqrt(d.value));
+
+        const node = g
+            .append("g")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1.5)
+            .selectAll("circle")
+            .data(communityNodes)
+            .enter()
+            .append("circle")
+            .attr("fill", d => colorScale(d.community))
+            .call(drag(simulation))
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+        node.append("title").text(d => d.label);
+    } else {
+        const simulation = d3
+            .forceSimulation(nodes)
+            .force("link", d3.forceLink(links).id(d => d.id).distance(nodeLinkSettings.linkDistance))
+            .force("charge", d3.forceManyBody().strength(nodeLinkSettings.chargeStrength))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(nodeLinkSettings.collisionRadius))
+            .alpha(1)
+            .alphaDecay(nodeLinkSettings.alphaDecay / 10000)
+            .on("tick", ticked);
+
+        function ticked() {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node.attr("cx", d => d.x).attr("cy", d => d.y);
+        }
+
+        const link = g
+            .append("g")
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", 0.6)
+            .selectAll("line")
+            .data(links)
+            .enter()
+            .append("line")
+            .attr("stroke-width", d => Math.sqrt(d.value));
+
+        const node = g
+            .append("g")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1.5)
+            .selectAll("circle")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("r", nodeLinkSettings.nodeSize)
+            .attr("fill", d => colorScale(d.community))
+            .call(drag(simulation))
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+        node.append("title").text(d => d.label);
     }
-
-    const link = g
-        .append("g")
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
-        .selectAll("line")
-        .data(links)
-        .enter()
-        .append("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
-
-    const node = g
-        .append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
-        .selectAll("circle")
-        .data(nodes)
-        .enter()
-        .append("circle")
-        .attr("r", nodeLinkSettings.nodeSize)
-        .attr("fill", d => colorScale(d.community))
-        .call(drag(simulation))
-        .on("mouseover", handleMouseOver)
-        .on("mouseout", handleMouseOut);
-
-    node.append("title").text(d => d.label);
 
     updateMetrics(nodes.length, links.length);
 
