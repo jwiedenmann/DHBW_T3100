@@ -15,6 +15,16 @@
     <option value="mcl">MCL Clustering</option>
   </select>
   <div class="form-control">
+    <label class="label cursor-pointer">
+      <span class="label-text">Combine Node Clusters</span>
+      <input
+        type="checkbox"
+        bind:checked={nodeLinkSettings.combineNodeClusters}
+        class="checkbox checkbox-primary"
+      />
+    </label>
+  </div>
+  <div class="form-control">
     <label class="label"
       ><span class="label-text">Node Size: {nodeLinkSettings.nodeSize}</span></label
     >

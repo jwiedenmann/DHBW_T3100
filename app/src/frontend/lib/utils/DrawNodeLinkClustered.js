@@ -16,7 +16,6 @@ export function drawGraph(
     const width = container.node().clientWidth;
     const height = container.node().clientHeight;
     const spreadFactor = 1.5;
-    const toggleClustering = true;
 
     // Set up SVG canvas
     const svgSelection = d3.select(svg).attr("viewBox", [0, 0, width, height]).attr("width", width).attr("height", height);
@@ -46,13 +45,13 @@ export function drawGraph(
     const uniqueCommunities = [...new Set(Object.values(communities))];
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
 
-    if (toggleClustering) {
-        const communityNodes = aggregateCommunities(nodes, uniqueCommunities, nodeLinkSettings.nodeSize);
+    if (nodeLinkSettings.combineNodeClusters) {
+        const communityNodes = aggregateCommunities(nodes, uniqueCommunities, nodeLinkSettings);
         const communityLinks = filterAndMapLinks(links, communityNodes);
 
-        runSimulation(communityNodes, communityLinks, nodeLinkSettings, g, width, height, colorScale, tickedAggregated);
+        runSimulation(communityNodes, communityLinks, nodeLinkSettings, g, width, height, colorScale, tickedAggregated, true);
     } else {
-        runSimulation(nodes, links, nodeLinkSettings, g, width, height, colorScale, ticked);
+        runSimulation(nodes, links, nodeLinkSettings, g, width, height, colorScale, ticked, false);
     }
 
     function ticked() {
@@ -101,22 +100,36 @@ function getCommunities(graph, algorithm) {
     }
 }
 
-function aggregateCommunities(nodes, uniqueCommunities, nodeSize) {
+function aggregateCommunities(nodes, uniqueCommunities, settings) {
     return uniqueCommunities.map(community => {
         const communityNodes = nodes.filter(node => node.community === community);
         const centroid = { x: d3.mean(communityNodes, d => d.x), y: d3.mean(communityNodes, d => d.y) };
-        const area = d3.sum(communityNodes, () => Math.PI * Math.pow(nodeSize, 2));
+        const nodeCount = communityNodes.length;
+
+        // Estimating the effective area that the community would occupy
+        const baseArea = nodeCount * Math.PI * Math.pow(settings.nodeSize, 2);
+        const linkSpacingArea = nodeCount * Math.pow(settings.linkDistance, 2);
+        const chargeRepulsionArea = Math.abs(settings.chargeStrength) * nodeCount * Math.pow(settings.nodeSize, 2);
+        const collisionArea = nodeCount * Math.pow(settings.collisionRadius, 2);
+
+        // Total area considering all forces
+        const totalEffectiveArea = baseArea + linkSpacingArea + chargeRepulsionArea + collisionArea;
+
+        // Calculating the radius from the total area
+        const effectiveRadius = Math.sqrt(totalEffectiveArea / Math.PI);
+
         return {
             id: `community-${community}`,
             label: `Community ${community}`,
             community: community,
             x: centroid.x,
             y: centroid.y,
-            r: Math.sqrt(area / Math.PI),
+            r: effectiveRadius,
             originalNodes: communityNodes.map(n => n.id)
         };
     });
 }
+
 
 function filterAndMapLinks(links, communityNodes) {
     return links.filter(link =>
@@ -131,12 +144,15 @@ function filterAndMapLinks(links, communityNodes) {
     });
 }
 
-function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc) {
+function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated) {
+    const chargeStrength = isAggregated ? settings.chargeStrength * 5 : settings.chargeStrength;
+    const collisionRadius = isAggregated ? settings.collisionRadius * 10 : settings.collisionRadius;
+
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(settings.linkDistance))
-        .force("charge", d3.forceManyBody().strength(settings.chargeStrength))
+        .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.r || settings.collisionRadius))
+        .force("collision", d3.forceCollide().radius(d => d.r || collisionRadius))
         .alpha(1).alphaDecay(settings.alphaDecay / 10000)
         .on("tick", tickedFunc);
 

@@ -29,6 +29,7 @@
       collisionRadius: 20,
       alphaDecay: 100,
       clusteringAlgorithm: "noClustering",
+      combineNodeClusters: false,
       colorAndSizeByLinks: false,
     },
     adjacencyMatrixSettings: {
