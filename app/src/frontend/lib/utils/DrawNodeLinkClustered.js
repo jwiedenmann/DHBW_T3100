@@ -106,13 +106,15 @@ function aggregateCommunities(nodes, uniqueCommunities, settings) {
         const centroid = { x: d3.mean(communityNodes, d => d.x), y: d3.mean(communityNodes, d => d.y) };
         const nodeCount = communityNodes.length;
 
-        // Estimating the effective area that the community would occupy
+        // Base area for nodes
         const baseArea = nodeCount * Math.PI * Math.pow(settings.nodeSize, 2);
-        const linkSpacingArea = nodeCount * Math.pow(settings.linkDistance, 2);
-        const chargeRepulsionArea = Math.abs(settings.chargeStrength) * nodeCount * Math.pow(settings.nodeSize, 2);
-        const collisionArea = nodeCount * Math.pow(settings.collisionRadius, 2);
 
-        // Total area considering all forces
+        // Scaled influence of link spacing, charge repulsion, and collision area
+        const linkSpacingArea = nodeCount * settings.linkDistance * settings.nodeSize;
+        const chargeRepulsionArea = nodeCount * Math.abs(settings.chargeStrength) * 0.5 * Math.pow(settings.nodeSize, 2);
+        const collisionArea = nodeCount * Math.pow(settings.collisionRadius, 2) * 0.5;
+
+        // Total area with adjusted scaling factors to avoid excessive inflation
         const totalEffectiveArea = baseArea + linkSpacingArea + chargeRepulsionArea + collisionArea;
 
         // Calculating the radius from the total area
@@ -132,27 +134,51 @@ function aggregateCommunities(nodes, uniqueCommunities, settings) {
 
 
 function filterAndMapLinks(links, communityNodes) {
-    return links.filter(link =>
-        communityNodes.some(node => node.originalNodes.includes(link.source) || node.originalNodes.includes(link.target))
-    ).map(link => {
+    const communityLinkMap = new Map();
+
+    links.forEach(link => {
         const sourceCommunity = communityNodes.find(node => node.originalNodes.includes(link.source));
         const targetCommunity = communityNodes.find(node => node.originalNodes.includes(link.target));
-        return {
-            source: sourceCommunity ? sourceCommunity.id : link.source,
-            target: targetCommunity ? targetCommunity.id : link.target
-        };
+
+        if (sourceCommunity && targetCommunity) {
+            const key = `${sourceCommunity.id}|${targetCommunity.id}`;
+
+            if (communityLinkMap.has(key)) {
+                communityLinkMap.set(key, communityLinkMap.get(key) + 1);
+            } else {
+                communityLinkMap.set(key, 1);
+            }
+        }
+    });
+
+    return Array.from(communityLinkMap.entries()).map(([key, weight]) => {
+        const [source, target] = key.split('|');
+        return { source, target, value: weight };
     });
 }
 
 function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated) {
-    const chargeStrength = isAggregated ? settings.chargeStrength * 5 : settings.chargeStrength;
-    const collisionRadius = isAggregated ? settings.collisionRadius * 10 : settings.collisionRadius;
+    // Define scaling factors based on the number of nodes in a community
+    const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
+
+    // Adjust forces based on the size of the communities
+    const chargeStrength = isAggregated 
+        ? d => settings.chargeStrength * nodeCountScale(d) * -0.5  // More negative for larger communities
+        : settings.chargeStrength;
+
+    const collisionRadius = isAggregated 
+        ? d => (d.r || settings.nodeSize) * 0.5 * nodeCountScale(d) // Larger collision radius for larger communities
+        : settings.collisionRadius;
+
+    const linkDistance = isAggregated 
+        ? d => settings.linkDistance * nodeCountScale(d.source) * 0.5 * nodeCountScale(d.target) // Adjust link distance based on size of connected nodes
+        : settings.linkDistance;
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(settings.linkDistance))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance))
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.r || collisionRadius))
+        .force("collision", d3.forceCollide().radius(collisionRadius))
         .alpha(1).alphaDecay(settings.alphaDecay / 10000)
         .on("tick", tickedFunc);
 
@@ -164,8 +190,10 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .attr("fill", d => colorScale(d.community))
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
-        .on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut);
 }
+
 
 function drag(simulation) {
     return d3.drag().on("start", (event) => {
