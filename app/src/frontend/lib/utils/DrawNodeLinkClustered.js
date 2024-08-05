@@ -43,14 +43,24 @@ export function drawGraph(
     nodes.forEach((node) => node.community = communities[node.id]);
 
     const uniqueCommunities = [...new Set(Object.values(communities))];
-    const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
+
+    let colorScale;
 
     if (nodeLinkSettings.combineNodeClusters) {
         const communityNodes = aggregateCommunities(nodes, uniqueCommunities, nodeLinkSettings);
+
+        // Define color scale based on the number of nodes in each community
+        const nodeCountExtent = d3.extent(communityNodes, d => d.originalNodes.length);
+        colorScale = d3.scaleLinear()
+            .domain(nodeCountExtent)
+            .range(["#FCA728", "#E91E64"]);
+
         const communityLinks = filterAndMapLinks(links, communityNodes);
 
         runSimulation(communityNodes, communityLinks, nodeLinkSettings, g, width, height, colorScale, tickedAggregated, true);
     } else {
+        // Define color scale based on community for individual nodes
+        colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
         runSimulation(nodes, links, nodeLinkSettings, g, width, height, colorScale, ticked, false);
     }
 
@@ -132,7 +142,6 @@ function aggregateCommunities(nodes, uniqueCommunities, settings) {
     });
 }
 
-
 function filterAndMapLinks(links, communityNodes) {
     const communityLinkMap = new Map();
 
@@ -162,20 +171,20 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
     // Adjust forces based on the size of the communities
-    const chargeStrength = isAggregated 
+    const chargeStrength = isAggregated
         ? d => settings.chargeStrength * nodeCountScale(d) * -0.5  // More negative for larger communities
         : settings.chargeStrength;
 
-    const collisionRadius = isAggregated 
+    const collisionRadius = isAggregated
         ? d => (d.r || settings.nodeSize) * 0.5 * nodeCountScale(d) // Larger collision radius for larger communities
         : settings.collisionRadius;
 
-    const linkDistance = isAggregated 
+    const linkDistance = isAggregated
         ? d => settings.linkDistance * nodeCountScale(d.source) * 0.5 * nodeCountScale(d.target) // Adjust link distance based on size of connected nodes
         : settings.linkDistance;
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance)) // Increase link strength
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(collisionRadius))
@@ -183,11 +192,12 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .on("tick", tickedFunc);
 
     g.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6)
-        .selectAll("line").data(links).enter().append("line").attr("stroke-width", d => Math.sqrt(d.value));
+        .selectAll("line").data(links).enter().append("line").attr("stroke-width", d => d.value * d.value); // Make links thicker
 
     g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5)
         .selectAll("circle").data(nodes).enter().append("circle")
-        .attr("fill", d => colorScale(d.community))
+        .attr("fill", d => colorScale(d.originalNodes ? d.originalNodes.length : d.community))
+        .attr("stroke", "#fff").attr("stroke-width", 1) // Draw a thin white border around nodes
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
