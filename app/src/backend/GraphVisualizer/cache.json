@@ -1,0 +1,2958 @@
+{
+  "graphCacheKey": {
+    "http://dbpedia.org/resource/Canada_House,_Berlin": {
+      "UriFactory": {
+        "InternUris": true
+      },
+      "Triples": [
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 2
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 2
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        },
+        {
+          "Subject": {
+            "NodeType": 1
+          },
+          "Predicate": {
+            "NodeType": 1
+          },
+          "Object": {
+            "NodeType": 1
+          },
+          "Context": null,
+          "Nodes": [
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            },
+            {
+              "NodeType": 1
+            }
+          ],
+          "IsGroundTriple": true
+        }
+      ],
+      "QuotedTriples": [],
+      "Nodes": [
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        }
+      ],
+      "AllNodes": [
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 2
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        },
+        {
+          "NodeType": 1
+        }
+      ],
+      "QuotedNodes": [],
+      "AllQuotedNodes": [],
+      "NamespaceMap": {
+        "Prefixes": [
+          "rdf",
+          "rdfs",
+          "xsd"
+        ]
+      },
+      "BaseUri": "https://dbpedia.org/sparql",
+      "Name": null,
+      "IsEmpty": false,
+      "NormalizeLiteralValues": false,
+      "LanguageTagValidation": 1
+    }
+  }
+}

@@ -8,15 +8,15 @@ namespace GraphVisualizer.DataAccess;
 
 public class SparqlRepository : ISparqlRepository
 {
-    private const string _graphCacheKey = "graphCacheKey";
+    public const string GraphCacheKey = "graphCacheKey";
     private readonly IConfiguration _configuration;
-    private readonly IMemoryCache _memoryCache;
+    private readonly PersistentMemoryCache _cache;
     private readonly HttpClient _httpClient;
 
-    public SparqlRepository(IConfiguration configuration, IMemoryCache memoryCache, HttpClient httpClient)
+    public SparqlRepository(IConfiguration configuration, PersistentMemoryCache persistentMemory, HttpClient httpClient)
     {
         _configuration = configuration;
-        _memoryCache = memoryCache;
+        _cache = persistentMemory;
         _httpClient = httpClient;
         _httpClient.Timeout = TimeSpan.FromSeconds(120);
     }
@@ -47,10 +47,10 @@ LIMIT 100";
 
     public async Task<KnowledgeGraph> Get(string uri, int loadingDepth, int limit)
     {
-        if (!_memoryCache.TryGetValue(_graphCacheKey, out Dictionary<string, Graph>? graphDictionary))
+        if (!_cache.TryGetValue(GraphCacheKey, out Dictionary<string, Graph>? graphDictionary))
         {
             graphDictionary = [];
-            _memoryCache.Set(_graphCacheKey, graphDictionary);
+            _cache.Set(GraphCacheKey, graphDictionary);
         }
 
         if (!graphDictionary!.TryGetValue(uri, out Graph? graph))
@@ -74,6 +74,7 @@ LIMIT 100";
             }
 
             graphDictionary[uri] = graph;
+            _cache.SaveCacheToDisk();
         }
 
         KnowledgeGraph knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph, limit);
