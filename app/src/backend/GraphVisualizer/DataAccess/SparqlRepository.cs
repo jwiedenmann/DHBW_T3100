@@ -67,18 +67,19 @@ LIMIT 100";
 
             if (graph == null)
             {
-                return new KnowledgeGraph
+                knowledgeGraph = new KnowledgeGraph
                 {
                     Nodes = new Dictionary<string, Node> { { uri, new Node { Uri = uri } } }
                 };
             }
+            else
+            {
+                knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph);
+            }
 
-            knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph);
             knowledgeGraphDictionary[uri] = knowledgeGraph;
             _cache.SaveCacheToDisk();
         }
-
-        Console.WriteLine($"Initial load finished: {knowledgeGraph.Nodes.Count} nodes");
 
         // Limit the number of nodes returned
         KnowledgeGraph limitedKnowledgeGraph = ApplyNodeLimit(knowledgeGraph, limit);
@@ -88,7 +89,6 @@ LIMIT 100";
             await LoadSubGraphsAsync(limitedKnowledgeGraph, loadingDepth - 1, limit, knowledgeGraphDictionary);
         }
 
-        Console.WriteLine($"Graph load finished: {knowledgeGraph.Nodes.Count} nodes");
         return limitedKnowledgeGraph;
     }
 
@@ -140,7 +140,6 @@ LIMIT 100";
             try
             {
                 var subGraph = await Get(uri, remainingDepth, limit);
-                Console.WriteLine($"Subgraph finished: {subGraph.Nodes.Count} nodes");
 
                 lock (knowledgeGraph.Nodes)
                 {
@@ -167,7 +166,7 @@ LIMIT 100";
     }
 
 
-    private Task<IGraph> LoadGraphAsync(string uri)
+    private Task<IGraph?> LoadGraphAsync(string uri)
     {
         try
         {
@@ -189,7 +188,7 @@ LIMIT 100";
         }
         catch
         {
-            return Task.FromResult((IGraph)new Graph());
+            return Task.FromResult((IGraph)null!)!;
         }
     }
 }
