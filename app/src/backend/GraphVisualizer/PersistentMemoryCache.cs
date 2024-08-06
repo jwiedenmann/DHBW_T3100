@@ -1,6 +1,5 @@
-﻿using AngleSharp.Common;
-using Microsoft.Extensions.Caching.Memory;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 
 namespace GraphVisualizer;
 
@@ -9,7 +8,6 @@ public class PersistentMemoryCache
     private readonly IMemoryCache _memoryCache;
     private readonly string _cacheFilePath;
     private readonly object _cacheLock = new();
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
     private readonly List<string> _keysToPersist;
 
     public PersistentMemoryCache(IMemoryCache memoryCache, string cacheFilePath, List<string> keysToPersist)
@@ -42,16 +40,21 @@ public class PersistentMemoryCache
     {
         lock (_cacheLock)
         {
-            var cacheItems = new Dictionary<object, object>();
-            foreach (object key in _keysToPersist)
+            Dictionary<string, CachedItem> cacheItems = [];
+
+            foreach (string key in _keysToPersist)
             {
                 if (_memoryCache.TryGetValue(key, out object? value))
                 {
-                    cacheItems[key] = value!;
+                    cacheItems[key.ToString()] = new CachedItem
+                    {
+                        Type = value!.GetType().AssemblyQualifiedName ?? string.Empty,
+                        Value = JsonConvert.SerializeObject(value)
+                    };
                 }
             }
 
-            string json = JsonSerializer.Serialize(cacheItems, _jsonSerializerOptions);
+            string json = JsonConvert.SerializeObject(cacheItems, Formatting.Indented);
 
             File.WriteAllText(_cacheFilePath, json);
         }
@@ -66,14 +69,19 @@ public class PersistentMemoryCache
             {
                 if (File.Exists(_cacheFilePath))
                 {
-                    var json = File.ReadAllText(_cacheFilePath);
-                    var cacheItems = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+                    string json = File.ReadAllText(_cacheFilePath);
+                    Dictionary<string, CachedItem>? cacheItems = JsonConvert.DeserializeObject<Dictionary<string, CachedItem>>(json);
 
                     if (cacheItems != null)
                     {
                         foreach (var item in cacheItems)
                         {
-                            _memoryCache.Set(item.Key, item.Value);
+                            Type? type = Type.GetType(item.Value.Type);
+                            if (type != null)
+                            {
+                                object? value = JsonConvert.DeserializeObject(item.Value.Value, type);
+                                _memoryCache.Set(item.Key, value);
+                            }
                         }
                     }
                 }
@@ -84,5 +92,11 @@ public class PersistentMemoryCache
                 Console.WriteLine(ex.StackTrace);
             }
         }
+    }
+
+    private class CachedItem
+    {
+        public required string Type { get; set; }
+        public required string Value { get; set; }
     }
 }
