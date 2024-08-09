@@ -94,8 +94,6 @@
   </div>
 {/if}
 
-<div id="tooltip" class="tooltip"></div>
-
 <div class="flex flex-1 overflow-hidden">
   <svg bind:this={svg} id="graphSvg"></svg>
 
@@ -124,27 +122,5 @@
   svg {
     width: 100%;
     height: 100%;
-  }
-
-  .tooltip {
-    opacity: 0;
-    position: absolute;
-    text-align: left;
-    width: auto;
-    height: auto;
-    padding: 5px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
-  }
-
-  .tooltip .nowrap {
-    white-space: nowrap;
-  }
-
-  .tooltip strong {
-    font-weight: bold;
   }
 </style>

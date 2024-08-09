@@ -201,8 +201,6 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .attr("stroke", "#fff").attr("stroke-width", 1) // Draw a thin white border around nodes
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
-        .on("mouseover", handleMouseOver)
-        .on("mouseout", handleMouseOut)
         .on("click", (event, d) => handleNodeClick(d));
 }
 
@@ -219,19 +217,6 @@ function drag(simulation) {
         event.subject.fx = null;
         event.subject.fy = null;
     });
-}
-
-function handleMouseOver(event, d) {
-    const tooltip = d3.select("#tooltip").transition().duration(200).style("opacity", 0.9);
-    tooltip.html(
-        `<div><strong>URI:</strong> <span class="nowrap">${d.id}</span></div>
-        <div><strong>Label:</strong> ${d.label}</div>
-        <div><strong>Properties:</strong> ${JSON.stringify(d.properties)}</div>`
-    ).style("left", event.pageX + 5 + "px").style("top", event.pageY - 28 + "px");
-}
-
-function handleMouseOut() {
-    d3.select("#tooltip").transition().duration(500).style("opacity", 0);
 }
 
 function calculateFPS(updateMetrics, nodesCount, linksCount) {

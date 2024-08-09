@@ -107,8 +107,6 @@ export function drawGraph(
         .attr("r", d => nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize)
         .attr("fill", d => nodeLinkSettings.colorAndSizeByLinks ? colorScale(d.links) : "steelblue")
         .call(drag(simulation))
-        .on("mouseover", handleMouseOver)
-        .on("mouseout", handleMouseOut)
         .on("click", (event, d) => handleNodeClick(d));
 
     node.append("title").text(d => d.label);
@@ -169,22 +167,5 @@ export function drawGraph(
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended);
-    }
-
-    function handleMouseOver(event, d) {
-        const tooltip = d3.select("#tooltip");
-        tooltip.transition().duration(200).style("opacity", 0.9);
-        tooltip
-            .html(
-                `<div><strong>URI:</strong> <span class="nowrap">${d.id}</span></div>
-              <div><strong>Label:</strong> ${d.label}</div>
-              <div><strong>Properties:</strong> ${JSON.stringify(d.properties)}</div>`
-            )
-            .style("left", event.pageX + 5 + "px")
-            .style("top", event.pageY - 28 + "px");
-    }
-
-    function handleMouseOut() {
-        d3.select("#tooltip").transition().duration(500).style("opacity", 0);
     }
 }
