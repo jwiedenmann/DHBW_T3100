@@ -5,7 +5,8 @@ export function drawGraph(
     svg,
     graphResults,
     nodeLinkSettings,
-    updateMetrics
+    updateMetrics,
+    handleNodeClick
 ) {
     if (!svg) return;
 
@@ -107,7 +108,8 @@ export function drawGraph(
         .attr("fill", d => nodeLinkSettings.colorAndSizeByLinks ? colorScale(d.links) : "steelblue")
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
-        .on("mouseout", handleMouseOut);
+        .on("mouseout", handleMouseOut)
+        .on("click", (event, d) => handleNodeClick(d));
 
     node.append("title").text(d => d.label);
 

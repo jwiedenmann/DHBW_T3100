@@ -8,7 +8,8 @@ export function drawGraph(
     svg,
     graphResults,
     nodeLinkSettings,
-    updateMetrics
+    updateMetrics,
+    handleNodeClick
 ) {
     if (!svg) return;
 
@@ -57,11 +58,11 @@ export function drawGraph(
 
         const communityLinks = filterAndMapLinks(links, communityNodes);
 
-        runSimulation(communityNodes, communityLinks, nodeLinkSettings, g, width, height, colorScale, tickedAggregated, true);
+        runSimulation(communityNodes, communityLinks, nodeLinkSettings, g, width, height, colorScale, tickedAggregated, true, handleNodeClick);
     } else {
         // Define color scale based on community for individual nodes
         colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueCommunities);
-        runSimulation(nodes, links, nodeLinkSettings, g, width, height, colorScale, ticked, false);
+        runSimulation(nodes, links, nodeLinkSettings, g, width, height, colorScale, ticked, false, handleNodeClick);
     }
 
     function ticked() {
@@ -137,7 +138,7 @@ function aggregateCommunities(nodes, uniqueCommunities, settings) {
             x: centroid.x,
             y: centroid.y,
             r: effectiveRadius,
-            originalNodes: communityNodes.map(n => n.id)
+            originalNodes: communityNodes
         };
     });
 }
@@ -146,8 +147,8 @@ function filterAndMapLinks(links, communityNodes) {
     const communityLinkMap = new Map();
 
     links.forEach(link => {
-        const sourceCommunity = communityNodes.find(node => node.originalNodes.includes(link.source));
-        const targetCommunity = communityNodes.find(node => node.originalNodes.includes(link.target));
+        const sourceCommunity = communityNodes.find(node => node.originalNodes.map(n => n.id).includes(link.source));
+        const targetCommunity = communityNodes.find(node => node.originalNodes.map(n => n.id).includes(link.target));
 
         if (sourceCommunity && targetCommunity) {
             const key = `${sourceCommunity.id}|${targetCommunity.id}`;
@@ -166,7 +167,7 @@ function filterAndMapLinks(links, communityNodes) {
     });
 }
 
-function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated) {
+function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated, handleNodeClick) {
     // Define scaling factors based on the number of nodes in a community
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
@@ -201,9 +202,9 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
         .on("mouseover", handleMouseOver)
-        .on("mouseout", handleMouseOut);
+        .on("mouseout", handleMouseOut)
+        .on("click", (event, d) => handleNodeClick(d));
 }
-
 
 function drag(simulation) {
     return d3.drag().on("start", (event) => {

@@ -14,12 +14,17 @@
 
   let svg;
 
+  // Sidebar state management
+  let sidebarVisible = false;
+  let selectedData = null;
+
   onMount(() => {
     drawGraph(
       svg,
       graphResults,
       nodeLinkSettings,
-      updateMetrics
+      updateMetrics,
+      handleNodeClick
     );
   });
 
@@ -27,28 +32,32 @@
     svg,
     graphResults,
     nodeLinkSettings,
-    updateMetrics
+    updateMetrics,
+    handleNodeClick
   );
 
   function drawGraph(
     svg,
     graphResults,
     nodeLinkSettings,
-    updateMetrics
+    updateMetrics,
+    handleNodeClick
   ) {
     if (nodeLinkSettings.clusteringAlgorithm === "noClustering") {
       drawNodeLinkGraph(
         svg,
         graphResults,
         nodeLinkSettings,
-        updateMetrics
+        updateMetrics,
+        handleNodeClick
       );
     } else {
       drawNodeLinkGraphClustered(
         svg,
         graphResults,
         nodeLinkSettings,
-        updateMetrics
+        updateMetrics,
+        handleNodeClick
       );
     }
   }
@@ -57,6 +66,17 @@
     nodeCount = nodes;
     edgeCount = edges;
     if (frameRate) fps = frameRate;
+  }
+
+  function handleNodeClick(data) {
+    console.log(data)
+    selectedData = data;
+    sidebarVisible = true;
+  }
+
+  function closeSidebar() {
+    sidebarVisible = false;
+    selectedData = null;
   }
 </script>
 
@@ -74,8 +94,31 @@
   </div>
 {/if}
 
-<svg bind:this={svg} id="graphSvg"></svg>
 <div id="tooltip" class="tooltip"></div>
+
+<div class="flex flex-1 overflow-hidden">
+  <svg bind:this={svg} id="graphSvg"></svg>
+
+  <div
+    class={`flex ${sidebarVisible ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
+  >
+    <div class="flex flex-col h-full w-full z-50 bg-base-200">
+      <button class="btn btn-sm btn-outline float-right" on:click={closeSidebar}
+        >Close</button
+      >
+
+      <h2 class="text-lg font-bold mb-4">Details</h2>
+      {#if selectedData}
+        <p><strong>URI:</strong> {selectedData.id}</p>
+        <p><strong>Label:</strong> {selectedData.label}</p>
+        <p>
+          <strong>Properties:</strong>
+          {JSON.stringify(selectedData.properties, null, 2)}
+        </p>
+      {/if}
+    </div>
+  </div>
+</div>
 
 <style>
   svg {
