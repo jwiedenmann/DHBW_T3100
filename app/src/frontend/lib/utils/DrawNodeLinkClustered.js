@@ -174,6 +174,12 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         { id: 'static-node-3', x: -20, y: -20, r: 5 }
     ];
 
+    const staticLinks = [
+        { source: 'static-node-1', target: 'static-node-2' },
+        { source: 'static-node-2', target: 'static-node-3' },
+        { source: 'static-node-3', target: 'static-node-1' }
+    ];
+
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
     const chargeStrength = isAggregated
@@ -211,19 +217,49 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                 const communityNode = d3.select(this);
                 const smallNodeGroup = g.append("g").attr("class", "small-nodes");
 
-                staticNodes.forEach((node) => {
-                    smallNodeGroup.append("circle")
-                        .attr("cx", d.x + node.x)
-                        .attr("cy", d.y + node.y)
-                        .attr("r", node.r)
-                        .attr("fill", "red")
-                        .attr("stroke", "#fff")
-                        .attr("stroke-width", 1);
+                const staticNodesCopy = JSON.parse(JSON.stringify(staticNodes)); // Create a copy of staticNodes for simulation
+                const staticLinksCopy = JSON.parse(JSON.stringify(staticLinks)); // Create a copy of staticLinks for simulation
+
+                // Create link elements for the static nodes
+                const staticLinkSelection = smallNodeGroup.selectAll("line")
+                    .data(staticLinksCopy)
+                    .enter()
+                    .append("line")
+                    .attr("stroke", "#999")
+                    .attr("stroke-width", 1);
+
+                // Create a separate force simulation for the static nodes
+                const staticNodeSimulation = d3.forceSimulation(staticNodesCopy)
+                    .force("link", d3.forceLink(staticLinksCopy)
+                        .id(d => d.id) // Ensure the link uses the correct IDs
+                        .distance(30).strength(1)) // Add links between static nodes
+                    .force("center", d3.forceCenter(d.x, d.y)) // Pull towards the center of the community node
+                    .force("charge", d3.forceManyBody().strength(-50)) // Apply some repulsion to space them out
+                    .force("collision", d3.forceCollide().radius(d => d.r + 5)) // Prevent them from overlapping
+                    .on("tick", () => {
+                        staticLinkSelection
+                            .attr("x1", d => d.source.x)
+                            .attr("y1", d => d.source.y)
+                            .attr("x2", d => d.target.x)
+                            .attr("y2", d => d.target.y);
+
+                        smallNodeGroup.selectAll("circle")
+                            .data(staticNodesCopy)
+                            .join("circle")
+                            .attr("cx", d => d.x)
+                            .attr("cy", d => d.y)
+                            .attr("r", d => d.r)
+                            .attr("fill", "red")
+                            .attr("stroke", "#fff")
+                            .attr("stroke-width", 1);
+                    });
+
+                // Stop the static node simulation when mouse leaves
+                communityNode.on("mouseout", function () {
+                    g.selectAll(".small-nodes").remove();
+                    staticNodeSimulation.stop();
                 });
             }
-        })
-        .on("mouseout", function () {
-            g.selectAll(".small-nodes").remove();
         });
 
     return { linkSelection, nodeSelection };
