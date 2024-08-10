@@ -65,12 +65,12 @@ export function drawGraph(
         runSimulation(nodes, links, nodeLinkSettings, g, width, height, colorScale, ticked, false, handleNodeClick);
     }
 
-    function ticked() {
-        updatePositions(g.selectAll("line"), g.selectAll("circle"), d => d.source.x, d => d.source.y, d => d.target.x, d => d.target.y);
+    function ticked(linkSelection, nodeSelection) {
+        updatePositions(linkSelection, nodeSelection, d => d.source.x, d => d.source.y, d => d.target.x, d => d.target.y);
     }
 
-    function tickedAggregated() {
-        updatePositions(g.selectAll("line"), g.selectAll("circle"), d => d.source.x, d => d.source.y, d => d.target.x, d => d.target.y, d => d.r);
+    function tickedAggregated(linkSelection, nodeSelection) {
+        updatePositions(linkSelection, nodeSelection, d => d.source.x, d => d.source.y, d => d.target.x, d => d.target.y, d => d.r);
     }
 
     calculateFPS(updateMetrics, nodes.length, links.length);
@@ -168,40 +168,65 @@ function filterAndMapLinks(links, communityNodes) {
 }
 
 function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated, handleNodeClick) {
-    // Define scaling factors based on the number of nodes in a community
+    const staticNodes = [
+        { id: 'static-node-1', x: 0, y: 0, r: 5 },
+        { id: 'static-node-2', x: 20, y: 20, r: 5 },
+        { id: 'static-node-3', x: -20, y: -20, r: 5 }
+    ];
+
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
-    // Adjust forces based on the size of the communities
     const chargeStrength = isAggregated
-        ? d => settings.chargeStrength * nodeCountScale(d) * -0.5  // More negative for larger communities
+        ? d => settings.chargeStrength * nodeCountScale(d) * -0.5
         : settings.chargeStrength;
 
     const collisionRadius = isAggregated
-        ? d => (d.r || settings.nodeSize) * 0.5 * nodeCountScale(d) // Larger collision radius for larger communities
+        ? d => (d.r || settings.nodeSize) * 0.5 * nodeCountScale(d)
         : settings.collisionRadius;
 
     const linkDistance = isAggregated
-        ? d => settings.linkDistance * nodeCountScale(d.source) * 0.5 * nodeCountScale(d.target) // Adjust link distance based on size of connected nodes
+        ? d => settings.linkDistance * nodeCountScale(d.source) * 0.5 * nodeCountScale(d.target)
         : settings.linkDistance;
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance)) // Increase link strength
+        .force("link", d3.forceLink(links).id(d => d.id).distance(linkDistance))
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(collisionRadius))
         .alpha(1).alphaDecay(settings.alphaDecay / 10000)
-        .on("tick", tickedFunc);
+        .on("tick", () => tickedFunc(linkSelection, nodeSelection));
 
-    g.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6)
-        .selectAll("line").data(links).enter().append("line").attr("stroke-width", d => d.value * d.value); // Make links thicker
+    const linkSelection = g.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6)
+        .selectAll("line").data(links).enter().append("line").attr("stroke-width", d => d.value * d.value);
 
-    g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5)
+    const nodeSelection = g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5)
         .selectAll("circle").data(nodes).enter().append("circle")
         .attr("fill", d => colorScale(d.originalNodes ? d.originalNodes.length : d.community))
-        .attr("stroke", "#fff").attr("stroke-width", 1) // Draw a thin white border around nodes
+        .attr("stroke", "#fff").attr("stroke-width", 1)
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
-        .on("click", (event, d) => handleNodeClick(d));
+        .on("click", (event, d) => handleNodeClick(d))
+        .on("mouseover", function (event, d) {
+            if (d.originalNodes) {
+                const communityNode = d3.select(this);
+                const smallNodeGroup = g.append("g").attr("class", "small-nodes");
+
+                staticNodes.forEach((node) => {
+                    smallNodeGroup.append("circle")
+                        .attr("cx", d.x + node.x)
+                        .attr("cy", d.y + node.y)
+                        .attr("r", node.r)
+                        .attr("fill", "red")
+                        .attr("stroke", "#fff")
+                        .attr("stroke-width", 1);
+                });
+            }
+        })
+        .on("mouseout", function () {
+            g.selectAll(".small-nodes").remove();
+        });
+
+    return { linkSelection, nodeSelection };
 }
 
 function drag(simulation) {
