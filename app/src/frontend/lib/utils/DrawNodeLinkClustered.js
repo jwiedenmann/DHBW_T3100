@@ -254,6 +254,21 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                             .attr("stroke-width", 1);
                     });
 
+                // Update positions of static nodes based on community node drag
+                communityNode.call(drag(simulation, (event, draggedNode) => {
+                    // Update the center of the static node simulation
+                    staticNodeSimulation.force("center", d3.forceCenter(draggedNode.x, draggedNode.y));
+
+                    // Manually update positions of static nodes
+                    staticNodesCopy.forEach(staticNode => {
+                        staticNode.x += event.dx;
+                        staticNode.y += event.dy;
+                    });
+
+                    // Restart the static node simulation to apply changes
+                    staticNodeSimulation.alpha(0.3).restart();
+                }));
+
                 // Stop the static node simulation when mouse leaves
                 communityNode.on("mouseout", function () {
                     g.selectAll(".small-nodes").remove();
@@ -265,7 +280,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
     return { linkSelection, nodeSelection };
 }
 
-function drag(simulation) {
+function drag(simulation, onDrag) {
     return d3.drag().on("start", (event) => {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         event.subject.fx = event.subject.x;
@@ -273,6 +288,7 @@ function drag(simulation) {
     }).on("drag", (event) => {
         event.subject.fx = event.x;
         event.subject.fy = event.y;
+        if (onDrag) onDrag(event, event.subject);
     }).on("end", (event) => {
         if (!event.active) simulation.alphaTarget(0);
         event.subject.fx = null;
