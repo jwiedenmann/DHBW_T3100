@@ -73,20 +73,20 @@ export function drawGraph(
         updatePositions(linkSelection, nodeSelection, d => d.source.x, d => d.source.y, d => d.target.x, d => d.target.y, d => d.r);
 
         // Update positions of smaller nodes inside community nodes
-        g.selectAll(".small-nodes").each(function (d) {
-            const communityNode = d3.select(this).datum();
-            d3.select(this)
-                .selectAll("circle")
-                .attr("cx", staticNode => communityNode.x + staticNode.offsetX)
-                .attr("cy", staticNode => communityNode.y + staticNode.offsetY);
+        // g.selectAll(".small-nodes").each(function (d) {
+        //     const communityNode = d3.select(this).datum();
+        //     d3.select(this)
+        //         .selectAll("circle")
+        //         .attr("cx", staticNode => communityNode.x + staticNode.offsetX)
+        //         .attr("cy", staticNode => communityNode.y + staticNode.offsetY);
 
-            d3.select(this)
-                .selectAll("line")
-                .attr("x1", link => communityNode.x + link.sourceOffsetX)
-                .attr("y1", link => communityNode.y + link.sourceOffsetY)
-                .attr("x2", link => communityNode.x + link.targetOffsetX)
-                .attr("y2", link => communityNode.y + link.targetOffsetY);
-        });
+        //     d3.select(this)
+        //         .selectAll("line")
+        //         .attr("x1", link => communityNode.x + link.sourceOffsetX)
+        //         .attr("y1", link => communityNode.y + link.sourceOffsetY)
+        //         .attr("x2", link => communityNode.x + link.targetOffsetX)
+        //         .attr("y2", link => communityNode.y + link.targetOffsetY);
+        // });
     }
 
     calculateFPS(updateMetrics, nodes.length, links.length);
@@ -184,18 +184,20 @@ function filterAndMapLinks(links, communityNodes) {
 }
 
 function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated, handleNodeClick) {
-    const staticNodesTemplate = [
-        { id: 'static-node-1', offsetX: 0, offsetY: 0, r: 5 },
-        { id: 'static-node-2', offsetX: 20, offsetY: 20, r: 5 },
-        { id: 'static-node-3', offsetX: -20, offsetY: -20, r: 5 }
+    // Helper function to create smaller nodes around a community node
+    const createStaticNodes = (communityNode) => [
+        { id: `${communityNode.id}-static-node-1`, x: communityNode.x, y: communityNode.y, r: 5 },
+        { id: `${communityNode.id}-static-node-2`, x: communityNode.x, y: communityNode.y, r: 5 },
+        { id: `${communityNode.id}-static-node-3`, x: communityNode.x, y: communityNode.y, r: 5 }
     ];
 
-    const staticLinksTemplate = [
-        { source: 'static-node-1', target: 'static-node-2', sourceOffsetX: 0, sourceOffsetY: 0, targetOffsetX: 20, targetOffsetY: 20 },
-        { source: 'static-node-2', target: 'static-node-3', sourceOffsetX: 20, sourceOffsetY: 20, targetOffsetX: -20, targetOffsetY: -20 },
-        { source: 'static-node-3', target: 'static-node-1', sourceOffsetX: -20, sourceOffsetY: -20, targetOffsetX: 0, targetOffsetY: 0 }
+    const createStaticLinks = (communityNode) => [
+        { source: `${communityNode.id}-static-node-1`, target: `${communityNode.id}-static-node-2` },
+        { source: `${communityNode.id}-static-node-2`, target: `${communityNode.id}-static-node-3` },
+        { source: `${communityNode.id}-static-node-3`, target: `${communityNode.id}-static-node-1` }
     ];
 
+    // Main force simulation for community nodes
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
     const chargeStrength = isAggregated
@@ -223,17 +225,26 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
             g.selectAll(".small-nodes").each(function (d) {
                 const communityNode = d;
 
-                d3.select(this).selectAll("circle")
-                    .data(staticNodesTemplate)
-                    .attr("cx", d => communityNode.x + d.offsetX)
-                    .attr("cy", d => communityNode.y + d.offsetY);
+                // Update the force simulation for the smaller nodes
+                const smallNodes = d3.select(this).selectAll("circle").data();
+                const smallNodeSimulation = d3.forceSimulation(smallNodes)
+                    .force("center", d3.forceCenter(communityNode.x, communityNode.y))
+                    .force("charge", d3.forceManyBody().strength(-10))
+                    .force("collision", d3.forceCollide().radius(d => d.r + 5))
+                    .force("link", d3.forceLink(createStaticLinks(communityNode)).id(d => d.id).distance(20))
+                    .on("tick", () => {
+                        d3.select(this).selectAll("circle")
+                            .attr("cx", d => d.x)
+                            .attr("cy", d => d.y);
 
-                d3.select(this).selectAll("line")
-                    .data(staticLinksTemplate)
-                    .attr("x1", d => communityNode.x + d.sourceOffsetX)
-                    .attr("y1", d => communityNode.y + d.sourceOffsetY)
-                    .attr("x2", d => communityNode.x + d.targetOffsetX)
-                    .attr("y2", d => communityNode.y + d.targetOffsetY);
+                        d3.select(this).selectAll("line")
+                            .attr("x1", d => d.source.x)
+                            .attr("y1", d => d.source.y)
+                            .attr("x2", d => d.target.x)
+                            .attr("y2", d => d.target.y);
+                    });
+
+                smallNodeSimulation.alpha(0.3).restart(); // Maintain an active simulation
             });
         });
 
@@ -249,34 +260,48 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .on("click", (event, d) => handleNodeClick(d))
         .on("mouseover", function (event, d) {
             if (d.originalNodes) {
-                // Create a group for the smaller nodes within the community node
                 const smallNodeGroup = g.append("g")
                     .attr("class", "small-nodes")
                     .datum(d);
 
-                // Append the smaller nodes as circles
+                const staticNodes = createStaticNodes(d);
+                const staticLinks = createStaticLinks(d);
+
                 smallNodeGroup.selectAll("circle")
-                    .data(staticNodesTemplate)
+                    .data(staticNodes)
                     .enter()
                     .append("circle")
-                    .attr("cx", staticNode => d.x + staticNode.offsetX)
-                    .attr("cy", staticNode => d.y + staticNode.offsetY)
                     .attr("r", staticNode => staticNode.r)
                     .attr("fill", "red")
                     .attr("stroke", "#fff")
                     .attr("stroke-width", 1);
 
-                // Append the links between smaller nodes
                 smallNodeGroup.selectAll("line")
-                    .data(staticLinksTemplate)
+                    .data(staticLinks)
                     .enter()
                     .append("line")
-                    .attr("x1", link => d.x + link.sourceOffsetX)
-                    .attr("y1", link => d.y + link.sourceOffsetY)
-                    .attr("x2", link => d.x + link.targetOffsetX)
-                    .attr("y2", link => d.y + link.targetOffsetY)
                     .attr("stroke", "#999")
                     .attr("stroke-width", 1);
+
+                // Initialize the force simulation for the smaller nodes
+                const smallNodeSimulation = d3.forceSimulation(staticNodes)
+                    .force("center", d3.forceCenter(d.x, d.y))
+                    .force("charge", d3.forceManyBody().strength(-10))
+                    .force("collision", d3.forceCollide().radius(d => d.r + 5))
+                    .force("link", d3.forceLink(staticLinks).id(d => d.id).distance(20))
+                    .on("tick", () => {
+                        smallNodeGroup.selectAll("circle")
+                            .attr("cx", d => d.x)
+                            .attr("cy", d => d.y);
+
+                        smallNodeGroup.selectAll("line")
+                            .attr("x1", d => d.source.x)
+                            .attr("y1", d => d.source.y)
+                            .attr("x2", d => d.target.x)
+                            .attr("y2", d => d.target.y);
+                    });
+
+                smallNodeSimulation.alpha(0.3).restart(); // Maintain an active simulation
             }
         })
         .on("mouseout", function () {
@@ -285,6 +310,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
 
     return { linkSelection, nodeSelection };
 }
+
 
 function drag(simulation) {
     return d3.drag().on("start", (event) => {
