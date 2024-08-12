@@ -188,15 +188,29 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
     const createStaticNodes = (communityNode) => [
         { id: `${communityNode.id}-static-node-1`, x: communityNode.x, y: communityNode.y, r: 5 },
         { id: `${communityNode.id}-static-node-2`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-3`, x: communityNode.x, y: communityNode.y, r: 5 }
+        { id: `${communityNode.id}-static-node-3`, x: communityNode.x, y: communityNode.y, r: 5 },
+        { id: `${communityNode.id}-static-node-4`, x: communityNode.x, y: communityNode.y, r: 5 }, // Additional static nodes
+        { id: `${communityNode.id}-static-node-5`, x: communityNode.x, y: communityNode.y, r: 5 },
+        { id: `${communityNode.id}-static-node-6`, x: communityNode.x, y: communityNode.y, r: 5 },
+        { id: `${communityNode.id}-static-node-7`, x: communityNode.x, y: communityNode.y, r: 5 },
+        { id: `${communityNode.id}-static-node-8`, x: communityNode.x, y: communityNode.y, r: 5 }
     ];
 
     const createStaticLinks = (communityNode) => [
         { source: `${communityNode.id}-static-node-1`, target: `${communityNode.id}-static-node-2` },
         { source: `${communityNode.id}-static-node-2`, target: `${communityNode.id}-static-node-3` },
-        { source: `${communityNode.id}-static-node-3`, target: `${communityNode.id}-static-node-1` }
+        { source: `${communityNode.id}-static-node-3`, target: `${communityNode.id}-static-node-1` },
+        { source: `${communityNode.id}-static-node-4`, target: `${communityNode.id}-static-node-5` }, // Additional static links
+        { source: `${communityNode.id}-static-node-5`, target: `${communityNode.id}-static-node-6` },
+        { source: `${communityNode.id}-static-node-6`, target: `${communityNode.id}-static-node-7` },
+        { source: `${communityNode.id}-static-node-7`, target: `${communityNode.id}-static-node-8` },
+        { source: `${communityNode.id}-static-node-8`, target: `${communityNode.id}-static-node-4` },
+        { source: `${communityNode.id}-static-node-1`, target: `${communityNode.id}-static-node-4` }, // Cross links to keep them together
+        { source: `${communityNode.id}-static-node-2`, target: `${communityNode.id}-static-node-5` },
+        { source: `${communityNode.id}-static-node-3`, target: `${communityNode.id}-static-node-6` }
     ];
 
+    // Main force simulation for community nodes (unchanged)
     // Main force simulation for community nodes
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
@@ -229,7 +243,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                 const smallNodes = d3.select(this).selectAll("circle").data();
                 const smallNodeSimulation = d3.forceSimulation(smallNodes)
                     .force("center", d3.forceCenter(communityNode.x, communityNode.y))
-                    .force("charge", d3.forceManyBody().strength(-10))
+                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the static nodes close
                     .force("collision", d3.forceCollide().radius(d => d.r + 5))
                     .force("link", d3.forceLink(createStaticLinks(communityNode)).id(d => d.id).distance(20))
                     .on("tick", () => {
@@ -286,7 +300,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                 // Initialize the force simulation for the smaller nodes
                 const smallNodeSimulation = d3.forceSimulation(staticNodes)
                     .force("center", d3.forceCenter(d.x, d.y))
-                    .force("charge", d3.forceManyBody().strength(-10))
+                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the static nodes close
                     .force("collision", d3.forceCollide().radius(d => d.r + 5))
                     .force("link", d3.forceLink(staticLinks).id(d => d.id).distance(20))
                     .on("tick", () => {
