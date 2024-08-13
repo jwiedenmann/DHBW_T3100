@@ -106,10 +106,8 @@ function createLinks(nodes) {
     const links = nodes.flatMap((node) =>
         Object.entries(node.Links).flatMap(([key, values]) =>
             values.map((value) => {
-                // Check if the value is an object, if so, try to extract a meaningful string identifier
                 let targetValue;
                 if (typeof value === 'object' && value !== null) {
-                    // Attempt to get an ID or URI from the object, or convert to string
                     targetValue = value.Uri || JSON.stringify(value);
                 } else {
                     targetValue = value;
@@ -272,7 +270,6 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .on("click", (event, d) => handleNodeClick(d))
         .on("mouseover", function (event, d) {
             if (d.originalNodes) {
-                // Remove any existing small nodes group
                 g.selectAll(".small-nodes").remove();
 
                 const smallNodeGroup = g.append("g")
@@ -282,28 +279,23 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                 const communityNodes = d.originalNodes;
                 const communityNodeIds = new Set(communityNodes.map(node => node.id));
 
-                // Ensure we are working with a copy of the originalLinksStore data to avoid mutations
                 let communityLinks = originalLinksStore.map(link => ({
                     source: link.source,
                     target: link.target,
                     predicate: link.predicate
-                })).filter(link => {
-                    return communityNodeIds.has(link.source) && communityNodeIds.has(link.target);
-                });
+                })).filter(link => communityNodeIds.has(link.source) && communityNodeIds.has(link.target));
 
-                // Append circles for community nodes
                 smallNodeGroup.selectAll("circle")
                     .data(communityNodes)
                     .enter()
                     .append("circle")
-                    .attr("r", settings.nodeSize) // Set radius
+                    .attr("r", settings.nodeSize)
                     .attr("cx", node => node.x)
                     .attr("cy", node => node.y)
-                    .attr("fill", node => colorScale(node.community))
+                    .attr("fill", "steelblue")
                     .attr("stroke", "#fff")
                     .attr("stroke-width", 1);
 
-                // Append lines for community links
                 smallNodeGroup.selectAll("line")
                     .data(communityLinks)
                     .enter()
@@ -315,10 +307,9 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                     .attr("x2", link => communityNodes.find(node => node.id === link.target).x)
                     .attr("y2", link => communityNodes.find(node => node.id === link.target).y);
 
-                // Initialize the force simulation for the smaller nodes
                 const smallNodeSimulation = d3.forceSimulation(communityNodes)
                     .force("center", d3.forceCenter(d.x, d.y))
-                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the nodes close
+                    .force("charge", d3.forceManyBody().strength(-30))
                     .force("collision", d3.forceCollide().radius(settings.nodeSize))
                     .force("link", d3.forceLink(communityLinks).id(d => d.id).distance(20))
                     .on("tick", () => {
@@ -333,17 +324,15 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                             .attr("y2", d => d.target.y);
                     });
 
-                smallNodeSimulation.alpha(0.3).restart(); // Maintain an active simulation
+                smallNodeSimulation.alpha(0.3).restart();
             }
         })
         .on("mouseout", function () {
-            // Properly remove the small nodes group on mouseout
             g.selectAll(".small-nodes").remove();
         });
 
     return { linkSelection, nodeSelection };
 }
-
 
 function drag(simulation) {
     return d3.drag().on("start", (event) => {
