@@ -4,6 +4,8 @@ import louvain from "graphology-communities-louvain";
 import { hcs } from "./hcs";
 import { mclAlgorithm } from "./mcl"; // Import the MCL algorithm
 
+let originalLinksStore = [];
+
 export function drawGraph(
     svg,
     graphResults,
@@ -11,6 +13,7 @@ export function drawGraph(
     updateMetrics,
     handleNodeClick
 ) {
+    if (originalLinksStore) originalLinksStore = [];
     if (!svg) return;
 
     const container = d3.select(svg.parentNode);
@@ -100,18 +103,30 @@ export function drawGraph(
 
 function createLinks(nodes) {
     const edgeSet = new Set();
-    return nodes.flatMap((node) =>
+    const links = nodes.flatMap((node) =>
         Object.entries(node.Links).flatMap(([key, values]) =>
             values.map((value) => {
-                const edgeKey = `${node.Uri}-${value}`;
+                // Check if the value is an object, if so, try to extract a meaningful string identifier
+                let targetValue;
+                if (typeof value === 'object' && value !== null) {
+                    // Attempt to get an ID or URI from the object, or convert to string
+                    targetValue = value.Uri || JSON.stringify(value);
+                } else {
+                    targetValue = value;
+                }
+
+                const edgeKey = `${node.Uri}-${targetValue}`;
                 if (!edgeSet.has(edgeKey)) {
                     edgeSet.add(edgeKey);
-                    return { source: node.Uri, target: value, predicate: key };
+                    originalLinksStore.push({ source: node.Uri, target: targetValue, predicate: key }); // Add to global store
+                    return { source: node.Uri, target: targetValue, predicate: key };
                 }
                 return null;
             }).filter(Boolean)
         )
     );
+
+    return links;
 }
 
 function getCommunities(graph, algorithm) {
@@ -184,33 +199,6 @@ function filterAndMapLinks(links, communityNodes) {
 }
 
 function runSimulation(nodes, links, settings, g, width, height, colorScale, tickedFunc, isAggregated, handleNodeClick) {
-    // Helper function to create smaller nodes around a community node
-    const createStaticNodes = (communityNode) => [
-        { id: `${communityNode.id}-static-node-1`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-2`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-3`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-4`, x: communityNode.x, y: communityNode.y, r: 5 }, // Additional static nodes
-        { id: `${communityNode.id}-static-node-5`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-6`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-7`, x: communityNode.x, y: communityNode.y, r: 5 },
-        { id: `${communityNode.id}-static-node-8`, x: communityNode.x, y: communityNode.y, r: 5 }
-    ];
-
-    const createStaticLinks = (communityNode) => [
-        { source: `${communityNode.id}-static-node-1`, target: `${communityNode.id}-static-node-2` },
-        { source: `${communityNode.id}-static-node-2`, target: `${communityNode.id}-static-node-3` },
-        { source: `${communityNode.id}-static-node-3`, target: `${communityNode.id}-static-node-1` },
-        { source: `${communityNode.id}-static-node-4`, target: `${communityNode.id}-static-node-5` }, // Additional static links
-        { source: `${communityNode.id}-static-node-5`, target: `${communityNode.id}-static-node-6` },
-        { source: `${communityNode.id}-static-node-6`, target: `${communityNode.id}-static-node-7` },
-        { source: `${communityNode.id}-static-node-7`, target: `${communityNode.id}-static-node-8` },
-        { source: `${communityNode.id}-static-node-8`, target: `${communityNode.id}-static-node-4` },
-        { source: `${communityNode.id}-static-node-1`, target: `${communityNode.id}-static-node-4` }, // Cross links to keep them together
-        { source: `${communityNode.id}-static-node-2`, target: `${communityNode.id}-static-node-5` },
-        { source: `${communityNode.id}-static-node-3`, target: `${communityNode.id}-static-node-6` }
-    ];
-
-    // Main force simulation for community nodes (unchanged)
     // Main force simulation for community nodes
     const nodeCountScale = d => Math.sqrt(d.originalNodes ? d.originalNodes.length : 1);
 
@@ -241,11 +229,21 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
 
                 // Update the force simulation for the smaller nodes
                 const smallNodes = d3.select(this).selectAll("circle").data();
+                const communityNodeIds = new Set(smallNodes.map(node => node.id));
+                // Ensure we are working with a copy of the originalLinksStore data to avoid mutations
+                const communityLinks = originalLinksStore.map(link => ({
+                    source: link.source,
+                    target: link.target,
+                    predicate: link.predicate
+                })).filter(link =>
+                    communityNodeIds.has(link.source) && communityNodeIds.has(link.target)
+                );
+
                 const smallNodeSimulation = d3.forceSimulation(smallNodes)
                     .force("center", d3.forceCenter(communityNode.x, communityNode.y))
-                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the static nodes close
-                    .force("collision", d3.forceCollide().radius(d => d.r + 5))
-                    .force("link", d3.forceLink(createStaticLinks(communityNode)).id(d => d.id).distance(20))
+                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the nodes close
+                    .force("collision", d3.forceCollide().radius(5))
+                    .force("link", d3.forceLink(communityLinks).id(d => d.id).distance(20))
                     .on("tick", () => {
                         d3.select(this).selectAll("circle")
                             .attr("cx", d => d.x)
@@ -274,35 +272,55 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .on("click", (event, d) => handleNodeClick(d))
         .on("mouseover", function (event, d) {
             if (d.originalNodes) {
+                // Remove any existing small nodes group
+                g.selectAll(".small-nodes").remove();
+
                 const smallNodeGroup = g.append("g")
                     .attr("class", "small-nodes")
                     .datum(d);
 
-                const staticNodes = createStaticNodes(d);
-                const staticLinks = createStaticLinks(d);
+                const communityNodes = d.originalNodes;
+                const communityNodeIds = new Set(communityNodes.map(node => node.id));
 
+                // Ensure we are working with a copy of the originalLinksStore data to avoid mutations
+                let communityLinks = originalLinksStore.map(link => ({
+                    source: link.source,
+                    target: link.target,
+                    predicate: link.predicate
+                })).filter(link => {
+                    return communityNodeIds.has(link.source) && communityNodeIds.has(link.target);
+                });
+
+                // Append circles for community nodes
                 smallNodeGroup.selectAll("circle")
-                    .data(staticNodes)
+                    .data(communityNodes)
                     .enter()
                     .append("circle")
-                    .attr("r", staticNode => staticNode.r)
-                    .attr("fill", "red")
+                    .attr("r", settings.nodeSize) // Set radius
+                    .attr("cx", node => node.x)
+                    .attr("cy", node => node.y)
+                    .attr("fill", node => colorScale(node.community))
                     .attr("stroke", "#fff")
                     .attr("stroke-width", 1);
 
+                // Append lines for community links
                 smallNodeGroup.selectAll("line")
-                    .data(staticLinks)
+                    .data(communityLinks)
                     .enter()
                     .append("line")
                     .attr("stroke", "#999")
-                    .attr("stroke-width", 1);
+                    .attr("stroke-width", 1)
+                    .attr("x1", link => communityNodes.find(node => node.id === link.source).x)
+                    .attr("y1", link => communityNodes.find(node => node.id === link.source).y)
+                    .attr("x2", link => communityNodes.find(node => node.id === link.target).x)
+                    .attr("y2", link => communityNodes.find(node => node.id === link.target).y);
 
                 // Initialize the force simulation for the smaller nodes
-                const smallNodeSimulation = d3.forceSimulation(staticNodes)
+                const smallNodeSimulation = d3.forceSimulation(communityNodes)
                     .force("center", d3.forceCenter(d.x, d.y))
-                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the static nodes close
-                    .force("collision", d3.forceCollide().radius(d => d.r + 5))
-                    .force("link", d3.forceLink(staticLinks).id(d => d.id).distance(20))
+                    .force("charge", d3.forceManyBody().strength(-30))  // Keep the nodes close
+                    .force("collision", d3.forceCollide().radius(settings.nodeSize))
+                    .force("link", d3.forceLink(communityLinks).id(d => d.id).distance(20))
                     .on("tick", () => {
                         smallNodeGroup.selectAll("circle")
                             .attr("cx", d => d.x)
@@ -319,6 +337,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
             }
         })
         .on("mouseout", function () {
+            // Properly remove the small nodes group on mouseout
             g.selectAll(".small-nodes").remove();
         });
 
