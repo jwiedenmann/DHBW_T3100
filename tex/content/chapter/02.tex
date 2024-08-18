@@ -4,19 +4,45 @@
 
 Dieses Kapitel bildet die Grundlage für die folgenden Vergleiche und Evaluationen von Graph Visualisierungen. Es werden Graphen und Knowledge Graphen genauer erläutert, ein Datenformat zur Speicherung der Daten und zuletzt die verschiedenen Visualisierungsoptionen. 
 
-
 \section{Graphen und Knowledge Graphen}
 % evtl Graphen schon in Einleitung beschreiben und hier nur auf Knowledge Graphen eingehen
 
 \subsection{Definition und Merkmale von Graphen}
+
+Ein Graph ist eine mathematische Struktur, die aus einer Menge von Knoten (engl. vertices) und einer Menge von Kanten (engl. edges) besteht. Die Kanten haben die Aufgabe Paare von Knoten zu verbinden. Graphen werden verwendet, um Netzwerke zu modellieren, in denen Objekte und deren Beziehungen zueinander abgebildet werden. Diese Netzwerke können unterschiedlichster Natur sein, wie soziale Netzwerke, Kommunikationsnetzwerke oder biologische Netzwerke. Die grundlegenden Merkmale eines Graphen sind seine Knoten, die Entitäten repräsentieren, und die Kanten, die die Beziehungen zwischen diesen Entitäten darstellen (vgl. \cite{graphIntroduction:Wilson}, S. 1 ff.).
+
+Graphen sind besonders wertvoll in der Datenvisualisierung, da sie es ermöglichen, komplexe Beziehungen und Strukturen auf eine Weise darzustellen, die visuell zugänglich und verständlich ist. In der Visualisierung werden Knoten typischerweise durch Kreise oder Punkte dargestellt, während Kanten als Linien oder Pfeile visualisiert werden, die die Richtung und Stärke der Beziehungen anzeigen. Die räumliche Anordnung der Knoten und Kanten spielt dabei eine entscheidende Rolle, da sie die Lesbarkeit und Interpretierbarkeit des Graphen maßgeblich beeinflusst. Verschiedene Layout-Algorithmen können verwendet werden, um die Knoten so anzuordnen, dass Muster wie Cluster oder Hierarchien besser erkennbar werden (vgl. \cite{graphIntroduction:Wilson}, S. 1 ff.). Die verschiedenen Möglichkeiten zur Darstellung von Graphen werden im Kapitel \ref{theory:vistechniques} noch genauer beschrieben.
+
 \subsection{Unterschied zwischen traditionellen Graphen und Knowledge Graphen}
+
+Während traditionelle Graphen primär auf die Darstellung von Entitäten und ihren direkten Beziehungen fokussiert sind, erweitern Knowledge Graphen dieses Modell, indem sie zusätzliche semantische Schichten und Kontextinformationen integrieren. Knowledge Graphen verbinden Entitäten nicht nur durch einfache Beziehungen, sondern auch durch semantische Bedeutungen, die es ermöglichen, komplexe Zusammenhänge und Abhängigkeiten darzustellen. Ein Knowledge Graph ist somit nicht nur eine Struktur von Knoten und Kanten, sondern ein umfassendes Netzwerk, das Entitäten, deren Beziehungen und die zugrundeliegenden Bedeutungen in einem kontextualisierten Modell vereint (vgl. \cite{knowledgeGraphIntroduction:Chaudhri}, S. 17 f.).
+
 \subsection{Anwendungsbereiche von Knowledge Graphen}
+
+Knowledge Graphen finden in einer Vielzahl von Anwendungsbereichen Einsatz, insbesondere dort, wo es auf die Darstellung und Analyse komplexer Beziehungen ankommt. Ein prominentes Beispiel ist der Einsatz von Knowledge Graphen in Suchmaschinen wie Google, wo sie verwendet werden, um Suchergebnisse durch die Verknüpfung von Entitäten und deren Beziehungen kontextualisiert und präzisiert darzustellen. Auch in Sprachassistenten wie Siri oder Alexa spielen Knowledge Graphen eine wichtige Rolle, indem sie die Verbindungen zwischen Begriffen und Konzepten erkennen und nutzen, um relevante und sinnvolle Antworten zu generieren (vgl. \cite{knowledgeGraphIntroduction:Chaudhri}, S. 18 ff.).
+
+Durch die Visualisierung von Knowledge Graphen werden diese komplexen und vernetzten Datenmengen zugänglicher und verständlicher. Die Visualisierung unterstützt nicht nur die Datenanalyse, sondern erleichtert auch die Kommunikation von Erkenntnissen, indem sie abstrakte Zusammenhänge in eine greifbare Form überführt. Dies macht Knowledge Graphen zu einem unverzichtbaren Werkzeug in vielen modernen datengetriebenen Anwendungen (vgl. \cite{knowledgeGraphIntroduction:Chaudhri}, S. 26).
 
 \section{Visualisierungstoosl für Knowledge Graphen}
 
-\section{Resource Description Framework - in realisierung beschreiben}
+Die Visualisierung von Knowledge Graphen ist entscheidend, um komplexe Beziehungen und Datenstrukturen verständlich darzustellen. Diese Visualisierungen ermöglichen es, die semantischen Verbindungen zwischen Entitäten zu erkennen und tiefere Einblicke in die zugrunde liegenden Daten zu gewinnen. In diesem Kapitel werden die Techniken untersucht, die in den weit verbreiteten Visualisierungstools Gephi und Cytoscape eingesetzt werden. Diese Analyse soll die Grundlage für die spätere Implementierung einer eigenen Software bilden.
+
+\subsection{Herausforderungen bei der Visualisierung von Knowledge Graphen}
+
+Die Visualisierung von Knowledge Graphen bringt spezifische Herausforderungen mit sich, die über die traditionellen Anforderungen an Graphvisualisierungen hinausgehen. Das Paper \citetitle{kgVisualization:Nararatwong} beschreibt verschiedene Herrausforderungen, die entscheidend dafür sind komplexe Datenmengen in einer Weise zu visualisieren, die sowohl zugänglich als auch verständlich ist. In diesem Abschnitt werden die zentralen Herausforderungen beleuchtet, die es bei der effektiven Visualisierung von Knowledge Graphen zu berücksichtigen gilt.
+
+Eine zentrale Herausforderung ist die Skalierbarkeit, insbesondere in Bezug auf die Performance bei großen Datenmengen. Knowledge Graphen bestehen oft aus einer sehr großen Anzahl von Knoten und Kanten, was die Visualisierung vor erhebliche technische Herausforderungen stellt. Die Visualisierungstools müssen in der Lage sein, diese Datenmengen effizient zu verarbeiten und darzustellen, ohne dass die Systemleistung darunter leidet oder die Benutzererfahrung beeinträchtigt wird (vgl. \cite{kgVisualization:Nararatwong}, S. 175).  Ein weiterer wichtiger Aspekt ist die Interaktivität. Benutzer müssen die Möglichkeit haben, die Visualisierung dynamisch zu erkunden, um relevante Informationen herauszufiltern und die Daten aus verschiedenen Perspektiven zu betrachten. Dies erfordert Techniken, die eine reibungslose und intuitive Interaktion mit dem Graphen ermöglichen (vgl. \cite{kgVisualization:Nararatwong}, S. 175). Die Verständlichkeit der Darstellung ist ebenfalls von großer Bedeutung. Sie bezieht sich darauf, wie gut die Visualisierung die strukturellen Verbindungen und Bedeutungen zwischen den Entitäten vermittelt. Eine klare und verständliche Darstellung ist notwendig, damit Benutzer die Beziehungen innerhalb des Knowledge Graphen intuitiv erfassen können (vgl. \cite{kgVisualization:Nararatwong}, S. 175).
+
+Das Paper gibt, neben den gerade vorgestellten Herrausforderungen, außerdem auch konkrete Empfehlungen zur Entiwcklung eines Visualisierungstools. Eine der zentralen Empfehlungen des Papers ist die Benutzeroberfläche so zu gestalten, dass sie speziell auf Nicht-Experten ausgerichtet ist. Die Visualisierung sollte den Benutzern eine intuitive und leicht verständliche Schnittstelle bieten, um komplexe Knowledge Graphen zu analysieren und zu verstehen (vgl. \cite{kgVisualization:Nararatwong}, S. 176). Ein weiterer wichtiger Aspekt ist die Leistungsfähigkeit des Visualizers. Um die Verarbeitung großer Datenmengen zu erleichtern, sollte das Backend-System vom UI getrennt werden. Dies ermöglicht die Verlagerung rechenintensiver Aufgaben auf spezialisierte oder skalierbare Servercluster, was die Reaktionsfähigkeit des Visualizers verbessert und die Benutzerfreundlichkeit erhöht (vgl. \cite{kgVisualization:Nararatwong}, S. 176). Zudem empfiehlt das Paper die Implementierung einer modularen Architektur. Ein Knowledge Graph Visualizer sollte erweiterbar und flexibel sein, um neue Technologien und anwendungsspezifische Anforderungen unterstützen zu können. Dies ist entscheidend, um die Anpassungsfähigkeit des Tools zu gewährleisten und es kontinuierlich weiterentwickeln zu können (vgl. \cite{kgVisualization:Nararatwong}, S. 176).
+
+\subsubsection{Gephi}
+
+Bal 
+
+\subsubsection{Gephi}
 
 \section{Visualisierungstechniken}
+\label{theory:vistechniques}
 
 Im Zeitalter der Digitalisierung sind Daten allgegenwärtig und werden in einem nie dagewesenen Ausmaß gesammelt. Es ist von entscheidender Bedeutung, diese Informationen effektiv begreifen und teilen zu können. In diesem Zusammenhang erweist sich die Datenvisualisierung als ein relevantes Feld, welches als Vermittler zwischen komplexen Datenmengen und dem menschlichen Verständnis fungiert. Durch die Transformation von rohen Daten in ein grafische Darstellungen vereinfacht die Datenvisualisierung den Zugang zu den Informationen. Sie erlaubt es den Beteiligten, Muster, Trends und Anomalien zu identifizieren, die in den Rohdaten verborgen sein könnten. Die Umwandlung von abstrakten Zahlen in visuelle Darstellungen fördert nicht nur das Verständnis, sondern unterstützt auch effektivere Entscheidungsprozesse. Es lässt sich nicht stark genug hervorheben, wie wichtig Datenvisualisierung ist. Sie macht Datenverständnis für alle zugänglich, ganz egal, wie viel oder wie wenig technisches Wissen der Benutzer hat (vgl. \cite{unwin:WhyDataVisualization}, S. 2 ff.).
 
