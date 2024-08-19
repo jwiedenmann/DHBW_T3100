@@ -35,11 +35,23 @@ Eine zentrale Herausforderung ist die Skalierbarkeit, insbesondere in Bezug auf 
 
 Das Paper gibt, neben den gerade vorgestellten Herrausforderungen, außerdem auch konkrete Empfehlungen zur Entiwcklung eines Visualisierungstools. Eine der zentralen Empfehlungen des Papers ist die Benutzeroberfläche so zu gestalten, dass sie speziell auf Nicht-Experten ausgerichtet ist. Die Visualisierung sollte den Benutzern eine intuitive und leicht verständliche Schnittstelle bieten, um komplexe Knowledge Graphen zu analysieren und zu verstehen (vgl. \cite{kgVisualization:Nararatwong}, S. 176). Ein weiterer wichtiger Aspekt ist die Leistungsfähigkeit des Visualizers. Um die Verarbeitung großer Datenmengen zu erleichtern, sollte das Backend-System vom UI getrennt werden. Dies ermöglicht die Verlagerung rechenintensiver Aufgaben auf spezialisierte oder skalierbare Servercluster, was die Reaktionsfähigkeit des Visualizers verbessert und die Benutzerfreundlichkeit erhöht (vgl. \cite{kgVisualization:Nararatwong}, S. 176). Zudem empfiehlt das Paper die Implementierung einer modularen Architektur. Ein Knowledge Graph Visualizer sollte erweiterbar und flexibel sein, um neue Technologien und anwendungsspezifische Anforderungen unterstützen zu können. Dies ist entscheidend, um die Anpassungsfähigkeit des Tools zu gewährleisten und es kontinuierlich weiterentwickeln zu können (vgl. \cite{kgVisualization:Nararatwong}, S. 176).
 
-\subsubsection{Gephi}
+\subsection{Gephi}
 
-Bal 
+Gephi ist ein Open-Source-Tool, das sich auf die Visualisierung und Analyse von Netzwerken spezialisiert hat. Es ist besonders nützlich für die Verarbeitung und Darstellung großer und komplexer Graphen. Ein wesentlicher Vorteil von Gephi liegt in seiner Fähigkeit, große Mengen an Knoten und Kanten effizient zu verarbeiten und darzustellen (vgl. \cite{gephi:Bastian}, S. 1).
 
-\subsubsection{Gephi}
+Ein zentrales Feature von Gephi ist das Force-Directed Layout (vgl. \cite{gephi:Bastian}, S. 1). Diese Technik simuliert physikalische Kräfte, bei denen Knoten als geladene Teilchen und Kanten als elastische Federn modelliert werden. Dadurch werden die Knoten so angeordnet, dass verwandte Entitäten näher beieinander liegen, was es ermöglicht, Cluster innerhalb des Netzwerks zu identifizieren und die Struktur des Netzwerks verständlicher darzustellen (vgl. \cite{forceGraph:yWorks}). Force-Directed Layouts nd werden in Gephi häufig eingesetzt, um komplexe Netzwerke intuitiv zu visualisieren.
+
+Darüber hinaus verfügt Gephi über Techniken für Clustering und Community Ermittlung, die es ermöglichen, Gruppen verwandter Knoten in einem Netzwerk zu identifizieren (vgl. \cite{gephi:Bastian}, S. 1 f.). Diese Funktionen sind besonders nützlich für die Analyse semantischer Beziehungen in großen Netzwerken. Durch die Anwendung von Algorithmen können Benutzer Untergruppen innerhalb des Netzwerks erkennen und analysieren, was eine detailliertere Untersuchung der Netzwerkstruktur ermöglicht (vgl. \cite{clusteringGraph:yWorks}).
+
+Ein weiteres nützliches Feature von Gephi ist die Unterstützung für dynamische Graphvisualisierungen. Diese Funktion ermöglicht es, zeitliche Veränderungen in Netzwerken darzustellen, was besonders hilfreich ist, um Entwicklungen über Zeit zu analysieren (vgl. \cite{gephi:Bastian}, S. 2).
+
+Eine der technischen Stärken von Gephi liegt in seiner Unterstützung für GPU-Rendering, das die Verarbeitungsgeschwindigkeit bei der Visualisierung großer Netzwerke erheblich steigert. Durch die Auslagerung rechenintensiver Aufgaben auf die Grafikkarte wird die CPU entlastet, was eine flüssigere und schnellere Darstellung von Graphen ermöglicht. Zusätzlich ist Gephi für Multitasking ausgelegt, was es ermöglicht, mehrere Prozesse gleichzeitig auszuführen, ohne die Gesamtleistung der Software erheblich zu beeinträchtigen. Diese Funktionen sind besonders vorteilhaft bei der Verarbeitung großer Datenmengen und tragen dazu bei, dass Gephi auch bei komplexen Visualisierungsaufgaben effizient arbeitet (vgl. \cite{gephi:Bastian}, S. 1).
+
+Gephi bietet damit eine robuste Plattform für die Visualisierung und Analyse von Netzwerken, wobei der Fokus auf der effizienten Verarbeitung großer Datenmengen und der Unterstützung interaktiver und dynamischer Visualisierungen liegt.
+
+\subsection{Cytoscape}
+
+
 
 \section{Visualisierungstechniken}
 \label{theory:vistechniques}

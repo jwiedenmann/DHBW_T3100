@@ -1,0 +1,2 @@
+2.2 Visualiesierungstoosl die eschon existieren beschreiben und in relation zu meinem Tool sezten
+Anforderungen in Konzeptteil. ANregungen aus Paper Knowledge Graph Visualization Challenges
