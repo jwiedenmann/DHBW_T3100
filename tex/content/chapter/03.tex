@@ -2,11 +2,17 @@
 
 \chapter{Realisierung}
 
-\section{Konzept}
-\subsection{Auswahl von Diagrammarten}
-\subsection{Designprinzipien und Anforderungen}
+Nachdem im theoretischen Teil die Grundlagen, Herausforderungen und geeigneten Visualisierungstechniken für Knowledge Graphen erarbeitet wurden, widmet sich dieses Kapitel der praktischen Umsetzung der gewonnenen Erkenntnisse. Ziel ist es, ein System zu entwickeln, welches dazu in der Lage ist einen Knowledge Graphen zu visualisieren und den Anforderungen, die sich aus dem Theorieteil ableiten lassen, gerecht zu werden. Das System wird im Folgenden Kapitel als Graph Visualizer bezeichnet.
 
-\subsection{Vergleiche der Diagrammarten}
+\section{Konzept}
+
+In diesem Abschnitt wird das Konzept für die Umsetzung des Graph Visualizers entwickelt. Auf Basis des theoretischen Teils, werden zunächst die funktionalen und nicht-funktionalen Anforderungen an den Graph Visualizer analysiert. Anschließend werden die geeigneten Diagrammarten ausgewählt und die notwendigen Technologien festgelegt. Das erarbeitete Konzept bildet die Grundlage für die nachfolgende Implementierung und gewährleistet, dass der Graph Visualizer sowohl den technischen als auch den benutzerseitigen Anforderungen entspricht. Dabei wird besonders darauf geachtet, dass die Architektur des Systems flexibel und erweiterbar gestaltet ist, um zukünftige Anpassungen und Erweiterungen zu ermöglichen.
+
+\subsection{Anforderungsanalyse}
+\subsubsection{Funktionale Anforderungen}
+\subsubsection{Nicht-Funktionale Anforderungen}
+
+\subsection{Vergleiche und Auswahl der Visualisierungstechniken}
 
 Nachdem im vorangegangenen Kapitel Node-Link Diagramme und Adjazenzmatrizen ausführlich vorgestellt wurden, soll hier nun ein Vergleich folgen. In diesem Kapitel wird ein ausführlicher Vergleich von Node-Link Diagrammen mit Adjazenzmatrizen angestellt, um ihre Tauglichkeit für die Visualisierung großer Knowledge Graphen zu beurteilen. Der Vergleich erfolgt anhand folgender Kriterien: Lesbarkeit und Verständlichkeit, Skalierbarkeit, Interaktivität, Performance, Unterstützung für hierarchische Daten. Durch diesen Vergleich soll ein tiefes Verständnis für die Vor- und Nachteile jeder Visualisierungsart geschaffen werden, sodass später eine qualifizierte Auswahl einer Diagrammart getroffen werden kann. Die folgenden Punkte stützen sich auf die Erkenntnisse aus Kapitel \ref{theory:visualization:types}. Da sich die Tree Map Diagramme bereits in ihrer Vorstellung als ungeeignet gezeigt haben, werden diese im folgenden Kapitel nicht berücksichtigt.
 
@@ -41,13 +47,15 @@ Node-Link Diagramme sind grafische Darstellungen, bei denen Knoten durch Punkte 
 
 Adjazenzmatrix Diagramme hingegen stellen Netzwerke als Matrizen dar, in denen die Verbindungen zwischen Knoten durch die Füllung der Zellen dargestellt wird. Die Rechenleistung für das Rendering einer Adjazenzmatrix skaliert im Wesentlichen linear mit der Anzahl der Knoten, da die Darstellung unabhängig von der Anzahl der Verbindungen ist. Dadurch sind Adjazenzmatrizen effizienter in der Darstellung sehr großer Netzwerke, insbesondere wenn es sich um dichte Netzwerke handelt. 
 
-\section{Technologieauswahl}
-\subsection{Frontend-Technologien}
-\subsection{Backend-Technologien}
-\subsection{Schnittstellen und Datenformate}
+\subsection{Technologieauswahl}
+\subsubsection{Frontend-Technologien}
+\subsubsection{Backend-Technologien}
+\subsubsection{Schnittstellen und Datenformate}
 
-\section{Resource Description Framework - in realisierung beschreiben}
+\subsection{Erstellung des Lösungskonzepts}
 
 \section{Implementierung}
+\subsection{Umsetzung des Backends}
+\subsection{Umsetzung des Frontends}
 
 \chapter{Zusammenfassung und Ausblick}
