@@ -9,8 +9,141 @@ Nachdem im theoretischen Teil die Grundlagen, Herausforderungen und geeigneten V
 In diesem Abschnitt wird das Konzept für die Umsetzung des Graph Visualizers entwickelt. Auf Basis des theoretischen Teils, werden zunächst die funktionalen und nicht-funktionalen Anforderungen an den Graph Visualizer analysiert. Anschließend werden die geeigneten Diagrammarten ausgewählt und die notwendigen Technologien festgelegt. Das erarbeitete Konzept bildet die Grundlage für die nachfolgende Implementierung und gewährleistet, dass der Graph Visualizer sowohl den technischen als auch den benutzerseitigen Anforderungen entspricht. Dabei wird besonders darauf geachtet, dass die Architektur des Systems flexibel und erweiterbar gestaltet ist, um zukünftige Anpassungen und Erweiterungen zu ermöglichen.
 
 \subsection{Anforderungsanalyse}
+
+In diesem Abschnitt werden die spezifischen Anforderungen an den Graph Visualizer untersucht und definiert. Dabei wird zwischen funktionalen und nicht-funktionalen Anforderungen unterschieden. Die funktionalen Anforderungen beschreiben die konkreten Funktionen, die der Graph Visualizer erfüllen muss, wie etwa die Visualisierung von Knowledge Graphen, die Interaktivität und die Anpassungsfähigkeit der Darstellung. Die nicht-funktionalen Anforderungen hingegen befassen sich mit Aspekten wie Performance, Skalierbarkeit, Benutzerfreundlichkeit und Sicherheit. Die Anforderungen werden aus den Erkenntnissen aus Kapitel \ref{theory} abgeleitet. Diese Analyse bildet die Grundlage für die Auswahl der geeigneten Technologien und die Entwicklung eines Systems, das den Erwartungen der Benutzer entspricht und gleichzeitig den technischen Herausforderungen gerecht wird.
+
 \subsubsection{Funktionale Anforderungen}
+
+Für dieses Projekt wurde festgelegt, dass der Graph Visualizer die Daten des DBpedia Graphen visualisieren soll. DBpedia ist eine umfassende Wissensdatenbank, die auf strukturierten Informationen aus Wikipedia basiert. Diese Datenquelle wurde ausgewählt, da sie einen großen, frei zugänglichen Knowledge Graphen zur Verfügung stellt. Die genauen Daten sind in diesem Projekt zweitrangig. Es geht darum mit welchen Techniken ein Knowledge Graph dargestellt werden kann und nicht darum welche Daten dargestellt werden.
+
+Der Graph Visualizer muss in der Lage sein, Knowledge Graphen effektiv darzustellen. Dies umfasst die Fähigkeit, Knoten und Kanten zu rendern und unterschiedliche Visualisierungstechniken anzuwenden, um die Daten strukturiert und verständlich zu präsentieren. Die Visualisierung muss es ermöglichen, komplexe Netzwerke übersichtlich darzustellen und verschiedene Perspektiven auf die Daten anzubieten.
+
+Ein wesentliches Merkmal des Graph Visualizer ist die Interaktivität. Benutzer müssen die Möglichkeit haben, mit dem Graphen zu interagieren, indem sie Knoten und Kanten auswählen, verschieben, vergrößern oder verkleinern. Darüber hinaus soll der Benutzer durch einfache Aktionen, wie Klicks oder Drag-and-Drop, den Graphen dynamisch erkunden und manipulieren können, um tiefere Einblicke in die Daten zu gewinnen.
+
+Der Graph Visualizer soll es ermöglichen, die Darstellung der Graphen anzupassen. Dazu gehört die Fähigkeit, verschiedene Layouts auszuwählen, sowie die Darstellung des Graphen anzupassen. Diese Anpassungen sollen helfen, die Visualisierung an den spezifischen Kontext der Analyse anzupassen und die relevanten Informationen hervorzuheben.
+
+Die eben definierten funktionalen Anforderungen sind in der Tabelle \ref{tab:realization:concept:funcreq} zusammengefasst.
+
+\begin{center}
+    \begin{longtable}{|l|p{4.5cm}|p{8cm}|}
+        \caption{Funktionale Anforderungen an den Graph Visualizer}
+        \label{tab:realization:concept:funcreq}  \\
+
+        \hline
+        \multicolumn{1}{|c|}{}            &
+        \multicolumn{1}{ c|}{\textbf{FR}} &
+        \multicolumn{1}{ c|}{\textbf{Bedeutung}} \\
+        \hline
+        \endhead
+
+        \hline
+        \endlastfoot
+
+        FR01
+        \label{FR01}
+                                          &
+        Darstellung von Daten aus DBpedia
+                                          &
+        Das System soll DBpedia als Datenquelle verwenden.
+        \\
+        \hline
+        FR02
+        \label{FR02}
+                                          &
+        Visualisierung von Knowledge Graphen
+                                          &
+        Das System soll dazu in der Lage sein einen Knowledge Graphen zu visualisieren.
+        \\
+        \hline
+        FR03
+        \label{FR03}
+                                          &
+        Interaktivität
+                                          &
+        Das System muss dem Nutzer verschiedene Möglichkeiten zu Interaktion bieten.
+        \\
+        \hline
+        FR04
+        \label{FR04}
+                                          &
+        Anpassbarkeit der Darstellung
+                                          &
+        Der Nutzer muss die Darstellung anpassen können.
+        \\
+    \end{longtable}
+\end{center}
+
 \subsubsection{Nicht-Funktionale Anforderungen}
+
+Der Graph Visualizer muss eine hohe Reaktionsgeschwindigkeit aufweisen, insbesondere bei der Verarbeitung großer Datenmengen. Ladezeiten sollten minimiert und Interaktionen wie das Verschieben, Zoomen oder Auswählen von Knoten sollten ohne Verzögerungen durchgeführt werden können. Das System sollte in der Lage sein, selbst bei Netzwerken mit tausenden von Knoten und Kanten flüssig zu arbeiten.
+
+Das System muss stabil und zuverlässig funktionieren. Es darf nicht zu Abstürzen kommen, selbst wenn es mit unerwarteten Eingaben oder sehr großen Datenmengen konfrontiert wird.
+
+Der Graph Visualizer sollte auf verschiedenen Plattformen und Betriebssystemen lauffähig sein. Der Nutzer soll den Graph Visualizer von jedem gängigen System aus verwenden können.
+
+Das System sollte leicht wartbar sein. Der Quellcode muss gut strukturiert sein, um zukünftige Anpassungen und Erweiterungen zu erleichtern. Ein modularer Aufbau des Systems ist wünschenswert, um einzelne Komponenten einfach austauschen oder aktualisieren zu können.
+
+Die Benutzeroberfläche sollte intuitiv und leicht verständlich sein. Es sollten umfassende Hilfsmittel wie Tooltips zur Verfügung stehen.
+
+Die eben definierten nicht-funktionalen Anforderungen sind in der Tabelle \ref{tab:realization:concept:nonfuncreq} zusammengefasst.
+
+\begin{center}
+    \begin{longtable}{|l|p{4.5cm}|p{8cm}|}
+        \caption{Nicht-funktionale Anforderungen an den Graph Visualizer}
+        \label{tab:realization:concept:nonfuncreq} \\
+
+        \hline
+        \multicolumn{1}{|c|}{}             &
+        \multicolumn{1}{ c|}{\textbf{NFR}} &
+        \multicolumn{1}{ c|}{\textbf{Bedeutung}}   \\
+        \hline
+        \endhead
+
+        \hline
+        \endlastfoot
+
+        NFR01
+        \label{NFR01}
+                                           &
+        Performance
+                                           &
+        Die Anwendung muss eine hohe Reaktionsgeschwindigkeit aufweisen und selbst bei Graphen mit tausenden Knoten flüssig arbeiten.
+        \\
+        \hline
+        NFR02
+        \label{NFR02}
+                                           &
+        Zuverlässigkeit
+                                           &
+        Das System muss stabil und zuverlässig funktionieren.
+        \\
+        \hline
+        NFR03
+        \label{NFR03}
+                                           &
+        Kompatibilität
+                                           &
+        Der Graph Visualizer sollte auf verschiedenen Plattformen und Betriebssystemen lauffähig
+        sein.
+        \\
+        \hline
+        NFR04
+        \label{NFR04}
+                                           &
+        Wartbarkeit
+                                           &
+        Das System sollte leicht zu warten und erweitern sein.
+        \\
+        \hline
+        NFR05
+        \label{NFR05}
+                                           &
+        Benutzerfreundlichkeit
+                                           &
+        Die Benutzeroberfläche sollte intuitiv und leicht verständlich sein.
+        \\
+    \end{longtable}
+\end{center}
 
 \subsection{Vergleiche und Auswahl der Visualisierungstechniken}
 
@@ -45,7 +178,7 @@ Das letzte Kriterium, was in diesem Vergleich beleuchtet werden soll, ist die Pe
 
 Node-Link Diagramme sind grafische Darstellungen, bei denen Knoten durch Punkte und Beziehungen durch Linien repräsentiert werden. Bei kleineren bis mittelgroßen Netzwerken ist die benötigte Rechenleistung für das Rendering und die Interaktion mit diesen Diagrammen logischerweise gering. Die Komplexität steigt jedoch exponentiell mit der Anzahl der Knoten und Verbindungen. Das reine Zeichnen der Knoten und Verbindungen stell hierbei allerdings weniger das Problem dar. Problematisch ist die Positionierung. Um die Übersichtlichkeit zu gewährleisten, werden in der Regel Algorithmen eingesetzt, welche versuchen die Knoten optimal zu positionieren, sodass möglichst wenig Überlappungen von Kanten entstehen. Die Performance wird auch von Techniken für die Vereinfachung der Diagramme belastet. Diese Techniken haben zu Ziel die Darstellung für den Nutzer übersichtlicher zu gestalten.  Diese Algorithmen benötigen bei großen und dichten Netzwerken erhebliche Rechenressourcen. Die Performance-Probleme manifestieren sich in Form von langsamen Ladezeiten und verzögerten Interaktionen.
 
-Adjazenzmatrix Diagramme hingegen stellen Netzwerke als Matrizen dar, in denen die Verbindungen zwischen Knoten durch die Füllung der Zellen dargestellt wird. Die Rechenleistung für das Rendering einer Adjazenzmatrix skaliert im Wesentlichen linear mit der Anzahl der Knoten, da die Darstellung unabhängig von der Anzahl der Verbindungen ist. Dadurch sind Adjazenzmatrizen effizienter in der Darstellung sehr großer Netzwerke, insbesondere wenn es sich um dichte Netzwerke handelt. 
+Adjazenzmatrix Diagramme hingegen stellen Netzwerke als Matrizen dar, in denen die Verbindungen zwischen Knoten durch die Füllung der Zellen dargestellt wird. Die Rechenleistung für das Rendering einer Adjazenzmatrix skaliert im Wesentlichen linear mit der Anzahl der Knoten, da die Darstellung unabhängig von der Anzahl der Verbindungen ist. Dadurch sind Adjazenzmatrizen effizienter in der Darstellung sehr großer Netzwerke, insbesondere wenn es sich um dichte Netzwerke handelt.
 
 \subsection{Technologieauswahl}
 \subsubsection{Frontend-Technologien}
