@@ -178,11 +178,26 @@ Die Kommunikation zwischen dem Frontend und dem Backend des Graph Visualizer erf
 
 Die Svelte-Anwendung im Frontend erhält die aufbereiteten Daten dann im \ac{JSON} Format. \ac{JSON} bietet die nötige Flexibilität und Einfachheit, um komplexe Datenstrukturen, effizient darzustellen. Diese Struktur ermöglicht eine reibungslose Integration der Daten in die interaktiven Visualisierungen des Graph Visualizer. Durch diese Architektur wird eine klare Trennung zwischen den Datenformaten im Backend und der Datenpräsentation im Frontend gewährleistet, was die Wartbarkeit und Erweiterbarkeit des Systems verbessert.
 
-\subsection{Erstellung des Lösungskonzepts}
+\subsection{Zusammenfassung der Systemarchitektur}
+
+Die Systemarchitektur des Graph Visualizer ist in die Client-Seite und die Server-Seite unterteilt. Auf der Client-Seite läuft das Frontend als Single Page Application im Browser des Users. Als JavaScript-Framework wird Svelte eingesetzt. Es ist für die Benutzeroberfläche und die Präsentation der Visualisierungen verantwortlich, wobei D3.js zur Darstellung der Knowledge Graphen sowie TailwindCSS und DaisyUI für das Styling eingesetzt werden. Das Frontend kommuniziert über API-Anfragen mit dem Backend.
+
+Das Backend, entwickelt mit ASP.NET Core, übernimmt die Geschäftslogik und den Datenzugriff. Es empfängt API-Anfragen vom Frontend, verarbeitet die Daten von DBpedia, die über einen SPARQL-Endpunkt im RDF-Format abgerufen werden, und wandelt sie in JSON um, das für das Frontend leicht verarbeitbar ist. Das Backend fungiert somit als zentrale Schnittstelle zwischen der Datenquelle und der Präsentationsebene.
+
+Diese Struktur ist zur Verdeutlichung in der Abbildung \ref{fig:realization:concept:architecture} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.35\textwidth]{images/03/Architecture.drawio.png}
+    \caption{Geplante Architektur des Graph Visualizers.}
+    \label{fig:realization:concept:architecture}
+\end{figure}
 
 \section{Implementierung}
-\subsection{Umsetzung des Backends}
-\subsection{Umsetzung des Frontends}
+
+\subsection{Initialisierung der Anwendung}
+\subsection{Implementierung der Startseite}
+\subsection{Implementierung der Graph-View}
 
 \section{Vergleich}
 \label{realization:comparison}

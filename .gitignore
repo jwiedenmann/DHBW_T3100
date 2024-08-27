@@ -5,6 +5,7 @@ bin/
 obj/
 
 .DS_Store
+*.bkp
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
