@@ -157,8 +157,8 @@ function aggregateCommunities(nodes, uniqueCommunities, settings) {
         // Total area with adjusted scaling factors to avoid excessive inflation
         const totalEffectiveArea = baseArea + linkSpacingArea + chargeRepulsionArea + collisionArea;
 
-        // Calculating the radius from the total area
-        const effectiveRadius = Math.sqrt(totalEffectiveArea / Math.PI);
+        // Calculating the radius from the total area and doubling it
+        const effectiveRadius = Math.sqrt(totalEffectiveArea / Math.PI) * 2;
 
         return {
             id: `community-${community}`,
