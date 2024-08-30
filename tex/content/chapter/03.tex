@@ -212,6 +212,50 @@ Um die Auslieferung der statischen Dateien zu ermöglichen, wurden in der Startu
 Nachdem die Konfiguration abgeschlossen war, wurde die ASP.NET Core-Anwendung gestartet, um sicherzustellen, dass die Svelte-Anwendung korrekt ausgeliefert wird. Bei einem Zugriff auf den Server durch den Browser wurde die Anwendung wie erwartet geladen, was den erfolgreichen Abschluss der Initialisierung bestätigte. Diese Schritte legten die Grundlage für die weitere Implementierung der spezifischen Features des Graph Visualizer.
 
 \subsection{Implementierung der Startseite}
+
+Die Implementierung der Startseite des Graph Visualizer legt besonderen Wert auf eine minimalistische und benutzerfreundliche Gestaltung, um den Nutzer sofort auf den Hauptzweck der Anwendung zu fokussieren. Dies entspricht der in den nicht-funktionalen Anforderungen (\hyperref[NFR05]{NFR05}) festgelegten Priorität auf Benutzerfreundlichkeit.
+
+Als erstes wurde das Layout der Startseite so entworfen, dass die Benutzer nur mit den notwendigsten Elementen interagieren müssen. Im Zentrum der Seite befindet sich ein auffälliges Suchfeld, das zur Eingabe von Suchbegriffen dient. Diese Reduktion auf das Wesentliche soll sicherstellen, dass die Benutzer direkt zur Hauptfunktion der Anwendung geführt werden, nämlich der Visualisierung von Knowledge Graphen. Die Startseite ist in Abbildung \ref{fig:realization:implementation:homepage} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/HomePage.png}
+    \caption{Startseite des Graph Visualizers.}
+    \label{fig:realization:implementation:homepage}
+\end{figure}
+
+Ein Feature der Startseite und der gesamten Anwendung ist die Unterstützung eines Dark Modes. Diese Funktion wurde implementiert, um den Komfort für die Benutzer zu erhöhen, insbesondere bei längeren Nutzungszeiten oder in Umgebungen mit schwacher Beleuchtung. Durch einen Schalter in der oberen rechten Ecke der Seite kann der Benutzer zwischen dem hellen und dunklen Modus wechseln. Dies sorgt für eine angenehmere visuelle Erfahrung und unterstützt das Ziel, einer anpassbaren und benutzerfreundlichen Oberfläche. Das Feature ist in Abbildung \ref{fig:realization:implementation:homepagedark} zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/HomePageDark.png}
+    \caption{Startseite des Graph Visualizers im Dark Mode.}
+    \label{fig:realization:implementation:homepagedark}
+\end{figure}
+
+Wenn der Benutzer einen Suchbegriff in das Eingabefeld eingibt und die Suche ausführt, wird er automatisch auf die Suchseite weitergeleitet. Die URL der Suchseite enthält den Suchbegriff als Parameter (z.B. \textit{/\#/search?query=Space\%20Center}). Bereits beim Aufbau der Suchseite wird im Hintergrund eine Anfrage an den Search Endpunkt des SparqlControllers im ASP.NET Core Backend gestellt. Dieser Controller verwendet das SparqlRepository, das mithilfe des SparqlQueryClient aus der Bibliothek dotNetRdf.Core eine SPARQL-Abfrage an den DBpedia-Endpunkt sendet.
+
+\begin{lstlisting}[caption={SPARQL-Abfrage zur Filterung von Ressourcen anhand des Labels}, label={list:realization:implementation:searchquery}]
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?resource ?label WHERE {
+  ?resource rdfs:label ?label .
+  FILTER(regex(?label, "{searchTerm}", "i") && langMatches(lang(?label),"EN"))
+}
+LIMIT 100
+\end{lstlisting}
+
+In der Abfrage aus Listing \ref{list:realization:implementation:searchquery} wird zunächst jede Ressource (\textit{?resource}) identifiziert, die ein Label (\textit{?label}) besitzt. Der FILTER-Ausdruck sorgt dafür, dass nur solche Labels berücksichtigt werden, die dem eingegebenen Suchbegriff entsprechen. Zusätzlich werden die Ergebnisse auf Labels in englischer Sprache eingeschränkt, um eine kontinuität für dieses Projekt zu erreichen. Schließlich wird die Anzahl der zurückgegebenen Ergebnisse auf 100 beschränkt, um die Performance der Abfrage zu verbessern.
+
+Die Ergebnisse dieser Abfrage bestehen aus einer Liste von Ressourcen (URI) und ihren entsprechenden Labels, die dann in eine JSON-Struktur umgewandelt und an das Frontend übermittelt werden. Auf der Suchseite werden diese Ergebnisse als klickbare Links angezeigt, die den Benutzer weiter in die Exploration des Knowledge Graphen führen können. Diese Darstellung ist in der Abbildung \ref{fig:realization:implementation:searchpage} zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.8\textwidth]{images/03/SearchResults.png}
+    \caption{Suchseite der Graph Visualizers.}
+    \label{fig:realization:implementation:searchpage}
+\end{figure}
+
 \subsection{Implementierung der Graph-View}
 
 \section{Vergleich}
