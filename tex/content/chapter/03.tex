@@ -195,7 +195,22 @@ Diese Struktur ist zur Verdeutlichung in der Abbildung \ref{fig:realization:conc
 
 \section{Implementierung}
 
+In diesem Kapitel wird die praktische Umsetzung des Graph Visualizer beschrieben. Aufbauend auf den in den vorherigen Kapiteln erarbeiteten Anforderungen, liegt der Schwerpunkt dieses Kapitels auf der konkreten Implementierung der Features. Das Kapitel ist nach den zentralen Funktionalitäten der Anwendung strukturiert. Innerhalb dieser Kapitel wird dann jeweils auf die Implementierung im Front- und Backend eingeganen, je nach relevanz. Ziel ist es, die Techniken und Ansätze zu erläutern, die verwendet wurden, um die Anwendung mit all ihren Anforderungen zu realisieren.
+
 \subsection{Initialisierung der Anwendung}
+
+Die Initialisierung der Anwendung begann mit der Einrichtung der beiden zentralen Komponenten. Der Svelte-Anwendung für das Frontend und der ASP.NET Core-Anwendung für das Backend.
+
+Zunächst wurde die Svelte-Anwendung erstellt, die als Frontend des Graph Visualizer dient. Hierfür wurde ein neues Svelte-Projekt mit dem Svelte-CLI-Tool initialisiert. Diese Initialisierung legte die grundlegende Verzeichnisstruktur und die erforderlichen Konfigurationsdateien fest, die für die Entwicklung einer Single Page Application (SPA) notwendig sind. Im Anschluss daran wurden die benötigten Abhängigkeiten installiert. Dazu gehörten TailwindCSS für das Styling und DaisyUI als ergänzende UI-Komponentenbibliothek. Zudem wurde D3.js integriert, um die Visualisierung der Knowledge Graphen zu ermöglichen. Diese Bibliotheken wurden hinzugefügt, um die Entwicklung einer interaktiven und benutzerfreundlichen Oberfläche zu unterstützen.
+
+Parallel dazu wurde eine ASP.NET Core-Anwendung initialisiert, die das Backend des Systems bildet. Diese Anwendung wurde mit dem .NET CLI-Tool erstellt, das eine Standard-Verzeichnisstruktur und grundlegende Konfigurationsdateien bereitstellt. Das Backend ist dafür verantwortlich, die Svelte-Anwendung auszuliefern und API-Endpunkte für die Datenverarbeitung bereitzustellen.
+
+Um die Integration zwischen Frontend und Backend zu realisieren, wurde Vite so konfiguriert, dass es die Svelte-Anwendung kompiliert und die generierten Dateien, in das wwwroot-Verzeichnis der ASP.NET Core-Anwendung platziert. Diese Dateien werden dann von der ASP.NET Core-Anwendung als statische Dateien ausgeliefert.
+
+Um die Auslieferung der statischen Dateien zu ermöglichen, wurden in der Startup.cs-Datei der ASP.NET Core-Anwendung die Middleware-Komponenten \textit{app.UseDefaultFiles()} und \textit{app.UseStaticFiles()} konfiguriert. Diese Middleware sorgt dafür, dass Anfragen an den Server automatisch die entsprechenden Dateien aus dem wwwroot-Verzeichnis laden und an den Client ausliefern.
+
+Nachdem die Konfiguration abgeschlossen war, wurde die ASP.NET Core-Anwendung gestartet, um sicherzustellen, dass die Svelte-Anwendung korrekt ausgeliefert wird. Bei einem Zugriff auf den Server durch den Browser wurde die Anwendung wie erwartet geladen, was den erfolgreichen Abschluss der Initialisierung bestätigte. Diese Schritte legten die Grundlage für die weitere Implementierung der spezifischen Features des Graph Visualizer.
+
 \subsection{Implementierung der Startseite}
 \subsection{Implementierung der Graph-View}
 
