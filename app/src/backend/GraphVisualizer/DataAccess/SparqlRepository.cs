@@ -78,7 +78,7 @@ LIMIT 100";
             }
 
             knowledgeGraphDictionary[uri] = knowledgeGraph;
-            _cache.SaveCacheToDisk();
+            //_cache.SaveCacheToDisk();
         }
 
         // Limit the number of nodes returned
