@@ -252,11 +252,60 @@ Die Ergebnisse dieser Abfrage bestehen aus einer Liste von Ressourcen (URI) und 
 \begin{figure}[h]
     \centering
     \includegraphics[height=.8\textwidth]{images/03/SearchResults.png}
-    \caption{Suchseite der Graph Visualizers.}
+    \caption{Suchseite des Graph Visualizers.}
     \label{fig:realization:implementation:searchpage}
 \end{figure}
 
 \subsection{Implementierung der Graph-View}
+
+Die Graph-View ist das zentrale Element des Graph Visualizer und ermöglicht dem Benutzer die interaktive Erkundung von Knowledge Graphen. Die Seite bietet dem Benutzer verschiedene Optionen, um die Darstellung des Graphen anzupassen und die Daten zu filtern, um eine möglichst intuitive und effiziente Visualisierung zu gewährleisten.
+
+\subsubsection{Aufbau der Graph-View}
+
+Die Graph-View stellt den zentralen Bereich der Anwendung dar, in dem die Visualisierung des Knowledge Graphen erfolgt. Diese Ansicht ermöglicht es dem Benutzer, den Graphen interaktiv zu erkunden und anzupassen. Auf der linken Seite befindet sich ein Bedienfeld, das verschiedene Einstellungsmöglichkeiten bietet, um die Darstellung und das Verhalten des Graphen zu beeinflussen. Die Graph-View ist in Abbildung \ref{fig:realization:implementation:graphview} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/GraphView.png}
+    \caption{Graph-View des Graph Visualizers.}
+    \label{fig:realization:implementation:graphview}
+\end{figure}
+
+In dem Menu auf der linken Seite gibt es mehrere Panels mit unterschiedlichen Einstellungen. Zu den Data Settings gehört die Möglichkeit, die Anzahl der Ladeiterationen sowie das Knotenlimit festzulegen. Diese Einstellungen bestimmen, wie tief der Graph geladen wird und wie viele Knoten gleichzeitig dargestellt werden. Diese Parameter erlauben es die Performance der Anwendung zu kontrollieren und zu testen, welche Techniken zu einer Leistungssteigerung der Anwendung führen.
+
+Der Graph selbst wird standardmäßig als Node-Link Diagramm dargestellt, da es eine intuitive Visualierung der Beziehungen und der Knoten bietet. Auf die Erstellung des Graphen wird in Kapitel \ref{realization:implementation:graphDrawing} noch genauer eingeganen.
+
+\subsubsection{Laden des Graphen}
+
+Beim Laden der Graph-View wird die URI der Ressource aus der URL extrahiert (z.B. \textit{/\#/graph/?uri=http://dbpedia.org/resource/Kennedy\_Space\_Center,\_FL}). Diese URI wird an das Backend übermittelt, das den entsprechenden Graphen von DBpedia abruft und als JSON an das Frontend zurückgibt. Das Abrufen des Graphen geschieht im Backend, da es eine bessere Performance bietet. Das parallele Abrufen von Ressourcen beschleunigt das Laden großer Graphen deutlich. Ein zentraler Bestandteil dieses Prozesses ist die Get-Methode des SparqlRepository. Diese Methode übernimmt die Aufgabe, den Graphen zu laden und ihn für die Anzeige vorzubereiten.
+
+Ein wichtiger Bestandteil der Implementierung ist der Cache, der zur Verbesserung der Performance dient. Der Cache speichert zuvor geladene Graphen, um unnötige Anfragen an die externe Datenquelle zu vermeiden. Wenn eine Anfrage an das Backend gestellt wird, prüft die Get-Methode zunächst, ob der angeforderte Graph bereits im Cache vorhanden ist. Falls der Graph im Cache vorhanden ist, wird er direkt aus dem Cache zurückgegeben, was die Ladezeit erheblich verkürzt. Ist der Graph jedoch nicht im Cache vorhanden, wird er mittels der \textit{LoadGraphAsync} Methode von DBpedia abgerufen und anschließend in den Cache aufgenommen.
+
+Der Einsatz eines Caches kann die Performance der Anwendung signifikant verbessern, insbesondere wenn häufig auf dieselben Graphen zugegriffen wird. Allerdings ist der Speicherplatz des Caches begrenzt, und bei sehr großen Datenmengen könnte der Cache an seine Grenzen stoßen. In einer produktiven Umgebung könnte es daher sinnvoll sein, eine dedizierte Datenbank zur Zwischenspeicherung der Graphen zu verwenden, um eine noch robustere Lösung zu bieten.
+
+code einfügen
+
+\subsubsection{Erweiterung des Graphen}
+
+Zusätzlich zum primären Graphen kann die Anwendung auch Subgraphen laden. Dies ist sogar notwendig, um einen \enquote{echten} Knowledge Graphen zu erhalten. Wenn ein Graph aus der DBpedia-Datenbank geladen wird, wird die angeforderte Ressource inklusive all ihrer direkten Links und Informationen abgerufen. Das entspricht einem zentralen Knoten und seinen Verbindungen zu anderen Ressourcen. Ein solcher Graph ist in Abbildung \ref{fig:realization:implementation:simpleGraph} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.3\textwidth]{images/03/SimpleGraph.png}
+    \caption{Visualierung einer Ressource von DBpedia.}
+    \label{fig:realization:implementation:simpleGraph}
+\end{figure}
+
+Diese Darstellung ist sicherlich nicht, das was man sich unter einem großen Knowledge Graphen vorgestellt. Um diesen zu erhalten, muss man die Ressourcen, mit welchen der Graph verbunden ist abgerufen und den originalen Graphen um diese Informationen erweitern.
+
+Die Methode LoadSubGraphsAsync wird verwendet, um diese weiterführenden Ressourcen zu laden und in den bestehenden Graphen zu integrieren. Diese Methode lädt die verknüpften Ressourcen, indem sie für jede verlinkte Ressource erneut die Get-Methode aufruft. Die geladenen Subgraphen werden dann in den ursprünglichen Graphen integriert. Dieser rekursive Prozess ermöglicht es dem Benutzer, die Exploration des Knowledge Graphen zu vertiefen und weitere Verbindungen und Zusammenhänge zu entdecken, ohne dabei die Übersichtlichkeit zu verlieren.
+
+code einfügen
+
+Durch diese Herangehensweise beim Abrufen des Graphen stellt die Implementierung sicher, dass komplexe Netzwerke effizient geladen werden können.
+
+\subsection{Implementierung der Graph-Visualisierungen}
+\label{realization:implementation:graphDrawing}
 
 \section{Vergleich}
 \label{realization:comparison}
