@@ -307,6 +307,104 @@ Durch diese Herangehensweise beim Abrufen des Graphen stellt die Implementierung
 \subsection{Implementierung der Graph-Visualisierungen}
 \label{realization:implementation:graphDrawing}
 
+Die Implementierung der Graph-Visualisierungen im Graph Visualizer umfasst zwei wesentliche Diagrammarten. Das Node-Link Diagramm und die Adjazenzmatrix. Diese beiden Visualisierungstechniken bieten unterschiedliche Perspektiven auf die zugrunde liegenden Daten und ermöglichen eine flexible Analyse von Knowledge Graphen. Bevor jedoch die Implementierung dieser Diagramme beschrieben wird, ist es wichtig, die Struktur der vom Backend gelieferten Daten zu verstehen und wie diese Daten für die Visualisierung aufbereitet werden müssen.
+
+\subsubsection{Datenstruktur und Aufbereitung}
+
+Die Daten, die vom Backend an das Frontend übermittelt werden, bestehen aus einer Liste von Knoten, die als JSON formatiert sind. Jeder Knoten enthält die folgenden Attribute:
+
+\begin{itemize}
+    \item Uri: Die eindeutige Ressource-Identifier-URI des Knotens.
+    \item Label: Ein menschenlesbarer Name oder Titel, der den Knoten beschreibt.
+    \item Properties: Ein Dictionary von Eigenschaften, das zusätzliche Informationen über den Knoten enthält. Die Schlüssel im Wörterbuch sind die Namen der Eigenschaften, und die Werte sind die entsprechenden Inhalte.
+    \item Links: Ein Dictionary, das Verbindungen zu anderen Knoten beschreibt. Die Schlüssel sind die Typen der Verbindungen, und die Werte sind Listen von URIs, die auf die verlinkten Knoten verweisen.
+\end{itemize}
+
+Ein solcher Knoten im JSON Format ist in Listing \ref{list:realization:implementation:nodejson} dargestellt.
+
+\begin{lstlisting}[caption={Informationen einer Node im JSON Format.}, label={list:realization:implementation:nodejson}]
+{
+    "Uri": "http://dbpedia.org/resource/Kennedy_Space_Center,_FL",
+    "Label": "Kennedy Space Center",
+    "Properties": {
+        "Location": "Florida",
+        "Operator": "NASA"
+    },
+    "Links": {
+        "located_in": ["http://dbpedia.org/resource/Florida"],
+        "operated_by": ["http://dbpedia.org/resource/NASA"]
+    }
+}
+\end{lstlisting}
+
+Damit diese Daten von D3.js für die Visualisierung genutzt werden können, müssen sie zunächst in ein Format umgewandelt werden, das die Bibliothek versteht. Für das Node-Link Diagramm bedeutet dies, dass die Knoten und die Kanten extrahiert und entsprechend strukturiert werden müssen. Ein Beispiel für die Transformierten Daten ist in Listing \ref{list:realization:implementation:nodesAndLinksJson} dargestellt.
+
+\begin{lstlisting}[caption={Informationen einer Node im JSON Format.}, label={list:realization:implementation:nodesAndLinksJson}]
+    const nodes = [
+        { id: "http://dbpedia.org/resource/Kennedy_Space_Center,_FL", label: "Kennedy Space Center" },
+        { id: "http://dbpedia.org/resource/Florida", label: "Florida" },
+        { id: "http://dbpedia.org/resource/NASA", label: "NASA" }
+    ];
+    
+    const links = [
+        { source: "http://dbpedia.org/resource/Kennedy_Space_Center,_FL", target: "http://dbpedia.org/resource/Florida", type: "located_in" },
+        { source: "http://dbpedia.org/resource/Kennedy_Space_Center,_FL", target: "http://dbpedia.org/resource/NASA", type: "operated_by" }
+    ];
+\end{lstlisting}
+
+Diese Datenstruktur ermöglicht es D3.js, Knoten und Verbindungen darzustellen, wobei jeder Knoten durch eine eindeutige id identifiziert wird und die Kanten durch Quell- und Ziel-Eigenschaften spezifiziert sind.
+
+\subsubsection{Node-Link Diagramm}
+
+Das Node-Link Diagramm ist eine der zentralen Visualisierungsformen des Graph Visualizer und stellt die Beziehungen zwischen den Entitäten eines Knowledge Graphen intuitiv und visuell ansprechend dar. Die Implementierung des Node-Link Diagramms erfolgt mittels D3.js. Die Knoten werden als Kreise dargestellt, deren Positionen durch ein Force-Directed Layout bestimmt werden. Dieses Layout modelliert die Knoten als physikalische Objekte, die durch Kräfte zueinander in Beziehung stehen, ähnlich wie Federn und Ladungen in einem physikalischen Modell. Knoten, die durch Kanten verbunden sind, werden durch diese Kräfte näher zusammengeführt, während unverbundene Knoten weiter auseinanderliegen. Die Oberfläche ist in Abbildung \ref{fig:realization:implementation:GraphViewWithSettings} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/GraphViewWithSettings.png}
+    \caption{Oberfläche des Graph Visualizers mit Node-Link Diagramm.}
+    \label{fig:realization:implementation:GraphViewWithSettings}
+\end{figure}
+
+Die Darstellung der Knoten und Kanten im Node-Link Diagramm kann durch verschiedene Einstellungen im \enquote{Graph Settings}-Panel angepasst werden. Hier können die Benutzer die Größe der Knoten, den Kollisionsradius, die Ladungsstärke und die Link-Distanz konfigurieren. Die Größe der Knoten bestimmt, wie prominent die einzelnen Entitäten im Diagramm erscheinen, während der Kollisionsradius beeinflusst, wie nah die Knoten zueinander liegen dürfen, bevor sie sich abstoßen. Die Ladungsstärke reguliert die Abstoßungskraft zwischen den Knoten, was bei der Entzerrung dicht verbundener Bereiche des Graphen hilfreich ist. Die Link-Distanz steuert die Länge der Verbindungen zwischen den Knoten, was die Gesamtstruktur des Graphen entweder dichter oder weiter gefasst erscheinen lässt. Das Ergebnis einer Änderung der Einstellungen ist in Abbildung \ref{fig:realization:implementation:NodeLinkWithChangedSettings} zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/NodeLinkChangedSettings.png}
+    \caption{Node Link Diagramm mit veänderten Einstellungen.}
+    \label{fig:realization:implementation:NodeLinkWithChangedSettings}
+\end{figure}
+
+Eine weitere Einstellung ist die Farbgebung der Knoten. Um die Visualisierung zugänglicher zu machen, wurde eine Option eingebaut, die es ermöglicht die Farbe der Knoten basierend auf der Anzahl Verbindungen berechnen zu lassen. Durch die Farbgebung können Benutzer auf einen Blick erkennen, welche Knoten besonders stark vernetzt sind oder spezifische Verbindungen aufweisen. Ein Beispiel hierfür ist in Abbildung \ref{fig:realization:implementation:ColorNodesByLinks} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/ColorNodesByLinks.png}
+    \caption{Node Link Diagramm mit der Einstellung \enquote{Color Nodes by Links}.}
+    \label{fig:realization:implementation:ColorNodesByLinks}
+\end{figure}
+
+Zusätzlich ist die Einstellung Alpha Decay ein wesentlicher Parameter, der die Stabilisierung des Force-Directed Layouts beeinflusst. Dieser Wert bestimmt, wie schnell das Layout konvergiert und zur Ruhe kommt. Ein hoher Alpha Decay-Wert sorgt dafür, dass sich das Layout schneller stabilisiert, was bei der Visualisierung großer Graphen von Vorteil sein kann, da die Knotenpositionen rascher endgültig festgelegt werden. Andererseits, kann die Darstellung dann unübersichtlicher sein, als bei einer Simulation die länger läuft. Diese Diskrepanz ist in den Abbildungen \ref{fig:realization:implementation:NodeLinkLowAlpha} und \ref{fig:realization:implementation:NodeLinkHighAlpha} dargestellt. In der linken Abbildung wurde der Simulation viel Zeit gegeben, während die rechte Darstellung einen hohen Alpha Decay hatte. Hier Zeigt sich deutlich, dass das Zentrum der rechten Darstellung deutlich unübersichtlicher ist.
+
+\begin{figure}
+    \centering
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\linewidth]{images/03/NodeLinkLowAlpha.png}
+        \caption{Node Link Diagramm niedrigem Aplha Decay.}
+        \label{fig:realization:implementation:NodeLinkLowAlpha}
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\linewidth]{images/03/NodeLinkHighAlpha.png}
+        \caption{Node Link Diagramm hohem Aplha Decay.}
+        \label{fig:realization:implementation:NodeLinkHighAlpha}
+    \end{minipage}
+\end{figure}
+
+Die umfangreichen Anpassungsmöglichkeiten des Node-Link Diagramms sind darauf ausgelegt, die in den nicht-funktionalen Anforderungen definierten Ziele zu erreichen. Dazu gehört unter anderem die Forderung nach einer hohen Benutzerfreundlichkeit und Flexibilität bei der Darstellung von komplexen Knowledge Graphen. Die interaktiven Anpassungsoptionen ermöglichen es den Benutzern, das Diagramm an ihre spezifischen Bedürfnisse anzupassen, was insbesondere bei der Analyse großer und komplexer Graphen von entscheidender Bedeutung ist.
+
+\subsubsection{Adjazenzmatrix}
+
 \section{Vergleich}
 \label{realization:comparison}
 
