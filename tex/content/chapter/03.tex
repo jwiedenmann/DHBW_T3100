@@ -405,6 +405,19 @@ Die umfangreichen Anpassungsmöglichkeiten des Node-Link Diagramms sind darauf a
 
 \subsubsection{Adjazenzmatrix}
 
+Die Adjazenzmatrix ist eine alternative Visualisierungsmethode, die sich besonders für die Analyse von großen und komplexen Graphen eignet, bei denen die Verbindungen zwischen den Knoten im Vordergrund stehen. In einer Adjazenzmatrix werden die Knoten sowohl in den Zeilen als auch in den Spalten einer Matrix angeordnet. Jede Zelle der Matrix repräsentiert eine mögliche Verbindung zwischen den Knoten, die durch die entsprechende Zeile und Spalte definiert sind. Ist eine Verbindung vorhanden, wird die Zelle entsprechend markiert. Diese Visualisierungsmethode eignet sich besonders gut, um Cluster und dichte Netzwerke innerhalb des Graphen schnell zu identifizieren. Durch die Anordnung der Knoten in einer Matrix können Verbindungen direkt und ohne Überlappungen dargestellt werden, was bei komplexen Graphen mit vielen Knoten und Kanten eine deutlich verbesserte Lesbarkeit ermöglicht. Der Nutzer kann im Graph Visualizer über das Settings-Panel auf die Adjazenzmatrixdarstellung umschalten. Diese Darstellung ist in Abbildung \ref{fig:realization:implementation:AdjacencyMatrixView} zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/AdjacencyViewWithSettings.png}
+    \caption{Adjazenzmatrixdarstellung im Graph Visualizer.}
+    \label{fig:realization:implementation:AdjacencyMatrixView}
+\end{figure}
+
+Die Adjazenzmatrix im Graph Visualizer bietet nur eine Anpassungsmöglichkeit. Sie ermöglicht es die Umrandung der Zellen ein- oder auszuschalten. Die Anzeige der Umrandung hilft dabei, die einzelnen Zellen klar voneinander zu trennen, was besonders bei dichten Graphen nützlich ist. Die Darstellung der Trennlinien kostet aber auch Performance, weshalb dem Nutzer die Möglichkeit gegeben wird diese auszuschalten.
+
+Die Adjazenzmatrix erfüllt mehrere der im Projekt definierten Anforderungen, insbesondere in Bezug auf die Darstellung komplexer Netzwerkstrukturen und die Benutzerfreundlichkeit. Durch die klare und strukturierte Darstellung von Verbindungen ermöglicht die Adjazenzmatrix eine einfache Identifikation von Clustern und Mustern im Graphen, was die Analyse und das Verständnis der zugrunde liegenden Daten erheblich erleichtert.
+
 \section{Vergleich}
 \label{realization:comparison}
 
