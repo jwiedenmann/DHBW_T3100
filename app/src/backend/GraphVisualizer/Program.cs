@@ -28,10 +28,6 @@ builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient<SparqlRepository>();
 
 builder.Services.AddTransient<ISparqlRepository, SparqlRepository>();
-builder.Services.AddSingleton(x => new PersistentMemoryCache(
-    x.GetRequiredService<IMemoryCache>(),
-    "cache.json",
-    [SparqlRepository.GraphCacheKey]));
 
 var app = builder.Build();
 

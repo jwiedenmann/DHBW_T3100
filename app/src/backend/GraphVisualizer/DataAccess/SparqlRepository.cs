@@ -10,13 +10,13 @@ public class SparqlRepository : ISparqlRepository
 {
     public const string GraphCacheKey = "graphCacheKey";
     private readonly IConfiguration _configuration;
-    private readonly PersistentMemoryCache _cache;
+    private readonly IMemoryCache _cache;
     private readonly HttpClient _httpClient;
 
-    public SparqlRepository(IConfiguration configuration, PersistentMemoryCache persistentMemory, HttpClient httpClient)
+    public SparqlRepository(IConfiguration configuration, IMemoryCache memoryCache, HttpClient httpClient)
     {
         _configuration = configuration;
-        _cache = persistentMemory;
+        _cache = memoryCache;
         _httpClient = httpClient;
         _httpClient.Timeout = TimeSpan.FromSeconds(120);
     }
@@ -78,7 +78,6 @@ LIMIT 100";
             }
 
             knowledgeGraphDictionary[uri] = knowledgeGraph;
-            //_cache.SaveCacheToDisk();
         }
 
         // Limit the number of nodes returned
