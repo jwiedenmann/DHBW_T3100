@@ -418,6 +418,40 @@ Die Adjazenzmatrix im Graph Visualizer bietet nur eine Anpassungsmöglichkeit. S
 
 Die Adjazenzmatrix erfüllt mehrere der im Projekt definierten Anforderungen, insbesondere in Bezug auf die Darstellung komplexer Netzwerkstrukturen und die Benutzerfreundlichkeit. Durch die klare und strukturierte Darstellung von Verbindungen ermöglicht die Adjazenzmatrix eine einfache Identifikation von Clustern und Mustern im Graphen, was die Analyse und das Verständnis der zugrunde liegenden Daten erheblich erleichtert.
 
+\subsection{Implementierung einer Clustering-Lösung}
+
+Die Implementierung einer Clustering-Lösung innerhalb für den Graph Visualizers stellt einen wichtigen Schritt dar. Sie ermöglicht es große und komplexe Netzwerke effizienter darzustellen. Cluster werden als Gruppen von Knoten verstanden, die innerhalb eines Netzwerks eng miteinander verbunden sind. Durch die visuelle Gruppierung solcher Knoten wird die Komplexität des Graphen reduziert und dem Benutzer ermöglicht, Muster und Strukturen innerhalb des Netzwerks leichter zu erkennen.
+
+\subsubsection{Visualierung der Cluster im Node-Link Diagramm}
+
+In der aktuellen Version des Graph Visualizers wurde der Louvain-Algorithmus zur Clustererkennung verwendet. Dieser Algorithmus zeichnet sich dadurch aus, dass er keine vorherige Festlegung der Anzahl der zu erkennenden Cluster erfordert und speziell für die Analyse großer Netzwerke entwickelt wurde. Der Louvain-Algorithmus optimiert die sogenannte Modularität, ein Maß für die Dichte der Verbindungen innerhalb von Clustern im Verhältnis zu den Verbindungen zwischen verschiedenen Clustern.
+
+Nach der Berechnung der Cluster werden die Knoten in der Visualisierung entsprechend eingefärbt, um die Zugehörigkeit zu einem bestimmten Cluster deutlich zu machen. Diese farbliche Differenzierung erleichtert dem Benutzer die Identifikation der verschiedenen Gruppen innerhalb des Netzwerks. Diese Darstellung ist in Abbildung \ref{fig:realization:implementation:NodeLinkCluster} zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/ClusteringView.png}
+    \caption{Node-Link Diagramm mit Clustering.}
+    \label{fig:realization:implementation:NodeLinkCluster}
+\end{figure}
+
+\subsubsection{Zusammenfassung der Cluster-Nodes}
+
+Ein zusätzliches Feature, ist die Möglichkeit, Cluster aus einzelnen Knoten zu großen Nodes zusammen zu fassen. Dieses Feature verbessert die Übersichtlichkeit der Visualisierung, insbesondere bei der Analyse sehr großer und komplexer Netzwerke.
+
+Die Zusammenfassung von Cluster-Nodes erfolgt, indem alle Knoten innerhalb eines Clusters zu einem einzigen großen Knoten zusammengefasst werden. Dieser neue, aggregierte Knoten repräsentiert alle ursprünglichen Knoten des Clusters und fasst ihre Verbindungen entsprechend zusammen. In der Benutzeroberfläche kann der Benutzer diese Funktion durch Aktivierung der Option \enquote{Combine Node Clusters} im \enquote{Graph Settings}-Panel nutzen.
+
+Die Umsetzung dieser Funktion basiert auf der Berechnung der Cluster durch den Louvain-Algorithmus. Sobald die Cluster berechnet sind, wird für jedes Cluster ein neuer virtueller Knoten erstellt, der die Position und die Verbindungen der Knoten im Cluster übernimmt. Die Größe des neuen Knotens ist proportional zur Anzahl der Knoten im Cluster, was dem Benutzer eine schnelle visuelle Einschätzung der Clustergröße ermöglicht. Darüber hinaus werden die Verbindungen, die aus einem Knoten innerhalb des Clusters zu einem Knoten außerhalb des Clusters führen, auf den zusammengefassten Knoten übertragen. In Abbildung \ref{fig:realization:implementation:NodeLinkCombinedCluster} ist das Feature zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/CombinedClusteringView.png}
+    \caption{Zusammengefasste Cluster im Node-Link Diagramm.}
+    \label{fig:realization:implementation:NodeLinkCombinedCluster}
+\end{figure}
+
+Dieses Feature wurde entwickelt, um den Anforderungen nach besserer Performance (\hyperref[NFR01]{NFR01}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) gerecht zu werden. Insbesondere wenn Benutzer mit sehr großen Graphen arbeiten wird die Performance reduziert und die Übersichtlichkeit sinkt aufgrund der vielen Knoten und Verbindungen. Die Zusammenfassung reduziert die visuelle Komplexität und die Anzahl der Knoten, die dargestellt werden müssen. Dieses Feature stellt somit eine wertvolle Ergänzung zur bereits implementierten Clustererkennung dar und erweitert die Analysemöglichkeiten im Graph Visualizer.
+
 \section{Vergleich}
 \label{realization:comparison}
 
