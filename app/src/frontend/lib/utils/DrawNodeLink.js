@@ -106,8 +106,25 @@ export function drawGraph(
         .append("circle")
         .attr("r", d => nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize)
         .attr("fill", d => nodeLinkSettings.colorAndSizeByLinks ? colorScale(d.links) : "steelblue")
+        .attr("cursor", "pointer") // Change cursor to pointer to indicate interactivity
         .call(drag(simulation))
-        .on("click", (event, d) => handleNodeClick(d));
+        .on("click", (event, d) => handleNodeClick(d))
+        .on("mouseover", function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("r", d => (nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize) * 1.5) // Increase size on hover
+                .attr("stroke", "steelblue") // Add a black border
+                .attr("stroke-width", 3);
+        })
+        .on("mouseout", function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("r", d => nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize) // Reset size
+                .attr("stroke", "#fff") // Reset border
+                .attr("stroke-width", 1.5);
+        });
 
     node.append("title").text(d => d.label);
 
