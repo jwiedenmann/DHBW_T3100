@@ -267,8 +267,20 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .attr("stroke", "#fff").attr("stroke-width", 1)
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
+        .attr("cursor", "pointer") // Change cursor to pointer to indicate interactivity
         .on("click", (event, d) => handleNodeClick(d))
         .on("mouseover", function (event, d) {
+
+            if (!settings.combineNodeClusters) {
+                const nodeColor = d3.select(this).attr("fill"); // Get the node's fill color
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("r", d => (d.r || settings.nodeSize) * 1.5) // Increase size on hover
+                    .attr("stroke", nodeColor) // Set stroke to match the node's fill color
+                    .attr("stroke-width", 3);
+            }
+
             if (d.originalNodes) {
                 g.selectAll(".small-nodes").remove();
 
@@ -328,6 +340,13 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
             }
         })
         .on("mouseout", function () {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("r", d => d.r || settings.nodeSize) // Reset size
+                .attr("stroke", "#fff") // Reset stroke color
+                .attr("stroke-width", 1.5);
+
             g.selectAll(".small-nodes").remove();
         });
 
