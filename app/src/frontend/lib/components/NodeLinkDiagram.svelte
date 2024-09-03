@@ -81,9 +81,11 @@
   }
 
   function formatProperties(properties) {
-    const baseURI = "http://dbpedia.org/property/";
     return Object.entries(properties).map(([key, value]) => {
-      const formattedKey = key.replace(baseURI, "").replace(/@en$/, "");
+      // Remove everything before the last slash in the key
+      const formattedKey = key
+        .substring(key.lastIndexOf("/") + 1)
+        .replace(/@en$/, "");
       const formattedValue = value.replace(/@en$/, "");
       return { key: formattedKey, value: formattedValue };
     });
@@ -134,7 +136,7 @@
       </div>
 
       {#if selectedData}
-        <div class="m-3">
+        <div class="m-3 overflow-auto">
           <p><strong>URI:</strong> {selectedData.id}</p>
           <div class="flex-grow border-t border-gray-300 my-3"></div>
           <p>
