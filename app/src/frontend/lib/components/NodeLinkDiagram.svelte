@@ -134,9 +134,9 @@
   <svg bind:this={svg} id="graphSvg"></svg>
 
   <div
-    class={`flex ${sidebarVisible ? "w-screen sm:w-1/2 md:w-1/2 lg:w-1/2" : "w-0"} transition-all duration-300`}
+    class={`flex ${sidebarVisible ? "w-screen sm:w-1/2 md:w-1/2 lg:w-1/2 max-w-sm" : "w-0"} transition-all duration-300`}
   >
-    <div class="flex flex-col h-full w-full z-50 bg-base-200">
+    <div class="flex flex-col h-full w-full z-50 bg-base-200 overflow-y-auto">
       <div class="flex flex-row items-center">
         <h2 class="text-lg font-bold flex-grow m-3">Details</h2>
 
@@ -149,7 +149,7 @@
       </div>
 
       {#if selectedData}
-        <div class="m-3 overflow-auto">
+        <div class="m-3">
           {#if isCluster}
             <!-- Display cluster information -->
             <p><strong>Cluster Label:</strong> {selectedData.label}</p>
