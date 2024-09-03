@@ -19,6 +19,7 @@
   let sidebarVisible = false;
   let selectedData = null;
   let isCluster = false; // Track if the selected data is a cluster
+  let expandedNodes = {}; // Track expanded nodes within a cluster
 
   onMount(() => {
     drawGraph(
@@ -74,6 +75,7 @@
     console.log(data);
     selectedData = data;
     isCluster = !!data.originalNodes; // Check if this is a cluster
+    expandedNodes = {}; // Reset expanded nodes state
     sidebarVisible = true;
   }
 
@@ -81,6 +83,7 @@
     sidebarVisible = false;
     selectedData = null;
     isCluster = false;
+    expandedNodes = {};
   }
 
   function formatProperties(properties) {
@@ -103,6 +106,13 @@
       return uri.replace(baseResourceURI, "").replace(/_/g, " ");
     }
     return uri; // fallback to the full URI if it's not the expected format
+  }
+
+  function toggleNodeExpansion(nodeId) {
+    expandedNodes = {
+      ...expandedNodes,
+      [nodeId]: !expandedNodes[nodeId], // Toggle the expansion state
+    };
   }
 </script>
 
@@ -149,12 +159,34 @@
             </p>
             <div class="flex-grow border-t border-gray-300 my-3"></div>
             <div>
-              <strong>Cluster Node Labels:</strong>
-              <ul class="list-disc list-inside">
-                {#each selectedData.originalNodes as node}
-                  <li>{getReadableLabel(node.id, node.label)}</li>
-                {/each}
-              </ul>
+              <strong>Cluster Nodes:</strong>
+              {#each selectedData.originalNodes as node}
+                <div>
+                  <button
+                    on:click={() => toggleNodeExpansion(node.id)}
+                    class="text-left w-full"
+                  >
+                    {expandedNodes[node.id] ? "▼" : "▶"}
+                    {getReadableLabel(node.id, node.label)}
+                  </button>
+                  {#if expandedNodes[node.id]}
+                    <!-- Show expanded node details -->
+                    <div class="ml-4 mt-2">
+                      <p><strong>URI:</strong> {node.id}</p>
+                      <p>
+                        <strong>Label:</strong>
+                        {getReadableLabel(node.id, node.label)}
+                      </p>
+                      <p><strong>Properties:</strong></p>
+                      <div class="ml-4">
+                        {#each formatProperties(node.properties) as { key, value }}
+                          <p><strong>{key}:</strong> {value}</p>
+                        {/each}
+                      </div>
+                    </div>
+                  {/if}
+                </div>
+              {/each}
             </div>
           {:else}
             <!-- Display individual node information -->
@@ -184,5 +216,16 @@
   svg {
     width: 100%;
     height: 100%;
+  }
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
   }
 </style>
