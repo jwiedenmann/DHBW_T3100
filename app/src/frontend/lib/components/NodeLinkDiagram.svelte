@@ -217,15 +217,4 @@
     width: 100%;
     height: 100%;
   }
-  button {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    cursor: pointer;
-  }
-  button:focus {
-    outline: none;
-  }
 </style>
