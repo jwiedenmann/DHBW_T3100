@@ -18,6 +18,7 @@
   // Sidebar state management
   let sidebarVisible = false;
   let selectedData = null;
+  let isCluster = false; // Track if the selected data is a cluster
 
   onMount(() => {
     drawGraph(
@@ -72,12 +73,14 @@
   function handleNodeClick(data) {
     console.log(data);
     selectedData = data;
+    isCluster = !!data.originalNodes; // Check if this is a cluster
     sidebarVisible = true;
   }
 
   function closeSidebar() {
     sidebarVisible = false;
     selectedData = null;
+    isCluster = false;
   }
 
   function formatProperties(properties) {
@@ -137,21 +140,40 @@
 
       {#if selectedData}
         <div class="m-3 overflow-auto">
-          <p><strong>URI:</strong> {selectedData.id}</p>
-          <div class="flex-grow border-t border-gray-300 my-3"></div>
-          <p>
-            <strong>Label:</strong>
-            {getReadableLabel(selectedData.id, selectedData.label)}
-          </p>
-          <div class="flex-grow border-t border-gray-300 my-3"></div>
-          <div>
-            <strong>Properties:</strong>
-            <ul class="list-disc list-inside">
-              {#each formatProperties(selectedData.properties) as { key, value }}
-                <li><strong>{key}:</strong> {value}</li>
-              {/each}
-            </ul>
-          </div>
+          {#if isCluster}
+            <!-- Display cluster information -->
+            <p><strong>Cluster Label:</strong> {selectedData.label}</p>
+            <p>
+              <strong>Number of Nodes in Cluster:</strong>
+              {selectedData.originalNodes.length}
+            </p>
+            <div class="flex-grow border-t border-gray-300 my-3"></div>
+            <div>
+              <strong>Cluster Node Labels:</strong>
+              <ul class="list-disc list-inside">
+                {#each selectedData.originalNodes as node}
+                  <li>{getReadableLabel(node.id, node.label)}</li>
+                {/each}
+              </ul>
+            </div>
+          {:else}
+            <!-- Display individual node information -->
+            <p><strong>URI:</strong> {selectedData.id}</p>
+            <div class="flex-grow border-t border-gray-300 my-3"></div>
+            <p>
+              <strong>Label:</strong>
+              {getReadableLabel(selectedData.id, selectedData.label)}
+            </p>
+            <div class="flex-grow border-t border-gray-300 my-3"></div>
+            <div>
+              <strong>Properties:</strong>
+              <ul class="list-disc list-inside">
+                {#each formatProperties(selectedData.properties) as { key, value }}
+                  <li><strong>{key}:</strong> {value}</li>
+                {/each}
+              </ul>
+            </div>
+          {/if}
         </div>
       {/if}
     </div>
