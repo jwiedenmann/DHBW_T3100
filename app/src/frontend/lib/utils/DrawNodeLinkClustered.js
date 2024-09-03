@@ -288,7 +288,11 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                     .attr("class", "small-nodes")
                     .datum(d);
 
-                const communityNodes = d.originalNodes;
+                const communityNodes = d.originalNodes.map(node => ({
+                    ...node,
+                    x: d.x, // Set the initial x position to the center of the cluster
+                    y: d.y  // Set the initial y position to the center of the cluster
+                }));
                 const communityNodeIds = new Set(communityNodes.map(node => node.id));
 
                 let communityLinks = originalLinksStore.map(link => ({
@@ -320,7 +324,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                     .attr("y2", link => communityNodes.find(node => node.id === link.target).y);
 
                 const smallNodeSimulation = d3.forceSimulation(communityNodes)
-                    .force("center", d3.forceCenter(d.x, d.y))
+                    .force("center", d3.forceCenter(d.x, d.y)) // Ensure nodes are centered around the cluster's center
                     .force("charge", d3.forceManyBody().strength(-30))
                     .force("collision", d3.forceCollide().radius(settings.nodeSize))
                     .force("link", d3.forceLink(communityLinks).id(d => d.id).distance(20))
@@ -352,6 +356,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
 
     return { linkSelection, nodeSelection };
 }
+
 
 function drag(simulation) {
     return d3.drag().on("start", (event) => {
