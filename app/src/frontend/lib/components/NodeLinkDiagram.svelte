@@ -1,6 +1,5 @@
 <script>
   import XIco from "../utils/icons/X.svelte";
-
   import { onMount } from "svelte";
   import { drawGraph as drawNodeLinkGraph } from "../utils/DrawNodeLink";
   import { drawGraph as drawNodeLinkGraphClustered } from "../utils/DrawNodeLinkClustered";
@@ -80,7 +79,26 @@
     sidebarVisible = false;
     selectedData = null;
   }
-  sidebarVisible = true;
+
+  function formatProperties(properties) {
+    const baseURI = "http://dbpedia.org/property/";
+    return Object.entries(properties).map(([key, value]) => {
+      const formattedKey = key.replace(baseURI, "").replace(/@en$/, "");
+      const formattedValue = value.replace(/@en$/, "");
+      return { key: formattedKey, value: formattedValue };
+    });
+  }
+
+  function getReadableLabel(uri, label) {
+    if (label) {
+      return label;
+    }
+    const baseResourceURI = "http://dbpedia.org/resource/";
+    if (uri.startsWith(baseResourceURI)) {
+      return uri.replace(baseResourceURI, "").replace(/_/g, " ");
+    }
+    return uri; // fallback to the full URI if it's not the expected format
+  }
 </script>
 
 {#if generalSettings.showPerformanceMetrics === true}
@@ -101,7 +119,7 @@
   <svg bind:this={svg} id="graphSvg"></svg>
 
   <div
-    class={`flex ${sidebarVisible ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
+    class={`flex ${sidebarVisible ? "w-screen sm:w-1/2 md:w-1/2 lg:w-1/2" : "w-0"} transition-all duration-300`}
   >
     <div class="flex flex-col h-full w-full z-50 bg-base-200">
       <div class="flex flex-row items-center">
@@ -118,11 +136,20 @@
       {#if selectedData}
         <div class="m-3">
           <p><strong>URI:</strong> {selectedData.id}</p>
-          <p><strong>Label:</strong> {selectedData.label}</p>
+          <div class="flex-grow border-t border-gray-300 my-3"></div>
           <p>
-            <strong>Properties:</strong>
-            {JSON.stringify(selectedData.properties, null, 2)}
+            <strong>Label:</strong>
+            {getReadableLabel(selectedData.id, selectedData.label)}
           </p>
+          <div class="flex-grow border-t border-gray-300 my-3"></div>
+          <div>
+            <strong>Properties:</strong>
+            <ul class="list-disc list-inside">
+              {#each formatProperties(selectedData.properties) as { key, value }}
+                <li><strong>{key}:</strong> {value}</li>
+              {/each}
+            </ul>
+          </div>
         </div>
       {/if}
     </div>
