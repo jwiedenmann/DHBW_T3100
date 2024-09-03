@@ -1,4 +1,6 @@
 <script>
+  import XIco from "../utils/icons/X.svelte";
+
   import { onMount } from "svelte";
   import { drawGraph as drawNodeLinkGraph } from "../utils/DrawNodeLink";
   import { drawGraph as drawNodeLinkGraphClustered } from "../utils/DrawNodeLinkClustered";
@@ -69,7 +71,7 @@
   }
 
   function handleNodeClick(data) {
-    console.log(data)
+    console.log(data);
     selectedData = data;
     sidebarVisible = true;
   }
@@ -78,6 +80,7 @@
     sidebarVisible = false;
     selectedData = null;
   }
+  sidebarVisible = true;
 </script>
 
 {#if generalSettings.showPerformanceMetrics === true}
@@ -101,18 +104,26 @@
     class={`flex ${sidebarVisible ? "w-screen sm:w-48 md:w-56 lg:w-64" : "w-0"} transition-all duration-300`}
   >
     <div class="flex flex-col h-full w-full z-50 bg-base-200">
-      <button class="btn btn-sm btn-outline float-right" on:click={closeSidebar}
-        >Close</button
-      >
+      <div class="flex flex-row items-center">
+        <h2 class="text-lg font-bold flex-grow m-3">Details</h2>
 
-      <h2 class="text-lg font-bold mb-4">Details</h2>
+        <button
+          class={`w-6 m-2 mr-6 fill-current ${sidebarVisible ? "visible" : "hidden"}`}
+          on:click={closeSidebar}
+        >
+          <XIco />
+        </button>
+      </div>
+
       {#if selectedData}
-        <p><strong>URI:</strong> {selectedData.id}</p>
-        <p><strong>Label:</strong> {selectedData.label}</p>
-        <p>
-          <strong>Properties:</strong>
-          {JSON.stringify(selectedData.properties, null, 2)}
-        </p>
+        <div class="m-3">
+          <p><strong>URI:</strong> {selectedData.id}</p>
+          <p><strong>Label:</strong> {selectedData.label}</p>
+          <p>
+            <strong>Properties:</strong>
+            {JSON.stringify(selectedData.properties, null, 2)}
+          </p>
+        </div>
       {/if}
     </div>
   </div>
