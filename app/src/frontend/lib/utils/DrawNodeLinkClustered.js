@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
 import { hcs } from "./hcs";
-import { mclAlgorithm } from "./mcl"; // Import the MCL algorithm
+import { mclAlgorithm } from "./mcl";
 
 let originalLinksStore = [];
 
@@ -74,22 +74,6 @@ export function drawGraph(
 
     function tickedAggregated(linkSelection, nodeSelection) {
         updatePositions(linkSelection, nodeSelection, d => d.source.x, d => d.source.y, d => d.target.x, d => d.target.y, d => d.r);
-
-        // Update positions of smaller nodes inside community nodes
-        // g.selectAll(".small-nodes").each(function (d) {
-        //     const communityNode = d3.select(this).datum();
-        //     d3.select(this)
-        //         .selectAll("circle")
-        //         .attr("cx", staticNode => communityNode.x + staticNode.offsetX)
-        //         .attr("cy", staticNode => communityNode.y + staticNode.offsetY);
-
-        //     d3.select(this)
-        //         .selectAll("line")
-        //         .attr("x1", link => communityNode.x + link.sourceOffsetX)
-        //         .attr("y1", link => communityNode.y + link.sourceOffsetY)
-        //         .attr("x2", link => communityNode.x + link.targetOffsetX)
-        //         .attr("y2", link => communityNode.y + link.targetOffsetY);
-        // });
     }
 
     calculateFPS(updateMetrics, nodes.length, links.length);
@@ -221,13 +205,13 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .on("tick", () => {
             tickedFunc(linkSelection, nodeSelection);
 
-            // Update positions of smaller nodes based on community nodes' current position
+            // Update positions of smaller nodes based on community nodes current position
             g.selectAll(".small-nodes").each(function (d) {
                 const communityNode = d;
 
-                // Update the force simulation for the smaller nodes
                 const smallNodes = d3.select(this).selectAll("circle").data();
                 const communityNodeIds = new Set(smallNodes.map(node => node.id));
+                
                 // Ensure we are working with a copy of the originalLinksStore data to avoid mutations
                 const communityLinks = originalLinksStore.map(link => ({
                     source: link.source,
@@ -254,7 +238,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
                             .attr("y2", d => d.target.y);
                     });
 
-                smallNodeSimulation.alpha(0.3).restart(); // Maintain an active simulation
+                smallNodeSimulation.alpha(0.3).restart();
             });
         });
 
@@ -267,17 +251,17 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         .attr("stroke", "#fff").attr("stroke-width", 1)
         .attr("r", d => d.r || settings.nodeSize)
         .call(drag(simulation))
-        .attr("cursor", "pointer") // Change cursor to pointer to indicate interactivity
+        .attr("cursor", "pointer")
         .on("click", (event, d) => handleNodeClick(d))
         .on("mouseover", function (event, d) {
 
             if (!settings.combineNodeClusters) {
-                const nodeColor = d3.select(this).attr("fill"); // Get the node's fill color
+                const nodeColor = d3.select(this).attr("fill");
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .attr("r", d => (d.r || settings.nodeSize) * 1.5) // Increase size on hover
-                    .attr("stroke", nodeColor) // Set stroke to match the node's fill color
+                    .attr("r", d => (d.r || settings.nodeSize) * 1.5)
+                    .attr("stroke", nodeColor)
                     .attr("stroke-width", 3);
             }
 
@@ -290,8 +274,8 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
 
                 const communityNodes = d.originalNodes.map(node => ({
                     ...node,
-                    x: d.x, // Set the initial x position to the center of the cluster
-                    y: d.y  // Set the initial y position to the center of the cluster
+                    x: d.x,
+                    y: d.y
                 }));
                 const communityNodeIds = new Set(communityNodes.map(node => node.id));
 
@@ -347,8 +331,8 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
             d3.select(this)
                 .transition()
                 .duration(200)
-                .attr("r", d => d.r || settings.nodeSize) // Reset size
-                .attr("stroke", "#fff") // Reset stroke color
+                .attr("r", d => d.r || settings.nodeSize)
+                .attr("stroke", "#fff")
                 .attr("stroke-width", 1.5);
 
             g.selectAll(".small-nodes").remove();
