@@ -259,7 +259,7 @@ function runSimulation(nodes, links, settings, g, width, height, colorScale, tic
         });
 
     const linkSelection = g.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6)
-        .selectAll("line").data(links).enter().append("line").attr("stroke-width", d => d.value * d.value);
+        .selectAll("line").data(links).enter().append("line").attr("stroke-width", settings.combineNodeClusters ? 10 : 1);
 
     const nodeSelection = g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5)
         .selectAll("circle").data(nodes).enter().append("circle")
