@@ -74,7 +74,10 @@
   async function fetchGraph(uri, graphLoadingDepth, limit) {
     const url = new URL(
       import.meta.env.VITE_ROUTE_Sparql_Graph,
-      import.meta.env.VITE_BASE_URL
+      // couldnt get the env variables to work...
+      import.meta.env.MODE === "production"
+        ? "http://localhost:8080"
+        : import.meta.env.VITE_BASE_URL
     );
     url.searchParams.append("uri", uri);
     url.searchParams.append("loadingDepth", graphLoadingDepth);

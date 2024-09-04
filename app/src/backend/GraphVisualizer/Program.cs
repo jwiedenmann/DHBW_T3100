@@ -1,24 +1,24 @@
-using GraphVisualizer;
 using GraphVisualizer.DataAccess;
-using Microsoft.Extensions.Caching.Memory;
-using VDS.RDF.Query.Algebra;
 
 const string _corsOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Bind to 0.0.0.0:80 to listen to all interfaces (this includes the Docker bridge)
-builder.WebHost.UseUrls("http://0.0.0.0:80");
+if (!builder.Environment.IsDevelopment())
+{
+    builder.WebHost.UseUrls("http://0.0.0.0:80");
+}
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: _corsOrigins,
                       policy =>
                       {
-                          policy.WithOrigins(
-                              "http://localhost:4999",
-                              "http://localhost:5000",
-                              "http://localhost:5001");
+                          policy
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                       });
 });
 builder.Services.AddControllers();
@@ -34,7 +34,9 @@ builder.Services.AddTransient<ISparqlRepository, SparqlRepository>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+app.UseCors(_corsOrigins);
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -43,7 +45,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors(_corsOrigins);
 }
 
 app.MapControllers();

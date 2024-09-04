@@ -17,6 +17,10 @@ RUN npm install
 # Copy the entire project (both frontend and backend)
 COPY . .
 
+# Set the environment to production before building
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 # Build both the Svelte frontend and .NET Core backend
 RUN npm run build
 
