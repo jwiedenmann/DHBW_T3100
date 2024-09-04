@@ -46,7 +46,10 @@
   async function fetchResults() {
     const url = new URL(
       import.meta.env.VITE_ROUTE_Sparql_Search,
-      import.meta.env.VITE_BASE_URL
+      // couldnt get the env variables to work...
+      import.meta.env.MODE === "production"
+        ? "http://localhost:8080"
+        : import.meta.env.VITE_BASE_URL
     );
     url.searchParams.append("searchTerm", searchQuery);
     const response = await fetch(url);
@@ -65,8 +68,9 @@
   <main class="flex-1 flex flex-col overflow-y-auto">
     {#each searchResults as searchResult}
       <div class="ml-6 mt-4 xl:ml-18">
-        <a href="/#/graph/?uri={searchResult.Subject}" class="link link-info font-semibold text-xl"
-          >{searchResult.Label}</a
+        <a
+          href="/#/graph/?uri={searchResult.Subject}"
+          class="link link-info font-semibold text-xl">{searchResult.Label}</a
         >
         <p>{searchResult.Subject}</p>
       </div>
