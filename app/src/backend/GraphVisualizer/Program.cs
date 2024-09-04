@@ -7,6 +7,9 @@ const string _corsOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Bind to 0.0.0.0:80 to listen to all interfaces (this includes the Docker bridge)
+builder.WebHost.UseUrls("http://0.0.0.0:80");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: _corsOrigins,
