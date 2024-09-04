@@ -35,7 +35,7 @@ export function drawGraph(
         id: node.Uri,
         label: node.Label,
         properties: node.Properties,
-        links: Object.values(node.Links).flat().length, // Count of links for each node
+        links: Object.values(node.Links).flat().length,
         x: (i % Math.sqrt(graphResults.Nodes.length)) * (width / Math.sqrt(graphResults.Nodes.length)) * spreadFactor, // Spread nodes horizontally
         y: (Math.floor(i / Math.sqrt(graphResults.Nodes.length))) * (height / Math.sqrt(graphResults.Nodes.length)) / spreadFactor // Spread nodes vertically
     }));
@@ -106,7 +106,7 @@ export function drawGraph(
         .append("circle")
         .attr("r", d => nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize)
         .attr("fill", d => nodeLinkSettings.colorAndSizeByLinks ? colorScale(d.links) : "steelblue")
-        .attr("cursor", "pointer") // Change cursor to pointer to indicate interactivity
+        .attr("cursor", "pointer")
         .call(drag(simulation))
         .on("click", (event, d) => handleNodeClick(d))
         .on("mouseover", function (event, d) {
@@ -114,7 +114,7 @@ export function drawGraph(
                 .transition()
                 .duration(200)
                 .attr("r", d => (nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize) * 1.5) // Increase size on hover
-                .attr("stroke", "steelblue") // Add a black border
+                .attr("stroke", "steelblue") 
                 .attr("stroke-width", 3);
         })
         .on("mouseout", function (event, d) {
@@ -122,7 +122,7 @@ export function drawGraph(
                 .transition()
                 .duration(200)
                 .attr("r", d => nodeLinkSettings.colorAndSizeByLinks ? sizeScale(d.links) : nodeLinkSettings.nodeSize) // Reset size
-                .attr("stroke", "#fff") // Reset border
+                .attr("stroke", "#fff")
                 .attr("stroke-width", 1.5);
         });
 
