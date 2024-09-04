@@ -1,0 +1,8 @@
+Image build:
+
+docker build -t graph-visualizer .
+
+Run container:
+
+docker run -p 8080:80 --name graph-visualizer-container graph-visualizer
+
