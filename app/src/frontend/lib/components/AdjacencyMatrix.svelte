@@ -11,16 +11,47 @@
   let frameCount = 0;
   let fps = 0;
 
-  // Extract links from the graphResults.Nodes
-  const links = graphResults.Nodes.flatMap((node) =>
-    Object.entries(node.Links).flatMap(([key, values]) =>
-      values.map((value) => ({
-        source: node.Uri,
-        target: value,
-        predicate: key,
-      }))
-    )
-  );
+  // Number of clusters
+  const nodesPerCluster = 20;
+
+  // Generate clustered static data
+  const staticData = {
+    Nodes: Array.from({ length: 100 }, (_, i) => {
+      const clusterId = Math.floor(i / nodesPerCluster); // Assign nodes to clusters
+      const clusterStart = clusterId * nodesPerCluster;
+
+      return {
+        Uri: `Node${i}`,
+        Links: {
+          connectsTo: [
+            ...Array.from(
+              { length: 10 },
+              () =>
+                `Node${clusterStart + Math.floor(Math.random() * nodesPerCluster)}`
+            ), // Internal cluster links
+            ...Array.from(
+              { length: 3 },
+              () => `Node${Math.floor(Math.random() * 100)}`
+            ), // External cluster links
+          ],
+        },
+      };
+    }),
+  };
+
+  // Extract links from the graphResults or staticData based on the toggle
+  function getLinks() {
+    const data = adjacencyMatrixSettings.staticData ? staticData : graphResults;
+    return data.Nodes.flatMap((node) =>
+      Object.entries(node.Links).flatMap(([key, values]) =>
+        values.map((value) => ({
+          source: node.Uri,
+          target: value,
+          predicate: key,
+        }))
+      )
+    );
+  }
 
   let svg;
   let zoomLevel = 1;
@@ -28,14 +59,6 @@
   let offsetY = 0;
   let isPanning = false;
   let startX, startY;
-
-  function handleWheel(event) {
-    event.preventDefault();
-    const scaleFactor = 0.001; // Smaller scale factor for more gradual zooming
-    zoomLevel += event.deltaY * -scaleFactor;
-    zoomLevel = Math.min(Math.max(0.125, zoomLevel), 4);
-    updateTransform();
-  }
 
   function handleMouseDown(event) {
     isPanning = true;
@@ -96,13 +119,22 @@
   }
 
   function drawMatrix() {
-    const nodeUris = graphResults.Nodes.map((node) => node.Uri);
+    const data = adjacencyMatrixSettings.staticData ? staticData : graphResults;
+    const nodeUris = data.Nodes.map((node) => node.Uri);
     const nodes = nodeUris.map((uri, i) => ({ id: uri, index: i }));
+    const links = getLinks();
     const edges = links.map((link) => ({
       source: nodeUris.indexOf(link.source),
       target: nodeUris.indexOf(link.target),
       weight: 1,
     }));
+
+    // Sort nodes by cluster for better visualization of clusters
+    nodes.sort((a, b) => {
+      const aCluster = Math.floor(a.index / nodesPerCluster);
+      const bCluster = Math.floor(b.index / nodesPerCluster);
+      return aCluster - bCluster;
+    });
 
     const size = [500, 500];
     const nodeWidth = size[0] / nodes.length;

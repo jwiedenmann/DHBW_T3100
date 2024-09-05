@@ -117,4 +117,14 @@
       />
     </label>
   </div>
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <span class="label-text">Use Static Data</span>
+      <input
+        type="checkbox"
+        bind:checked={adjacencyMatrixSettings.staticData}
+        class="checkbox checkbox-primary"
+      />
+    </label>
+  </div>
 {/if}
