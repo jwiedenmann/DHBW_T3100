@@ -34,6 +34,7 @@
     },
     adjacencyMatrixSettings: {
       showGrid: true,
+      staticData: false,
     },
     generalSettings: {
       showPerformanceMetrics: false,
