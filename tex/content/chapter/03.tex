@@ -452,7 +452,46 @@ Die Umsetzung dieser Funktion basiert auf der Berechnung der Cluster durch den L
 
 Dieses Feature wurde entwickelt, um den Anforderungen nach besserer Performance (\hyperref[NFR01]{NFR01}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) gerecht zu werden. Insbesondere wenn Benutzer mit sehr großen Graphen arbeiten wird die Performance reduziert und die Übersichtlichkeit sinkt aufgrund der vielen Knoten und Verbindungen. Die Zusammenfassung reduziert die visuelle Komplexität und die Anzahl der Knoten, die dargestellt werden müssen. Dieses Feature stellt somit eine wertvolle Ergänzung zur bereits implementierten Clustererkennung dar und erweitert die Analysemöglichkeiten im Graph Visualizer.
 
+\subsection{Implementierung einer Detailansicht für Nodes}
+
+Die Implementierung der Detailansicht für Nodes basiert auf der Verarbeitung und Aufbereitung von RDF-Triples. Die Triples stammen von DBpedia und enthalten grundlegende Informationen in Form von Subjekt, Prädikat und Objekt. Sie bilden die Grundlage für die semantische Darstellung des Knowledge Graphen. Das Backend unterteilt die Triples in zwei Hauptkategorien, in Eigenschaften und Links zu anderen Knoten. Diese Informationen werden dann in strukturierte Daten umgewandelt, die vom Frontend visualisiert werden können.
+
+Die Detailansicht für einzelne Nodes wird aufgerufen, wenn der Benutzer auf einen bestimmten Knoten im Node-Link Diagramm klickt. Diese Ansicht zeigt die spezifischen Informationen der ausgewählten Ressource. Dazu gehören die URI, die als eindeutige Adresse der Ressource dient, das Label, das den Namen des Knotens beschreibt, und eine Liste von Eigenschaften, die dem Knoten zugeordnet sind. Diese Detailansicht wurde entwickelt, um dem Benutzer einen schnellen und tiefgehenden Überblick über die Metadaten eines Knotens zu ermöglichen und ist in Abbildung \ref{fig:realization:implementation:NodeDetails} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/NodeDetails.png}
+    \caption{Detailansicht für eine Node.}
+    \label{fig:realization:implementation:NodeDetails}
+\end{figure}
+
+Bei der Auswahl eines Clusters von Knoten wird die Detailansicht für Node-Cluster aktiviert. Diese Ansicht zeigt eine Übersicht über die Knoten, die innerhalb des Clusters zusammengefasst sind. Das Cluster-Label gibt an, wie das Cluster vom Louvain-Algorithmus identifiziert wurde, und die Anzahl der Knoten im Cluster wird ebenfalls angezeigt. Die Knoten innerhalb des Clusters werden mit ihrer URI und ihrem Label aufgelistet, und der Benutzer kann auf einzelne Knoten klicken, um deren spezifische Detailansicht zu öffnen. Die Detailansicht für CLuster ist in Abbildung \ref{fig:realization:implementation:ClusterDetails} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.5\textwidth]{images/03/ClusterDetails.png}
+    \caption{Detailansicht für ein Cluster.}
+    \label{fig:realization:implementation:ClusterDetails}
+\end{figure}
+
+Durch die Implementierung der Detailansicht für Nodes und Cluster wird eine der Kernanforderungen des Projekts erfüllt: die Möglichkeit, große und komplexe Graphen effizient zu analysieren. Der Benutzer kann sich durch die intuitive und interaktive Detailansicht sowohl auf einzelner Knotenebene als auch auf Clusterebene durch die Daten navigieren. Dies trägt erheblich zur Verständlichkeit und Übersichtlichkeit der Visualisierung bei. Die klare und strukturierte Darstellung von Informationen unterstützt den Benutzer bei der Analyse und ermöglicht es ihm, tiefere Einblicke in die zugrunde liegenden Daten des Knowledge Graphs zu gewinnen.
+
+Zusammenfassend erfüllen die Detailansichten die funktionalen Anforderungen an die Bereitstellung von spezifischen und strukturierten Informationen über die Ressourcen im Knowledge Graph (\hyperref[FR02]{FR02}), sowie die nicht-funktionalen Anforderungen an Benutzerfreundlichkeit ( \hyperref[NFR05]{NFR05}), indem sie die Daten übersichtlich und interaktiv darstellen. Gleichzeitig werden die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Performance (\hyperref[NFR01]{NFR01}) durch die optimierte Verarbeitung und Darstellung der Knoten und Cluster im Backend gewährleistet.
+
+
+
+
+
 \section{Vergleich}
 \label{realization:comparison}
 
+- Adjenzmatrix hohe Verbindungsdichte
+- RDF erklären
+
 \chapter{Zusammenfassung und Ausblick}
+
+- Edge Bundling
+- highlighting von edges
+- Performance
+- refinement clustering
+- kombination aus Adjenzmatrix und Nodelink
