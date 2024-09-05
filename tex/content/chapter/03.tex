@@ -478,12 +478,47 @@ Durch die Implementierung der Detailansicht für Nodes und Cluster wird eine der
 
 Zusammenfassend erfüllen die Detailansichten die funktionalen Anforderungen an die Bereitstellung von spezifischen und strukturierten Informationen über die Ressourcen im Knowledge Graph (\hyperref[FR02]{FR02}), sowie die nicht-funktionalen Anforderungen an Benutzerfreundlichkeit ( \hyperref[NFR05]{NFR05}), indem sie die Daten übersichtlich und interaktiv darstellen. Gleichzeitig werden die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Performance (\hyperref[NFR01]{NFR01}) durch die optimierte Verarbeitung und Darstellung der Knoten und Cluster im Backend gewährleistet.
 
-
-
-
-
-\section{Vergleich}
+\section{Vergleich und Auswertung}
 \label{realization:comparison}
+
+In diesem Kapitel werden die im Graph Visualizer implementierten Diagrammarten und Visualisierungstechniken miteinander verglichen und ausgewertet. Ziel ist es, die Erfüllung der im Projekt definierten funktionalen und nicht-funktionalen Anforderungen zu überprüfen.
+
+Der Vergleich der Diagrammarten Node-Link Diagramm und Adjazenzmatrix soll zeigen, welche dieser Techniken sich besser für die Darstellung großer und komplexer Knowledge Graphen eignet. Dabei wird bewertet, wie gut die Diagramme die Übersichtlichkeit bewahren und wie effizient sie mit zunehmender Größe der Netzwerke umgehen.
+
+Die Auswertung der Visualisierungstechniken, wie das Force-Directed Layout und die Clustererkennung, fokussiert sich darauf, inwieweit diese Techniken den Nutzern ermöglichen, die Netzwerkstrukturen klar zu erkennen und zu analysieren. Auch hier stehen die Anforderungen an Anpassbarkeit und Performance im Vordergrund.
+
+Insgesamt zielt dieses Kapitel darauf ab, auf Basis der praktischen Implementierung eine fundierte Bewertung der verwendeten Methoden vorzunehmen und daraus Schlüsse für künftige Entwicklungen zu ziehen.
+
+\subsection{Vergleich der Diagrammarten}
+
+Im Rahmen der Implementierung des Graph Visualizer wurden zwei verschiedene Diagrammarten zur Visualisierung von Knowledge Graphen verwendet: das Node-Link Diagramm und die Adjazenzmatrix. Beide Diagrammarten bieten unterschiedliche Ansätze zur Darstellung von Knoten und ihren Verbindungen und bringen jeweils spezifische Stärken und Schwächen mit sich. In diesem Kapitel werden die beiden Diagrammarten anhand ihrer Eignung für die jeweiligen Anforderungen verglichen und ihre Einsatzmöglichkeiten ausgewertet. Dabei werden die Erkenntnisse aus der Implementierung und den durchgeführten Tests einbezogen, um eine fundierte Bewertung vorzunehmen.
+
+\subsubsection{Node-Link Diagramm}
+
+Das Node-Link Diagramm bietet eine intuitive und visuell ansprechende Darstellung von Netzwerken, bei der Knoten durch Linien verbunden werden. Diese Darstellung eignet sich besonders gut, um die Beziehungen zwischen Entitäten im Graphen auf einen Blick sichtbar zu machen. Zu den großen Stärken des Node-Link Diagramms zählt seine Benutzerfreundlichkeit, da die Verbindungen zwischen den Knoten visuell leicht nachvollziehbar sind. Diese Eigenschaft trägt wesentlich zur Erfüllung der Anforderung nach einer klaren und verständlichen Darstellung (\hyperref[NFR05]{NFR05}) bei.
+
+Allerdings zeigte sich, dass das Node-Link Diagramm bei Netzwerken mit mehreren Tausend Knoten an seine Grenzen stößt. Ab einer bestimmten Komplexität kann es zu Überlappungen und Unübersichtlichkeit kommen, was die Skalierbarkeit beeinträchtigt. Dies stellt ein Problem in Bezug auf die Performance und die Fähigkeit, auch große Graphen übersichtlich darzustellen, dar. Trotz dieser Einschränkungen bleibt das Node-Link Diagramm für Netzwerke mit bis zu einigen Tausend Knoten ein wertvolles Werkzeug, insbesondere aufgrund seiner visuellen Anschaulichkeit und interaktiven Natur. Viele der Nachteile können auch durch verschiedene Visualisierungstechniken ausgeglichen werden. Diese werden in dem folgenden Kapitel näher betrachtet.
+
+\subsubsection{Adjazenzmatrix}
+
+Die Adjazenzmatrix bietet eine strukturierte und effiziente Möglichkeit, Netzwerke darzustellen, indem Knoten sowohl in den Zeilen als auch in den Spalten einer Matrix angeordnet und Verbindungen durch markierte Zellen visualisiert werden. Diese Methode ist besonders nützlich, um Netzwerke mit vielen Verbindungen übersichtlich darzustellen, da Überlappungen vermieden werden. Dies spricht vor allem die Anforderungen an die Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Performance (\hyperref[NFR01]{NFR01}) an, da auch bei einer großen Anzahl von Verbindungen die Struktur des Graphen klar dargestellt wird.
+
+Eine überraschende Erkenntnis war jedoch, dass die Adjazenzmatrix schon bei Netzwerken mit einer geringeren Anzahl von Knoten als das Node-Link Diagramm an ihre Grenzen stößt. Während das Node-Link Diagramm mehrere Tausend Knoten handhaben kann, zeigt die Adjazenzmatrix bei größeren Netzwerken ab etwa 200 Knoten eine abnehmende Übersichtlichkeit. Dies könnte auf die Implementierung zurückzuführen sein und müsste mit anderen Technologien weiter untersucht werden. Dennoch zeigt die Adjazenzmatrix ihre Stärken insbesondere bei Netzwerken mit vielen Verbindungen, aber einer vergleichsweise geringen Anzahl an Knoten (bis zu etwa 200). In einem Test, bei dem statische Daten mit vielen Verbindungen im Adjenzmatrix Diagramm dargestellt wurden, konnte die Effizienz der Matrix bei stark verbundenen Netzwerken demonstriert werden. Eine Abbildung der Darstellung eines stark Verbundenen Graphen ist in Abbildung \ref{fig:realization:comparison:AdjacencyViewHighlyConnected} zu sehen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=.8\textwidth]{images/03/AdjacencyViewHighlyConnected.png}
+    \caption{Beispiel für die Darstellung stark Verbundener Graphen in einem Adjenzmatrix Diagramm.}
+    \label{fig:realization:comparison:AdjacencyViewHighlyConnected}
+\end{figure}
+
+\subsubsection{Fazit des Vergleichs}
+
+Zusammenfassend lässt sich sagen, dass Node-Link Diagramme eine ausgezeichnete Wahl für kleinere bis mittelgroße Netzwerke mit bis zu mehreren Tausend Knoten sind. Seine Stärke liegt in der visuellen Klarheit und der einfachen Benutzbarkeit. Allerdings stößt es bei sehr großen Netzwerken mit Tausenden von Knoten an seine Grenzen. Die Adjazenzmatrix hingegen zeigt ihre Stärken bei Netzwerken mit vielen Verbindungen, aber einer relativ geringen Knotenanzahl. Sie ist weniger intuitiv, bietet jedoch bei dichten Netzwerken mit weniger Knoten eine klarere Darstellung. Ab einer bestimmten Anzahl von Knoten nimmt jedoch auch hier die Übersichtlichkeit ab, was auf die aktuelle Implementierung zurückzuführen sein könnte und eine weitere Untersuchung mit alternativen Technologien erfordert.
+
+\subsection{Auswertung der Visualisierungstechniken}
+\subsection{Auswertung der Interaktivität und Benutzerfreundlichkeit}
+\subsection{Gesamtbewertung und Schlussfolgerung}
 
 - Adjenzmatrix hohe Verbindungsdichte
 - RDF erklären
