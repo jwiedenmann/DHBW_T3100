@@ -1,0 +1,66 @@
+%!TEX root = ../../main.tex
+
+\chapter{Zusammenfassung und Ausblick}
+
+Die vorliegende Arbeit hatte das Ziel, die geeignetste Visualisierungstechnik für Knowledge Graphen zu ermitteln und eine entsprechende Implementierung zu entwickeln. Die Visualisierung von Knowledge Graphen stellt eine besondere Herausforderung dar, da sowohl die Struktur der Daten als auch die Darstellung großer Netzwerke effizient und benutzerfreundlich sein müssen. In den vorangegangenen Kapiteln wurden verschiedene Visualisierungstechniken, wie das Node-Link Diagramm und die Adjazenzmatrix, analysiert und implementiert, um ihre Stärken und Schwächen im praktischen Einsatz zu bewerten. In diesem Kapitel werden die Ergebnisse der Arbeit zusammengefasst und wichtige Erkenntnisse reflektiert, bevor ein Ausblick auf mögliche Weiterentwicklungen und Optimierungen gegeben wird.
+
+\section{Zusammenfassung der Ergebnisse}
+
+In dieser Arbeit wurde das Ziel verfolgt, die beste Visualisierungstechnik für Knowledge Graphen zu ermitteln und eine darauf basierende Visualisierungslösung zu implementieren. Im Laufe der Untersuchung und Implementierung wurden zwei zentrale Visualisierungstechniken analysiert und in den Graph Visualizer integriert. Diese Techniken wurden hinsichtlich ihrer Stärken und Schwächen evaluiert, insbesondere im Kontext der Darstellung großer Netzwerke.
+
+\subsection{Analyse der Visualisierungstechniken}
+
+Das Node-Link Diagramm erwies sich als eine intuitive und visuell ansprechende Methode, um kleinere bis mittelgroße Netzwerke zu visualisieren. Es ermöglicht eine klare Darstellung der Beziehungen zwischen Knoten, stößt jedoch bei sehr großen Netzwerken mit mehreren Tausend Knoten an seine Grenzen. Die Performance nimmt mit der Anzahl der Verbindungen stark ab, was zu einer beeinträchtigten Stabilität und Benutzererfahrung führt.
+
+Die Adjazenzmatrix zeigte ihre Stärken bei Netzwerken mit vielen Verbindungen und einer vergleichsweise geringen Knotenanzahl. Bei Netzwerken mit mehr als 200 Knoten wurden jedoch Schwächen in der Übersichtlichkeit erkennbar. Trotz dieser Einschränkungen konnte die Adjazenzmatrix in stark verbundenen Netzwerken ihre Vorteile zeigen, indem sie eine klare und strukturierte Darstellung von Verbindungen ohne Überlappungen ermöglichte.
+
+\subsection{Erfüllung der Anforderungen}
+
+Die in Kapitel \ref{realization:requirements} festgelegten funktionalen  Anforderungen wurden vollständig erfüllt. Die nicht-funktionalen Anforderungen wurden größtenteils erfüllt:
+
+\begin{itemize}
+    \item Performance (\hyperref[NFR01]{NFR01}): Bei mittelgroßen Netzwerken war die Performance zufriedenstellend. Bei sehr großen Netzwerken mit vielen Verbindungen zwischen Clustern traten jedoch Instabilitäten im Force-Directed Layout auf, die zu längeren Ladezeiten und Zittern führten.
+    \item Zuverlässigkeit (\hyperref[NFR02]{NFR02}): Die Anwendung erwies sich als stabil, abgesehen von den Performance-Einschränkungen bei großen Netzwerken. Kleinere bis mittelgroße Netzwerke wurden zuverlässig und ohne signifikante Probleme dargestellt.
+    \item Kompatibilität (\hyperref[NFR03]{NFR03}): Die Verwendung von Svelte im Frontend und ASP.NET Core im Backend ermöglichte eine problemlose Ausführung der Anwendung in verschiedenen Umgebungen und stellte eine gute Grundlage für Erweiterbarkeit und zukünftige Anpassungen sicher.
+    \item Wartbarkeit (\hyperref[NFR04]{NFR04}): Die modulare Architektur des Graph Visualizer erleichtert zukünftige Wartung und Erweiterungen. Durch klare Trennung von Backend und Frontend sowie die Verwendung etablierter Frameworks wird eine hohe Wartbarkeit gewährleistet.
+    \item Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}): Die intuitive Benutzeroberfläche mit interaktiven Features wie Filterung, Detailansicht und flexiblen Anpassungsmöglichkeiten der Visualisierung erfüllte die Anforderungen an die Benutzerfreundlichkeit. Besonders die Möglichkeit, Cluster zu erkennen und die Visualisierung dynamisch zu modifizieren, trug zur positiven Benutzererfahrung bei.
+\end{itemize}
+
+Insgesamt konnte die Implementierung des Graph Visualizer die funktionalen und nicht-funktionalen Anforderungen weitgehend erfüllen. Besonders die Skalierbarkeit und Benutzerfreundlichkeit wurden durch die Clustererkennung und die flexiblen Visualisierungstechniken erfolgreich umgesetzt. Die Performance bei sehr großen Netzwerken mit vielen Verbindungen bleibt jedoch ein Bereich, der weiter optimiert werden muss.
+
+\section{Erkenntnisse aus der Arbeit}
+
+Die Arbeit hat wertvolle Einsichten zur Visualisierung von Knowledge Graphen geliefert und zeigte, welche Techniken besonders gut geeignet sind. Eine überraschende Erkenntnis war, wie viele Knoten das Node-Link Diagramm trotz der anfänglichen Erwartung, bei größeren Netzwerken unperfomant zu werden, darstellen konnte. Selbst bei Netzwerken mit mehreren Tausend Knoten blieb die Performance akzeptabel. Dies macht das Node-Link Diagramm zu einer starken Option für mittelgroße Netzwerke mit moderaten Verbindungen.
+
+Die Adjazenzmatrix hingegen zeigte ihre Stärken bei dichten Netzwerken mit vielen Verbindungen, jedoch nur bis zu einer bestimmten Knotenanzahl. Bei Netzwerken mit mehr als 200 Knoten verlor die Adjazenzmatrix an Übersichtlichkeit und litt unter Performanceproblemen, was ihre Anwendung auf große Netzwerke einschränkt. Diese Technik erwies sich dennoch als nützlich für kleinere, stark verbundene Netzwerke, in denen die Verbindungen klar dargestellt werden können, ohne dass Überlappungen auftreten.
+
+Eine der wichtigsten Erkenntnisse war die zentrale Rolle der Clustererkennung und Clusterdarstellung. Durch das Zusammenfassen stark verbundener Knoten in Cluster wurde die Komplexität großer Netzwerke erheblich reduziert, was die Visualisierung von Netzwerken mit zehntausenden Knoten ermöglichte. Die Clusterdarstellung verbesserte die Übersichtlichkeit und Skalierbarkeit der Visualisierung signifikant, indem sie Netzwerke in überschaubare Einheiten aufteilte. Zudem bot sie den Nutzern die Möglichkeit, bei Bedarf tiefer in die Cluster einzutauchen, um die enthaltenen Verbindungen zu untersuchen.
+
+Jedoch zeigte sich, dass Verbindungen zwischen Clustern bei sehr großen Netzwerken problematisch sind. Trotz der Reduktion sichtbarer Knoten bleibt die Vielzahl an Verbindungen bestehen, was zu Instabilitäten im Force-Directed Layout und Performance-Problemen führte. Diese Erkenntnis zeigt, dass alternative Ansätze zur Darstellung von Verbindungen in großen Netzwerken notwendig sind, um Stabilität und Performance zu verbessern.
+
+Zusammengefasst zeigte die Arbeit, dass sowohl das Node-Link Diagramm als auch die Adjazenzmatrix jeweils spezifische Stärken für bestimmte Netzwerkstrukturen bieten. Die Clustererkennung ist dabei ein Schlüssel, um sehr große Netzwerke handhabbar zu machen. Während das Node-Link Diagramm in Kombination mit der Clusterdarstellung die beste Balance aus Übersichtlichkeit und Skalierbarkeit bietet, bleibt die Optimierung der Darstellung von Verbindungen zwischen Clustern eine Herausforderung für zukünftige Arbeiten.
+
+\section{Ausblick}
+
+Die Ergebnisse dieser Arbeit haben gezeigt, dass die Visualisierung von Knowledge Graphen durch Techniken wie das Node-Link Diagramm, die Adjazenzmatrix und die Clustererkennung erheblich verbessert werden kann. Gleichzeitig sind während der Auswertung der Implementierung und der Tests neue Ideen und Optimierungsmöglichkeiten aufgekommen, die in zukünftigen Arbeiten berücksichtigt werden sollten.
+
+\subsection{Kombination von Node-Link und Adjazenzmatrix}
+
+Eine interessante Idee, die sich aus den Stärken und Schwächen der beiden Diagrammarten entwickelt hat, ist die Möglichkeit, Node-Link und Adjazenzmatrix auf eine innovative Weise zu kombinieren. Da die hohe Konnektivität zwischen Communities im Node-Link Diagramm zu Problemen führt, aber gleichzeitig ein Vorteil der Adjazenzmatrix ist, könnte man diese beiden Ansätze verbinden: Die Communities werden zunächst als Adjazenzmatrix dargestellt, wobei die Verbindungen zwischen den stark verknüpften Gruppen übersichtlich und ohne Überlappungen dargestellt werden. Durch einen Klick auf eine Community innerhalb der Matrix könnte dann eine detaillierte Darstellung der Knoten innerhalb dieser Gruppe im Node-Link Diagramm erfolgen. Dies würde die Stärken beider Techniken vereinen und könnte die Visualisierung sehr großer Netzwerke erheblich verbessern.
+
+\subsection{Weitere Techniken zur Verbesserung der Visualisierung}
+
+Es gibt mehrere Visualisierungstechniken, die in zukünftigen Implementierungen getestet werden sollten, um die Benutzerfreundlichkeit und Übersichtlichkeit weiter zu optimieren. Diese Techniken wurden in dieser Arbeit nicht getestet, da es der zeitliche Rahmen nicht erlaubt hat.
+
+\begin{itemize}
+    \item Edge Bundling: Diese Technik könnte dabei helfen, die visuelle Komplexität von Netzwerken zu reduzieren, indem ähnliche Kanten zu Bündeln zusammengefasst werden. Besonders in stark vernetzten Netzwerken könnte dies die Übersichtlichkeit verbessern und die Darstellung entlasten.
+    \item Highlighting von Kanten bei Hover über Knoten: Diese Funktion würde es den Benutzern ermöglichen, die Verbindungen eines spezifischen Knotens schnell und übersichtlich zu sehen, was die Interaktivität und Analyse des Netzwerks erleichtert.
+\end{itemize}
+
+Neben den Visualisierungstechniken ist auch die Performance ein zentrales Thema für Optimierungen. Vor allem bei großen Netzwerken und vielen Verbindungen zwischen Clustern treten Performance-Probleme auf. Alternativen wie die Bibliothek sigma.js könnten getestet werden, um zu prüfen, ob sie eine bessere Performance und Stabilität bieten.
+
+Auch die Überarbeitung der Clustering-Ansicht ist notwendig. Derzeit führt die Hover-Detection dazu, dass kleine Knoten verschwinden und wieder auftauchen, wenn der Benutzer über Community-Nodes fährt. Eine Verbesserung der Erkennung würde die Benutzererfahrung deutlich konsistenter und reibungsloser gestalten.
+
+\subsection{Fazit}
+
+Insgesamt bietet die Arbeit eine solide Grundlage für die Visualisierung von Knowledge Graphen, hat aber auch Bereiche aufgezeigt, in denen zukünftige Entwicklungen und Tests notwendig sind. Durch die Kombination von Node-Link und Adjazenzmatrix, den Einsatz neuer Visualisierungstechniken und Performance-Optimierungen können zukünftige Implementierungen robuster und effizienter gestaltet werden, um den Anforderungen großer und komplexer Netzwerke gerecht zu werden.
