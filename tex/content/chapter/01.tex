@@ -2,30 +2,24 @@
 
 \chapter{Einleitung}
 
-Die Visualisierung von Daten ist zu einem großen Feld in der modernen Forschung herangewachsen. Die Disziplin beschäftigt sich mit der Erstellung von leicht verständlichen grafischen Darstellungen aus großen mengen komplexer Daten. Sie ermöglicht es, komplexe Informationen auf eine zugängliche Weise zu präsentieren und tiefergehende Erkenntnisse aus den vorliegenden Daten zu gewinnen (vgl. \cite{wiki:DataVisualization}). Grafische Darstellungen können Datenmerkmale erkennbar machen, welche in rohen Statistiken verloren gehen können (vgl. \cite{unwin:WhyDataVisualization}, S. 2).
+Die Visualisierung von Daten hat sich in den letzten Jahren zu einem bedeutenden Forschungsfeld entwickelt. Sie befasst sich mit der Erstellung verständlicher grafischer Darstellungen aus komplexen und großen Datenmengen. Dadurch wird es möglich, komplexe Informationen auf eine zugängliche Weise darzustellen und tiefere Erkenntnisse aus den Daten zu gewinnen. Grafische Darstellungen können Muster und Merkmale sichtbar machen, die in rohen Statistiken oft übersehen werden (vgl. \cite{unwin:WhyDataVisualization}, S. 2).
 
-In den vergangenen Jahren hat sich die Datenlandschaft allerdings stark gewandelt. Die Bedeutung von verknüpften Informationen hat im Zeitalter von Big Data stark zugenommen. In immer mehr Feldern und Anwendungen fallen große Mengen von Daten an, welche die Beziehung zwischen Entitäten beschreiben. Zu diesen Feldern zählen beispielsweise Biomedizin, soziale Netzwerke und Kommunikationsnetzwerke (vgl. \cite{chen:SurveyGraphVisualization}, S. 1 f). Diese Daten lassen sich in Form von Graphen beschreiben. Ein Graph ist ein mathematisches Konzept, welches mithilfe einer Menge von Knoten und Kanten, Objekte und deren Beziehungen untereinander modellieren kann (vgl. \cite{wiki:Graph}).
+In den letzten Jahren hat sich die Datenlandschaft jedoch drastisch verändert, insbesondere durch den Aufstieg von Big Data. Verknüpfte Informationen, die die Beziehungen zwischen Entitäten beschreiben, haben enorm an Bedeutung gewonnen. Besonders in Bereichen wie der Biomedizin, sozialen Netzwerken und Kommunikationsnetzwerken fallen große Mengen solcher Daten an (vgl. \cite{chen:SurveyGraphVisualization}, S. 1 f.). Diese Daten können durch Graphen modelliert werden. Sie sind mathematische Strukturen, die Knoten und Kanten verwendet, um komplexe Netzwerke darzustellen.
 
-Graphen lassen sich mathematisch gut beschreiben. Allerdings wird für die visuelle Analyse der Daten eine grafische Darstellung benötigt. Es existieren zahlreiche Diagramme, mit welchen Graphen dargestellt werden können. Beispielsweise gibt es Node-Link, Adjazenzmatrix und Hypergraph Diagramme (vgl. \cite{chen:SurveyGraphVisualization}, S. 2). Jede dieser Diagrammklassen ist dazu in der Lage einen Graphen darzustellen. Dabei sind sie allerdings nicht jeder Aufgabe gleich gut gewachsen. Jede der möglichen Diagrammklassen folgt einem anderen Ansatz und hat unterschiedliche Prioritäten in der Darstellung. So sind Node-Link-Diagramme beispielsweise besonders leicht zu verstehen, werden allerdings schnell unübersichtlich, wenn die Anzahl der Objekte oder der Kanten steigt. Das Problem, bei der Darstellung von Graphen liegt also nicht in dem Mangel von adäquaten Visualisierungstechniken. Im Gegensatz liegt es in der Auswahl der richtigen Technik. Aufgrund der unterschiedlichen Prioritäten, bei der Visualisierung, ist die Auswahl ist allerdings maßgeblich von dem vorliegenden Problem abhängig.
+Obwohl Graphen mathematisch gut beschrieben werden können, erfordert die visuelle Analyse der Daten eine geeignete grafische Darstellung. Es existieren zahlreiche Visualisierungstechniken, die Graphen darstellen können, darunter Node-Link-Diagramme, Adjazenzmatrizen und Hypergraphen (vgl. \cite{chen:SurveyGraphVisualization}, S. 2). Jede dieser Methoden hat jedoch ihre spezifischen Stärken und Schwächen. So sind Node-Link-Diagramme beispielsweise leicht verständlich, werden jedoch schnell unübersichtlich, wenn die Anzahl der Knoten oder Kanten zunimmt. Das eigentliche Problem bei der Visualisierung von Graphen liegt nicht im Fehlen geeigneter Techniken, sondern in der Auswahl der richtigen Methode. Diese Auswahl hängt stark vom jeweiligen Anwendungsfall ab, da jede Technik unterschiedliche Aspekte der Daten hervorhebt.
 
-\section{Motivation}
 \section{Zielsetzung}
 
 Ziel der Arbeit ist es zu ermitteln, welche Visualisierungstechnik sich am besten für Knowledge Graphen eignet. Anschließend soll die Visualisierung eines Knowledge Graphen implementiert werden.
 
-Aufgrund der unterschiedlichen stärken, wird zum Vergleich der verschiedenen Visualisierungstechniken ein konkretes Beispiel benötigt. Diese Arbeit, wurde auf Knowledge Graphen eingeschränkt. Knowledge Graphen haben heutzutage eine hohe Relevanz. Sie werden traditionell in Suchmaschinen und in Sprachassistenten, wie Siri, eingesetzt. Zu den klassischen Anwendungsfällen sind in den letzten Jahren noch die Neuralen Netze hinzugekommen (vgl. \cite{wiki:KnowledgeGraph}).
-
-Zunächst wird ein Überblick über die möglichen Visualisierungstechniken geliefert. Diese werden ausführlich beschrieben und ihre Vor- und Nachteile aufgezeigt. Anschließend werden die Techniken verglichen und die für das Problem geeignetste ausgewählt. Im praktischen Teil der Arbeit wird dann die ausgewählte Visualisierungstechnik implementiert. 
-
-\section{Methodik}
-
-Im theoretischen Teil der Arbeit werden durch Literaturrecherche die möglichen Visualisierungstechniken und deren Vor- und Nachteile ermittelt. Diese werden dann verglichen und eine Auswahl getroffen.
-
-Im praktischen Teil der Arbeit wird die ausgewählte Visualisierungstechnik dann implementiert. Das Frontend wird über JavaScript realisiert. Hierbei kommt die Bibliothek D3 zum Einsatz, um den Graphen darzustellen. Das Backend wird mittels C\# realisiert werden. Die Daten für den Knowledge Graphen werden aus der DBpedia API abgerufen. Die API stellt Wikipedia Informationen, als Knowledge Graph bereit. Der Endpunkt wird über die Abfragesprache \ac{SPARQL} abgefragt.
-
 \section{Aufbau der Arbeit}
 
-% (vgl. \cite{unwin:WhyDataVisualization}, S. 2)
-% (vgl. \cite{wiki:DataVisualization})
-% (vgl. \cite{wiki:Graph})
-% (vgl. \cite{chen:SurveyGraphVisualization})
+Die vorliegende Arbeit gliedert sich in vier Hauptkapitel, die systematisch aufeinander aufbauen und die verschiedenen Aspekte der Visualisierung von großen Datasets aus Graph-Datenbanken behandeln.
+
+Im ersten Kapitel, der Einleitung, wird das Thema der Arbeit eingeführt und die Zielsetzung klar definiert. Es wird erläutert, welche Relevanz die Visualisierung von Graph-Datenbanken hat, insbesondere im Kontext großer und komplexer Datenmengen. Darüber hinaus wird das Ziel der Arbeit formuliert.
+
+Das zweite Kapitel beschäftigt sich mit den theoretischen Grundlagen der Arbeit. Es erläutert die Definition und Merkmale von Graphen sowie Knowledge Graphen und geht auf deren Unterschiede ein. Weiterhin werden Anwendungsgebiete von Knowledge Graphen beschrieben und verschiedene Visualisierungstools wie Gephi und Cytoscape vorgestellt.
+
+Das dritte Kapitel behandelt die praktische Umsetzung der im theoretischen Teil gewonnenen Erkenntnisse. Es beginnt mit einer detaillierten Anforderungsanalyse, in der sowohl funktionale als auch nicht-funktionale Anforderungen an die entwickelte Lösung definiert werden. Anschließend wird die Auswahl der verwendeten Technologien sowie die konkrete Systemarchitektur beschrieben. Der Hauptteil dieses Kapitels widmet sich der Implementierung.
+
+Im vierten und letzten Kapitel erfolgt eine Zusammenfassung der Ergebnisse der Arbeit. Die wichtigsten Erkenntnisse werden zusammengetragen und kritisch bewertet, wobei sowohl die Stärken als auch die Schwächen der entwickelten Lösung beleuchtet werden. Abschließend gibt das Kapitel einen Ausblick auf mögliche Weiterentwicklungen und Erweiterungen der Visualisierungstechniken sowie die potenziellen Einsatzmöglichkeiten der entwickelten Lösung in weiteren Anwendungsbereichen.
