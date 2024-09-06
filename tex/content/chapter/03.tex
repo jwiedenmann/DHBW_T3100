@@ -517,16 +517,53 @@ Eine überraschende Erkenntnis war jedoch, dass die Adjazenzmatrix schon bei Net
 Zusammenfassend lässt sich sagen, dass Node-Link Diagramme eine ausgezeichnete Wahl für kleinere bis mittelgroße Netzwerke mit bis zu mehreren Tausend Knoten sind. Seine Stärke liegt in der visuellen Klarheit und der einfachen Benutzbarkeit. Allerdings stößt es bei sehr großen Netzwerken mit Tausenden von Knoten an seine Grenzen. Die Adjazenzmatrix hingegen zeigt ihre Stärken bei Netzwerken mit vielen Verbindungen, aber einer relativ geringen Knotenanzahl. Sie ist weniger intuitiv, bietet jedoch bei dichten Netzwerken mit weniger Knoten eine klarere Darstellung. Ab einer bestimmten Anzahl von Knoten nimmt jedoch auch hier die Übersichtlichkeit ab, was auf die aktuelle Implementierung zurückzuführen sein könnte und eine weitere Untersuchung mit alternativen Technologien erfordert.
 
 \subsection{Auswertung der Visualisierungstechniken}
+
+Die im Graph Visualizer eingesetzten Visualisierungstechniken spielen eine entscheidende Rolle, um die Benutzerfreundlichkeit und Effektivität der Anwendung zu gewährleisten. Zwei wesentliche Techniken, die im Rahmen der Implementierung verwendet wurden, sind das Force-Directed Layout sowie das Clustering. In diesem Kapitel werden beide Techniken hinsichtlich ihrer Effektivität, Benutzerfreundlichkeit und Performance bewertet.
+
+\subsubsection{Force-Directed Layout}
+
+Das Force-Directed Layout ist eine zentrale Technik im Node-Link Diagramm und sorgt dafür, dass Knoten durch physikalische Kräfte angeordnet werden. Diese Technik simuliert Knoten als Objekte, die durch anziehende und abstoßende Kräfte interagieren, was zu einer visuellen Darstellung führt, die verwandte Knoten näher zueinander positioniert. Dies erleichtert es dem Benutzer, die Beziehungen im Netzwerk zu erkennen, da Cluster und zentrale Knoten schnell erkennbar werden.
+
+In der Implementierung des Graph Visualizer wurden zahlreiche Anpassungsmöglichkeiten eingebaut, die es dem Benutzer ermöglichen, das Verhalten des Force-Directed Layouts individuell zu steuern. Dazu gehören Einstellungen wie Node-Größe, Kollisionsradius, Ladungsstärke und Link-Distanz. Diese Anpassungsmöglichkeiten ermöglichen eine flexible Darstellung und tragen zur Benutzerfreundlichkeit bei, da der Benutzer die Visualisierung an die jeweiligen Anforderungen und die Größe des Netzwerks anpassen kann.
+
+In Tests zeigte sich, dass das Force-Directed Layout für Netzwerke mit moderater Knotenanzahl sehr effektiv ist. Bei großen Netzwerken nimmt jedoch die Performance ab, was sich in längeren Ladezeiten und einer langsameren Reaktion auf Benutzerinteraktionen äußert. Dennoch bleibt das Force-Directed Layout aufgrund seiner Anpassungsfähigkeit und intuitiven Darstellung eine der geeignetsten Techniken zur Visualisierung mittelgroßer Netzwerke.
+
+\subsubsection{Clustererkennung und -darstellung}
+
+Die Clustererkennung ermöglicht die Darstellung von Netzwerken mit mehreren zehntausend Knoten, indem Knoten, die eng miteinander verbunden sind, zu Clustern zusammengefasst werden. Diese Cluster werden dann im Graphen als größere Knoten dargestellt, was die Komplexität des Netzwerks erheblich verringert. Die Knoten im Cluster bleiben vorerst verborgen, und der Benutzer sieht nur die Cluster, wodurch das Netzwerk deutlich übersichtlicher wird. Die Darstellung der Cluster bietet dem Benutzer eine vereinfachte Sicht auf das Netzwerk und ermöglicht es, schnell die Verbindungen zwischen den Clustern zu erkennen. Dies erleichtert die Analyse großer Netzwerke und hilft dabei, Muster und Strukturen besser zu identifizieren. Ein großer Vorteil der Clusterdarstellung ist, dass die Benutzer je nach Bedarf in die Details einzelner Cluster betrachten können, um die darin enthaltenen Knoten und Verbindungen zu erkunden.
+
+Diese Technik erfüllt die Anforderungen an die Skalierbarkeit (\hyperref[NFR03]{NFR03}), da sie die Komplexität des Netzwerks auf ein für den Benutzer handhabbares Maß reduziert, ohne wichtige Informationen zu verlieren. Netzwerke mit mehreren zehntausend Knoten lassen sich so auch bei großer Dichte der Verbindungen noch effektiv visualisieren und analysieren.
+
+Ein wesentliches Problem tritt jedoch bei der Darstellung von Verbindungen zwischen Clustern auf. In sehr großen Netzwerken entstehen oft zahlreiche Verbindungen zwischen verschiedenen Clustern. Wenn diese Verbindungen im Force-Directed Layout dargestellt werden, kann dies zu Instabilitäten führen. Die physikalische Simulation des Force-Directed Layouts versucht, die Knoten auf Basis ihrer Verbindungen auszurichten, doch bei sehr vielen Verbindungen beginnt das Diagramm zu \enquote{zittern}. Dieses Zittern entsteht, weil die Kraftsimulation Schwierigkeiten hat, die Knoten in einer stabilen Position zu halten, was zu langen Stabilisierungszeiten führt.
+
+Diese Instabilität beeinträchtigt die Benutzererfahrung und wirkt sich negativ auf die Performance aus. Je mehr Verbindungen zwischen den Clustern bestehen, desto stärker wird die Simulation beansprucht, was dazu führt, dass die Darstellung langsamer reagiert und die Benutzerinteraktion weniger flüssig wird. Dies ist besonders bei Netzwerken mit vielen Verbindungen zwischen den Clustern ein Problem, da die große Anzahl an Kanten die Stabilität des Layouts belastet und die Performance mindert.
+
+\subsubsection{Fazit}
+
+Die Clustererkennung und -darstellung im Graph Visualizer ermöglicht eine effiziente Visualisierung großer Netzwerke, indem sie die Komplexität durch die Aggregation von Knoten in Clustern reduziert. Dies verbessert die Übersichtlichkeit und Skalierbarkeit erheblich und erfüllt die entsprechenden Anforderungen des Projekts. Die Kombination dieser Technik mit dem Force-Directed Layout bietet eine visuell ansprechende und interaktive Darstellung von Netzwerken.
+
+Allerdings stößt das Force-Directed Layout bei Netzwerken mit vielen Verbindungen zwischen Clustern an seine Grenzen. Das Zittern und die langen Stabilisierungszeiten beeinträchtigen die Performance und die Benutzererfahrung. Eine Reduktion der Anzahl angezeigter Verbindungen oder die Anwendung einer alternativen Visualisierungstechnik könnte dieses Problem mildern und die Stabilität des Graphen bei sehr großen Netzwerken verbessern.
+
 \subsection{Auswertung der Interaktivität und Benutzerfreundlichkeit}
-\subsection{Gesamtbewertung und Schlussfolgerung}
 
-- Adjenzmatrix hohe Verbindungsdichte
-- RDF erklären
+Die Interaktivität und Benutzerfreundlichkeit des Graph Visualizer sind entscheidend für die effektive Analyse von Netzwerken. In diesem Abschnitt werden die wichtigsten interaktiven Features und ihre Auswirkung auf die Benutzerfreundlichkeit sowie die Erfüllung der Anforderungen bewertet.
 
-\chapter{Zusammenfassung und Ausblick}
+\subsubsection{Filterung und Detailansicht}
 
-- Edge Bundling
-- highlighting von edges
-- Performance
-- refinement clustering
-- kombination aus Adjenzmatrix und Nodelink
+Die Graph-Suche reduziert die Komplexität großer Netzwerke, indem irrelevante Daten ausgeblendet werden. Dies verbessert die Übersichtlichkeit und erfüllt die Anforderung an Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}). Die Detailansicht zeigt bei einem Klick auf einen Knoten die zugehörigen Informationen und ermöglicht eine gezielte Analyse. Diese Funktion ist besonders nützlich im Node-Link Diagramm, fehlt jedoch noch in der Adjazenzmatrix.
+
+\subsubsection{Anpassungsmöglichkeiten der Diagramme}
+
+Benutzer können verschiedene Parameter wie Node-Größe, Kollisionsradius und Link-Distanz im Force-Directed Layout anpassen. Diese Flexibilität erhöht die Interaktivität und ermöglicht eine individuelle Anpassung der Visualisierung an die Netzwerkstruktur. Diese Funktion trägt erheblich zur Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) bei und erleichtert die Analyse komplexer Netzwerke.
+
+\subsubsection{Clusterdarstellung und Navigation}
+
+Die Clusterdarstellung ermöglicht es, große Netzwerke effizienter zu navigieren, indem stark verknüpfte Knoten zusammengefasst werden. Dies verbessert die Übersichtlichkeit und erfüllt die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}). Das Ein- und Ausklappen von Clustern bietet eine flexible Möglichkeit, zwischen globaler und detaillierter Ansicht zu wechseln.
+
+\subsubsection{Performance und Stabilität der Interaktivität}
+
+Bei sehr großen Netzwerken zeigt das Force-Directed Layout Schwächen in der Performance, insbesondere durch das Zittern und lange Stabilisierungszeiten. Dies beeinträchtigt die Benutzererfahrung, da die Reaktionsfähigkeit der Anwendung abnimmt. Trotz dieser Einschränkungen funktioniert die Interaktivität bei mittelgroßen Netzwerken gut.
+
+\subsubsection{Fazit}
+
+Die Interaktivität und Benutzerfreundlichkeit des Graph Visualizer sind insgesamt gut umgesetzt. Funktionen wie die Filterung, Detailansicht und Anpassungsmöglichkeiten bieten eine flexible und intuitive Nutzung, erfüllen die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) weitgehend. Schwächen bei der Performance großer Netzwerke sollten jedoch weiter optimiert werden.
