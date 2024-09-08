@@ -35,7 +35,7 @@
   });
 
   async function loadResults() {
-    loading.set(true);
+    loading.set(true)
     try {
       searchResults = await fetchResults();
     } catch (error) {
@@ -72,6 +72,11 @@
       <!-- Show spinner while loading -->
       <div class="flex justify-center items-center h-full">
         <span class="loading loading-spinner loading-lg"></span>
+      </div>
+    {:else if searchResults.length === 0}
+      <!-- Show placeholder text if no results -->
+      <div class="flex justify-center items-center h-full">
+        <p class="text-xl text-gray-500">No results found.</p>
       </div>
     {:else}
       {#each searchResults as searchResult}
