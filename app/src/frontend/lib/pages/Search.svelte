@@ -5,9 +5,11 @@
   import Footer from "../components/Footer.svelte";
   import { onMount, onDestroy } from "svelte";
   import { getURLSearchParams } from "../utils/UrlHelper";
+  import { writable } from "svelte/store";
 
   let searchQuery = null;
   let searchResults = [];
+  let loading = writable(true);
 
   $: if (searchQuery !== null) {
     loadResults();
@@ -32,15 +34,15 @@
     window.removeEventListener("hashchange", updateSearchQuery);
   });
 
-  function loadResults() {
-    fetchResults().then(
-      function (value) {
-        searchResults = value;
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
+  async function loadResults() {
+    loading.set(true);
+    try {
+      searchResults = await fetchResults();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      loading.set(false);
+    }
   }
 
   async function fetchResults() {
@@ -66,15 +68,22 @@
   <Navbar showSearchBar={true} {searchQuery} />
 
   <main class="flex-1 flex flex-col overflow-y-auto">
-    {#each searchResults as searchResult}
-      <div class="ml-6 mt-4 xl:ml-18">
-        <a
-          href="/#/graph/?uri={searchResult.Subject}"
-          class="link link-info font-semibold text-xl">{searchResult.Label}</a
-        >
-        <p>{searchResult.Subject}</p>
+    {#if $loading}
+      <!-- Show spinner while loading -->
+      <div class="flex justify-center items-center h-full">
+        <span class="loading loading-spinner loading-lg"></span>
       </div>
-    {/each}
+    {:else}
+      {#each searchResults as searchResult}
+        <div class="ml-6 mt-4 xl:ml-18">
+          <a
+            href="/#/graph/?uri={searchResult.Subject}"
+            class="link link-info font-semibold text-xl">{searchResult.Label}</a
+          >
+          <p>{searchResult.Subject}</p>
+        </div>
+      {/each}
+    {/if}
   </main>
 
   <Footer />
