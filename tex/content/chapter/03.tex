@@ -246,7 +246,7 @@ SELECT DISTINCT ?resource ?label WHERE {
 LIMIT 100
 \end{lstlisting}
 
-In der Abfrage aus Listing \ref{list:realization:implementation:searchquery} wird zunächst jede Ressource (\textit{?resource}) identifiziert, die ein Label (\textit{?label}) besitzt. Der FILTER-Ausdruck sorgt dafür, dass nur solche Labels berücksichtigt werden, die dem eingegebenen Suchbegriff entsprechen. Zusätzlich werden die Ergebnisse auf Labels in englischer Sprache eingeschränkt, um eine Kontinuität für dieses Projekt zu erreichen. Schließlich wird die Anzahl der zurückgegebenen Ergebnisse auf 100 beschränkt, um die Performance der Abfrage zu verbessern.
+In der Abfrage aus Listing \ref{list:realization:implementation:searchquery} wird zunächst jede Ressource identifiziert, die ein Label besitzt. Der FILTER-Ausdruck sorgt dafür, dass nur solche Labels berücksichtigt werden, die dem eingegebenen Suchbegriff entsprechen. Zusätzlich werden die Ergebnisse auf Labels in englischer Sprache eingeschränkt, um eine Kontinuität für dieses Projekt zu erreichen. Schließlich wird die Anzahl der zurückgegebenen Ergebnisse auf 100 beschränkt, um die Performance der Abfrage zu verbessern.
 
 Die Ergebnisse dieser Abfrage bestehen aus einer Liste von Ressourcen (URI) und ihren entsprechenden Labels, die dann in eine JSON-Struktur umgewandelt und an das Frontend übermittelt werden. Auf der Suchseite werden diese Ergebnisse als klickbare Links angezeigt, die den Benutzer weiter in die Exploration des Knowledge Graphen führen können. Diese Darstellung ist in der Abbildung \ref{fig:realization:implementation:searchpage} zu sehen.
 
@@ -278,13 +278,61 @@ Der Graph selbst wird standardmäßig als Node-Link Diagramm dargestellt, da es 
 
 \subsubsection{Laden des Graphen}
 
-Beim Laden der Graph-View wird die URI der Ressource aus der URL extrahiert (z.B. \textit{/\#/graph/?uri=http://dbpedia.org/resource/Kennedy\_Space\_Center,\_FL}). Diese URI wird an das Backend übermittelt, das den entsprechenden Graphen von DBpedia abruft und als JSON an das Frontend zurückgibt. Das Abrufen des Graphen geschieht im Backend, da es eine bessere Performance bietet. Das parallele Abrufen von Ressourcen beschleunigt das Laden großer Graphen deutlich. Ein zentraler Bestandteil dieses Prozesses ist die Get-Methode des SparqlRepository. Diese Methode übernimmt die Aufgabe, den Graphen zu laden und ihn für die Anzeige vorzubereiten.
+Beim Laden der Graph-View wird die URI der Ressource aus der URL extrahiert (z.B. \textit{/\#/graph/?uri=http://dbpedia.org/resource/Kennedy\_Space\_Center,\_FL}). Diese URI wird an das Backend übermittelt, das den entsprechenden Graphen von DBpedia abruft und als JSON an das Frontend zurückgibt. Das Abrufen des Graphen geschieht im Backend, da es eine bessere Performance bietet. Das parallele Abrufen von Ressourcen beschleunigt das Laden großer Graphen deutlich. Ein zentraler Bestandteil dieses Prozesses ist die \textit{Get}-Methode des SparqlRepository. Diese Methode übernimmt die Aufgabe, den Graphen zu laden und ihn für die Anzeige vorzubereiten.
 
-Ein wichtiger Bestandteil der Implementierung ist der Cache, der zur Verbesserung der Performance dient. Der Cache speichert zuvor geladene Graphen, um unnötige Anfragen an die externe Datenquelle zu vermeiden. Wenn eine Anfrage an das Backend gestellt wird, prüft die Get-Methode zunächst, ob der angeforderte Graph bereits im Cache vorhanden ist. Falls der Graph im Cache vorhanden ist, wird er direkt aus dem Cache zurückgegeben, was die Ladezeit erheblich verkürzt. Ist der Graph jedoch nicht im Cache vorhanden, wird er mittels der \textit{LoadGraphAsync} Methode von DBpedia abgerufen und anschließend in den Cache aufgenommen.
+Ein wichtiger Bestandteil der Implementierung ist der Cache, der zur Verbesserung der Performance dient. Der Cache speichert zuvor geladene Graphen, um unnötige Anfragen an die externe Datenquelle zu vermeiden. Wenn eine Anfrage an das Backend gestellt wird, prüft die \textit{Get}-Methode zunächst, ob der angeforderte Graph bereits im Cache vorhanden ist. Falls der Graph im Cache vorhanden ist, wird er direkt aus dem Cache zurückgegeben, was die Ladezeit erheblich verkürzt. Ist der Graph jedoch nicht im Cache vorhanden, wird er mittels der \textit{LoadGraphAsync} Methode von DBpedia abgerufen und anschließend in den Cache aufgenommen.
 
 Der Einsatz eines Caches kann die Performance der Anwendung signifikant verbessern, insbesondere wenn häufig auf dieselben Graphen zugegriffen wird. Allerdings ist der Speicherplatz des Caches begrenzt, und bei sehr großen Datenmengen könnte der Cache an seine Grenzen stoßen. In einer produktiven Umgebung könnte es daher sinnvoll sein, eine dedizierte Datenbank zur Zwischenspeicherung der Graphen zu verwenden, um eine noch robustere Lösung zu bieten.
 
-code einfügen
+In Listing \ref{list:realization:implementation:getMethod} ist die \textit{Get}-Methode des SparqlRepository abgebildet. Der Code enthält die Logik zum Abrufen des Graphen, entweder aus dem Cache oder von DBpedia.
+
+\begin{lstlisting}[caption={Get-Methode des SparqlRepository zum Abrufen des Graphen mit Cache.}, label={list:realization:implementation:getMethod}]
+    public async Task<KnowledgeGraph> Get(string uri, int loadingDepth, int limit)
+    {
+        if (!_cache.TryGetValue(GraphCacheKey, out Dictionary<string, KnowledgeGraph>? knowledgeGraphDictionary))
+        {
+            knowledgeGraphDictionary = [];
+            _cache.Set(GraphCacheKey, knowledgeGraphDictionary);
+        }
+
+        if (!knowledgeGraphDictionary!.TryGetValue(uri, out KnowledgeGraph? knowledgeGraph))
+        {
+            Graph? graph = null;
+            try
+            {
+                graph = (Graph?)await LoadGraphAsync(uri);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load graph for URI: {uri}. Exception: {ex.Message}");
+            }
+
+            if (graph == null)
+            {
+                knowledgeGraph = new KnowledgeGraph
+                {
+                    Nodes = new Dictionary<string, Node> { { uri, new Node { Uri = uri } } }
+                };
+            }
+            else
+            {
+                knowledgeGraph = GraphHelper.ConvertGraphToKnowledgeGraph(graph);
+            }
+
+            knowledgeGraphDictionary[uri] = knowledgeGraph;
+        }
+
+        // Limit the number of nodes returned
+        KnowledgeGraph limitedKnowledgeGraph = ApplyNodeLimit(knowledgeGraph, limit);
+
+        if (loadingDepth > 1)
+        {
+            await LoadSubGraphsAsync(limitedKnowledgeGraph, loadingDepth - 1, limit, knowledgeGraphDictionary);
+        }
+
+        return limitedKnowledgeGraph;
+    }
+\end{lstlisting}
 
 \subsubsection{Erweiterung des Graphen}
 
@@ -299,9 +347,43 @@ Zusätzlich zum primären Graphen kann die Anwendung auch Subgraphen laden. Dies
 
 Diese Darstellung ist sicherlich nicht das, was man sich unter einem großen Knowledge Graphen vorgestellt. Um diesen zu erhalten, muss man die Ressourcen, mit welchen der Graph verbunden ist, abrufen und den originalen Graphen um diese Informationen erweitern.
 
-Die Methode LoadSubGraphsAsync wird verwendet, um diese weiterführenden Ressourcen zu laden und in den bestehenden Graphen zu integrieren. Diese Methode lädt die verknüpften Ressourcen, indem sie für jede verlinkte Ressource erneut die Get-Methode aufruft. Die geladenen Subgraphen werden dann in den ursprünglichen Graphen integriert. Dieser rekursive Prozess ermöglicht es dem Benutzer, die Exploration des Knowledge Graphen zu vertiefen und weitere Verbindungen und Zusammenhänge zu entdecken, ohne dabei die Übersichtlichkeit zu verlieren.
+Die Methode \textit{LoadSubGraphsAsync} wird verwendet, um diese weiterführenden Ressourcen zu laden und in den bestehenden Graphen zu integrieren. Diese Methode lädt die verknüpften Ressourcen, indem sie für jede verlinkte Ressource erneut die Get-Methode aufruft. Die geladenen Subgraphen werden dann in den ursprünglichen Graphen integriert. Dieser rekursive Prozess ermöglicht es dem Benutzer, die Exploration des Knowledge Graphen zu vertiefen und weitere Verbindungen und Zusammenhänge zu entdecken, ohne dabei die Übersichtlichkeit zu verlieren. Der Code der Methode ist in Listing \ref{list:realization:implementation:loadSubGraphMethod} abgebildet.
 
-code einfügen
+\begin{lstlisting}[caption={\textit{LoadSubGraphsAsync}-Methode zum rekursiven Laden der Graph-Ressourcen}, label={list:realization:implementation:loadSubGraphMethod}]
+    private async Task LoadSubGraphsAsync(KnowledgeGraph knowledgeGraph, int remainingDepth, int limit, Dictionary<string, KnowledgeGraph> knowledgeGraphDictionary)
+    {
+        var nodeUris = knowledgeGraph.Nodes.Keys.ToList();
+
+        var tasks = nodeUris.Select(async uri =>
+        {
+            try
+            {
+                var subGraph = await Get(uri, remainingDepth, limit);
+
+                lock (knowledgeGraph.Nodes)
+                {
+                    foreach (var subNode in subGraph.Nodes.Values)
+                    {
+                        if (knowledgeGraph.Nodes.TryGetValue(subNode.Uri, out var existingNode))
+                        {
+                            GraphHelper.MergeNodes(existingNode, subNode);
+                        }
+                        else
+                        {
+                            knowledgeGraph.Nodes[subNode.Uri] = subNode;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load subgraph for URI: {uri}. Exception: {ex.Message}");
+            }
+        });
+
+        await Task.WhenAll(tasks);
+    }
+\end{lstlisting}
 
 Durch diese Herangehensweise beim Abrufen des Graphen stellt die Implementierung sicher, dass komplexe Netzwerke effizient geladen werden können.
 
