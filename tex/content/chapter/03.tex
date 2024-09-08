@@ -2,11 +2,11 @@
 
 \chapter{Realisierung}
 
-Nachdem im theoretischen Teil die Grundlagen, Herausforderungen und geeigneten Visualisierungstechniken für Knowledge Graphen erarbeitet wurden, widmet sich dieses Kapitel der praktischen Umsetzung der gewonnenen Erkenntnisse. Ziel ist es, ein System zu entwickeln, welches dazu in der Lage ist einen Knowledge Graphen zu visualisieren und den Anforderungen, die sich aus dem Theorieteil ableiten lassen, gerecht zu werden. Das System wird im Folgenden Kapitel als Graph Visualizer bezeichnet.
+Nachdem im theoretischen Teil die Grundlagen, Herausforderungen und geeigneten Visualisierungstechniken für Knowledge Graphen erarbeitet wurden, widmet sich dieses Kapitel der praktischen Umsetzung der gewonnenen Erkenntnisse. Ziel ist es, ein System zu entwickeln, welches dazu in der Lage ist, einen Knowledge Graphen zu visualisieren und den Anforderungen, die sich aus dem Theorieteil ableiten lassen, gerecht zu werden. Das System wird im folgenden Kapitel als Graph Visualizer bezeichnet.
 
 \section{Konzept}
 
-In diesem Abschnitt wird das Konzept für die Umsetzung des Graph Visualizers entwickelt. Auf Basis des theoretischen Teils, werden zunächst die funktionalen und nicht-funktionalen Anforderungen an den Graph Visualizer analysiert. Anschließend werden die geeigneten Diagrammarten ausgewählt und die notwendigen Technologien festgelegt. Das erarbeitete Konzept bildet die Grundlage für die nachfolgende Implementierung und gewährleistet, dass der Graph Visualizer sowohl den technischen als auch den benutzerseitigen Anforderungen entspricht. Dabei wird besonders darauf geachtet, dass die Architektur des Systems flexibel und erweiterbar gestaltet ist, um zukünftige Anpassungen und Erweiterungen zu ermöglichen.
+In diesem Abschnitt wird das Konzept für die Umsetzung des Graph Visualizers entwickelt. Auf Basis des theoretischen Teils werden zunächst die funktionalen und nicht-funktionalen Anforderungen an den Graph Visualizer analysiert. Anschließend werden die geeigneten Diagrammarten ausgewählt und die notwendigen Technologien festgelegt. Das erarbeitete Konzept bildet die Grundlage für die nachfolgende Implementierung und gewährleistet, dass der Graph Visualizer sowohl den technischen als auch den benutzerseitigen Anforderungen entspricht. Dabei wird besonders darauf geachtet, dass die Architektur des Systems flexibel und erweiterbar gestaltet ist, um zukünftige Anpassungen und Erweiterungen zu ermöglichen.
 
 \subsection{Anforderungsanalyse}
 \label{realization:requirements}
@@ -15,13 +15,13 @@ In diesem Abschnitt werden die spezifischen Anforderungen an den Graph Visualize
 
 \subsubsection{Funktionale Anforderungen}
 
-Für dieses Projekt wurde festgelegt, dass der Graph Visualizer die Daten des DBpedia Graphen visualisieren soll. DBpedia ist eine umfassende Wissensdatenbank, die auf strukturierten Informationen aus Wikipedia basiert. Diese Datenquelle wurde ausgewählt, da sie einen großen, frei zugänglichen Knowledge Graphen zur Verfügung stellt. Die genauen Daten sind in diesem Projekt zweitrangig. Es geht darum mit welchen Techniken ein Knowledge Graph dargestellt werden kann und nicht darum welche Daten dargestellt werden.
+Für dieses Projekt wurde festgelegt, dass der Graph Visualizer die Daten des DBpedia Graphen visualisieren soll. DBpedia ist eine umfassende Wissensdatenbank, die auf strukturierten Informationen aus Wikipedia basiert. Diese Datenquelle wurde ausgewählt, da sie einen großen, frei zugänglichen Knowledge Graphen zur Verfügung stellt. Die genauen Daten sind in diesem Projekt zweitrangig. Es geht darum, mit welchen Techniken ein Knowledge Graph dargestellt werden kann und nicht darum, welche Daten dargestellt werden.
 
 Der Graph Visualizer muss in der Lage sein, Knowledge Graphen effektiv darzustellen. Dies umfasst die Fähigkeit, Knoten und Kanten zu rendern und unterschiedliche Visualisierungstechniken anzuwenden, um die Daten strukturiert und verständlich zu präsentieren. Die Visualisierung muss es ermöglichen, komplexe Netzwerke übersichtlich darzustellen und verschiedene Perspektiven auf die Daten anzubieten.
 
-Ein wesentliches Merkmal des Graph Visualizer ist die Interaktivität. Benutzer müssen die Möglichkeit haben, mit dem Graphen zu interagieren, indem sie Knoten und Kanten auswählen, verschieben, vergrößern oder verkleinern. Darüber hinaus soll der Benutzer durch einfache Aktionen, wie Klicks oder Drag-and-Drop, den Graphen dynamisch erkunden und manipulieren können, um tiefere Einblicke in die Daten zu gewinnen.
+Ein wesentliches Merkmal des Graph Visualizer ist die Interaktivität. Benutzer müssen die Möglichkeit haben, mit dem Graphen zu interagieren, indem sie Knoten und Kanten auswählen, verschieben, vergrößern oder verkleinern. Darüber hinaus soll der Benutzer durch einfache Aktionen wie Klicks oder Drag-and-drop den Graphen dynamisch erkunden und manipulieren können, um tiefere Einblicke in die Daten zu gewinnen.
 
-Der Graph Visualizer soll es ermöglichen, die Darstellung der Graphen anzupassen. Dazu gehört die Fähigkeit, verschiedene Layouts auszuwählen, sowie die Darstellung des Graphen anzupassen. Diese Anpassungen sollen helfen, die Visualisierung an den spezifischen Kontext der Analyse anzupassen und die relevanten Informationen hervorzuheben.
+Der Graph Visualizer soll es ermöglichen, die Darstellung der Graphen anzupassen. Dazu gehört die Fähigkeit, verschiedene Layouts auszuwählen sowie die Darstellung des Graphen anzupassen. Diese Anpassungen sollen helfen, die Visualisierung an den spezifischen Kontext der Analyse anzupassen und die relevanten Informationen hervorzuheben.
 
 Die eben definierten funktionalen Anforderungen sind in der Tabelle \ref{tab:realization:concept:funcreq} zusammengefasst.
 
@@ -53,7 +53,7 @@ Die eben definierten funktionalen Anforderungen sind in der Tabelle \ref{tab:rea
                                           &
         Visualisierung von Knowledge Graphen
                                           &
-        Das System soll dazu in der Lage sein einen Knowledge Graphen zu visualisieren.
+        Das System soll dazu in der Lage sein, einen Knowledge Graphen zu visualisieren.
         \\
         \hline
         FR03
@@ -74,9 +74,9 @@ Die eben definierten funktionalen Anforderungen sind in der Tabelle \ref{tab:rea
     \end{longtable}
 \end{center}
 
-\subsubsection{Nicht-Funktionale Anforderungen}
+\subsubsection{Nicht-funktionale Anforderungen}
 
-Der Graph Visualizer muss eine hohe Reaktionsgeschwindigkeit aufweisen, insbesondere bei der Verarbeitung großer Datenmengen. Ladezeiten sollten minimiert und Interaktionen wie das Verschieben, Zoomen oder Auswählen von Knoten sollten ohne Verzögerungen durchgeführt werden können. Das System sollte in der Lage sein, selbst bei Netzwerken mit tausenden von Knoten und Kanten flüssig zu arbeiten.
+Der Graph Visualizer muss eine hohe Reaktionsgeschwindigkeit aufweisen, insbesondere bei der Verarbeitung großer Datenmengen. Ladezeiten sollten minimiert und Interaktionen wie das Verschieben, Zoomen oder Auswählen von Knoten sollten ohne Verzögerungen durchgeführt werden können. Das System sollte in der Lage sein, selbst bei Netzwerken mit Tausenden von Knoten und Kanten flüssig zu arbeiten.
 
 Das System muss stabil und zuverlässig funktionieren. Es darf nicht zu Abstürzen kommen, selbst wenn es mit unerwarteten Eingaben oder sehr großen Datenmengen konfrontiert wird.
 
@@ -124,8 +124,7 @@ Die eben definierten nicht-funktionalen Anforderungen sind in der Tabelle \ref{t
                                            &
         Kompatibilität
                                            &
-        Der Graph Visualizer sollte auf verschiedenen Plattformen und Betriebssystemen lauffähig
-        sein.
+        Der Graph Visualizer sollte auf verschiedenen Plattformen und Betriebssystemen lauffähig sein.
         \\
         \hline
         NFR04
@@ -152,37 +151,37 @@ In diesem Kapitel werden die verschiedenen Visualisierungstechniken, die im theo
 
 \subsubsection{Diagrammarten}
 
-Für die Implementierung des Graph Visualizer werden sowohl Node-Link-Diagramme als auch Adjazenzmatrizen ausgewählt, da beide Diagrammarten unterschiedliche Stärken aufweisen, die den spezifischen Anforderungen des Projekts gerecht werden. Node-Link-Diagramme werden aufgrund ihrer intuitiven Darstellung und Benutzerfreundlichkeit gewählt, da sie es ermöglichen, die Beziehungen zwischen Knoten direkt und visuell ansprechend zu repräsentieren. Diese Diagrammart unterstützt die Anforderung, ein System zu entwickeln, das auch für Nutzer ohne tiefgehende technische Kenntnisse leicht verständlich und bedienbar ist. Auf der anderen Seite bieten Adjazenzmatrizen eine effiziente Möglichkeit, dichte Netzwerke kompakt und übersichtlich darzustellen, was insbesondere für die Anforderung der Skalierbarkeit entscheidend ist. Adjazenzmatrizen eignen sich hervorragend zur Analyse komplexer und stark verbundener Netzwerke, indem sie Verbindungen in einer klar strukturierten Form präsentieren. Obwohl beide Diagrammarten für die Implementierung ausgewählt wurden, spielen sie nicht zusammen, sondern werden getrennt verwendet, um ihre jeweiligen Vorteile auszunutzen. In einem späteren Kapitel werden sie miteinander verglichen, um zu evaluieren, welche der beiden Methoden für bestimmte Anwendungsfälle besser geeignet ist und wie sie sich in der praktischen Anwendung bewähren. Hierarchische Layouts hingegen werden nicht berücksichtigt, da ein Knowledge Graph typischerweise nicht hierarchisch ist und solche Layouts daher die komplexen, nicht-linearen Strukturen eines Knowledge Graphen nicht adäquat abbilden könnten.
+Für die Implementierung des Graph Visualizers werden sowohl Node-Link-Diagramme als auch Adjazenzmatrizen ausgewählt, da beide Diagrammarten unterschiedliche Stärken aufweisen, die den spezifischen Anforderungen des Projekts gerecht werden. Node-Link-Diagramme werden aufgrund ihrer intuitiven Darstellung und Benutzerfreundlichkeit gewählt, da sie es ermöglichen, die Beziehungen zwischen Knoten direkt und visuell ansprechend zu repräsentieren. Diese Diagrammart unterstützt die Anforderung, ein System zu entwickeln, das auch für Nutzer ohne tiefgehende technische Kenntnisse leicht verständlich und bedienbar ist. Auf der anderen Seite bieten Adjazenzmatrizen eine effiziente Möglichkeit, dichte Netzwerke kompakt und übersichtlich darzustellen, was insbesondere für die Anforderung der Skalierbarkeit entscheidend ist. Adjazenzmatrizen eignen sich hervorragend zur Analyse komplexer und stark verbundener Netzwerke, indem sie Verbindungen in einer klar strukturierten Form präsentieren. Obwohl beide Diagrammarten für die Implementierung ausgewählt wurden, spielen sie nicht zusammen, sondern werden getrennt verwendet, um ihre jeweiligen Vorteile auszunutzen. In einem späteren Kapitel werden sie miteinander verglichen, um zu evaluieren, welche der beiden Methoden für bestimmte Anwendungsfälle besser geeignet ist und wie sie sich in der praktischen Anwendung bewähren. Hierarchische Layouts hingegen werden nicht berücksichtigt, da ein Knowledge Graph typischerweise nicht hierarchisch ist und solche Layouts daher die komplexen, nicht-linearen Strukturen eines Knowledge Graphen nicht adäquat abbilden könnten.
 
 \subsubsection{Visualisierungstechniken}
 
-Für die Implementierung des Graph Visualizer wurden sorgfältig verschiedene Visualisierungstechniken ausgewählt, die den Anforderungen des Projekts am besten entsprechen und gleichzeitig die Grundlage für eine spätere Erweiterung des Systems bieten. Eine der zentralen Techniken ist die Graph Filterung, die sowohl in der Vorverarbeitung als auch während des Betriebs des Systems zum Einsatz kommt. Diese Technik ermöglicht es, irrelevante oder weniger wichtige Knoten und Kanten aus dem Graphen zu entfernen oder auszublenden, wodurch die Komplexität der Darstellung reduziert und der Fokus auf relevante Daten gelenkt wird. Dies ist besonders wichtig bei großen Netzwerken, da die Analyse solcher Netzwerke oft durch die schiere Menge an Informationen erschwert wird. Die interaktive Filterung, die es den Nutzern ermöglicht, den Graphen dynamisch an ihre Bedürfnisse anzupassen, trägt entscheidend zur Benutzerfreundlichkeit und Flexibilität des Systems bei. Zudem wird ein Force-Directed Layout implementiert, das sich durch seine intuitive Darstellung und die Möglichkeit der Anpassung aller Parameter durch den Nutzer auszeichnet. Diese Technik basiert auf physikalischen Modellen, die dafür sorgen, dass verwandte Knoten näher beieinanderliegen, was es dem Nutzer erleichtert, Cluster und Beziehungen im Netzwerk zu erkennen. Das Force-Directed Layout unterstützt die Anforderung, ein hochgradig interaktives und anpassbares System zu entwickeln, das auch komplexe Netzwerke verständlich darstellt. Ein weiterer wesentlicher Bestandteil des Graph Visualizer ist die Integration des Louvain-Algorithmus zur Clustererkennung. Dieser Algorithmus ist besonders für große Netzwerke geeignet und ermöglicht es, Cluster ohne vorherige Festlegung ihrer Anzahl zu identifizieren. Dies ist von besonderer Bedeutung für die Visualisierung von Knowledge Graphen, die in der Regel keine vorab bekannte Struktur aufweisen. Durch die Clustererkennung wird das Netzwerk in überschaubare Segmente unterteilt, was die Analyse erleichtert und die Skalierbarkeit des Systems verbessert. Andere im theoretischen Teil vorgestellte Techniken, wie das Edge Bundling oder die Fischaugen-Ansicht, werden aufgrund zeitlicher Einschränkungen nicht implementiert, obwohl sie ebenfalls nützlich sind. Der Fokus liegt auf den Methoden, die die Anforderungen am besten erfüllen und gleichzeitig die Grundlage für eine spätere Erweiterung des Systems bilden. Diese ausgewählten Techniken werden in späteren Kapiteln evaluiert, um ihre Effektivität und Eignung für die spezifischen Anforderungen des Graph Visualizer zu überprüfen und zu validieren.
+Für die Implementierung des Graph Visualizers wurden sorgfältig verschiedene Visualisierungstechniken ausgewählt, die den Anforderungen des Projekts am besten entsprechen und gleichzeitig die Grundlage für eine spätere Erweiterung des Systems bieten. Eine der zentralen Techniken ist die Graph Filterung, die sowohl in der Vorverarbeitung als auch während des Betriebs des Systems zum Einsatz kommt. Diese Technik ermöglicht es, irrelevante oder weniger wichtige Knoten und Kanten aus dem Graphen zu entfernen oder auszublenden, wodurch die Komplexität der Darstellung reduziert und der Fokus auf relevante Daten gelenkt wird. Dies ist besonders wichtig bei großen Netzwerken, da die Analyse solcher Netzwerke oft durch die schiere Menge an Informationen erschwert wird. Die interaktive Filterung, die es den Nutzern ermöglicht, den Graphen dynamisch an ihre Bedürfnisse anzupassen, trägt entscheidend zur Benutzerfreundlichkeit und Flexibilität des Systems bei. Zudem wird ein Force-Directed Layout implementiert, das sich durch seine intuitive Darstellung und die Möglichkeit der Anpassung aller Parameter durch den Nutzer auszeichnet. Diese Technik basiert auf physikalischen Modellen, die dafür sorgen, dass verwandte Knoten näher beieinanderliegen, was es dem Nutzer erleichtert, Cluster und Beziehungen im Netzwerk zu erkennen. Das Force-Directed Layout unterstützt die Anforderung, ein hochgradig interaktives und anpassbares System zu entwickeln, das auch komplexe Netzwerke verständlich darstellt. Ein weiterer wesentlicher Bestandteil des Graph Visualizers ist die Integration des Louvain-Algorithmus zur Clustererkennung. Dieser Algorithmus ist besonders für große Netzwerke geeignet und ermöglicht es, Cluster ohne vorherige Festlegung ihrer Anzahl zu identifizieren. Dies ist von besonderer Bedeutung für die Visualisierung von Knowledge Graphen, die in der Regel keine vorab bekannte Struktur aufweisen. Durch die Clustererkennung wird das Netzwerk in überschaubare Segmente unterteilt, was die Analyse erleichtert und die Skalierbarkeit des Systems verbessert. Andere im theoretischen Teil vorgestellte Techniken wie das Edge Bundling oder die Fischaugen-Ansicht werden aufgrund zeitlicher Einschränkungen nicht implementiert, obwohl sie ebenfalls nützlich sind. Der Fokus liegt auf den Methoden, die die Anforderungen am besten erfüllen und gleichzeitig die Grundlage für eine spätere Erweiterung des Systems bilden. Diese ausgewählten Techniken werden in späteren Kapiteln evaluiert, um ihre Effektivität und Eignung für die spezifischen Anforderungen des Graph Visualizers zu überprüfen und zu validieren.
 
 \subsection{Technologieauswahl}
 
-In diesem Abschnitt werden die Technologien beschrieben, die für die Implementierung des Graph Visualizer ausgewählt wurden. Die Wahl der Technologien basiert auf den Anforderungen, die in den vorherigen Kapiteln definiert wurden, und zielt darauf ab, ein robustes, flexibles und leistungsfähiges System zu schaffen, das die Visualisierung von Knowledge Graphen effektiv unterstützt.
+In diesem Abschnitt werden die Technologien beschrieben, die für die Implementierung des Graph Visualizers ausgewählt wurden. Die Wahl der Technologien basiert auf den Anforderungen, die in den vorherigen Kapiteln definiert wurden, und zielt darauf ab, ein robustes, flexibles und leistungsfähiges System zu schaffen, das die Visualisierung von Knowledge Graphen effektiv unterstützt.
 
 \subsubsection{Frontend-Technologien}
 
-Das Frontend des Graph Visualizer wird als \ac{SPA} realisiert. Dafür wurde Svelte als Framework gewählt, da es eine hohe Performance bietet und einfach von Einsteigern erlernt werden kann. Svelte ermöglicht es, reaktive Webanwendungen zu erstellen, bei denen die Benutzeroberfläche auf Benutzerinteraktionen reagiert. Um das Styling der Anwendung zu unterstützen, wird TailwindCSS eingesetzt. Ergänzend dazu wird DaisyUI verwendet, um die Entwicklung zu beschleunigen. DaisyUI ist eine auf TailwindCSS basierende UI-Komponentenbibliothek, die vorgefertigte Komponenten bereitstellt.
+Das Frontend des Graph Visualizers wird als \ac{SPA} realisiert. Dafür wurde Svelte als Framework gewählt, da es eine hohe Performance bietet und einfach von Einsteigern erlernt werden kann. Svelte ermöglicht es, reaktive Webanwendungen zu erstellen, bei denen die Benutzeroberfläche auf Benutzerinteraktionen reagiert. Um das Styling der Anwendung zu unterstützen, wird TailwindCSS eingesetzt. Ergänzend dazu wird DaisyUI verwendet, um die Entwicklung zu beschleunigen. DaisyUI ist eine auf TailwindCSS basierende UI-Komponentenbibliothek, die vorgefertigte Komponenten bereitstellt.
 
 Für die Visualisierung der Graphen kommt D3.js zum Einsatz. D3.js ist eine JavaScript-Bibliothek, die für die Erstellung dynamischer und interaktiver Datenvisualisierungen entwickelt wurde. D3.js ermöglicht es, Daten in verschiedensten Formaten zu binden und diese durch Transformation des \ac{DOM} in komplexe Visualisierungen umzusetzen. Diese Flexibilität und dessen Verbreitung machen D3.js besonders geeignet für die Darstellung von Knowledge Graphen (vgl. \cite{d3js:Bostock}). Es gibt auch Alternativen zu D3.js, wie zum Beispiel Sigma.js, eine Bibliothek, die sich ebenfalls für die Darstellung von Netzwerken eignet und sich durch eine optimierte Performance für große Netzwerke auszeichnet. Sigma.js ist besonders dann nützlich, wenn der Fokus auf der schnellen und einfachen Darstellung von Netzwerken liegt, ohne die umfassende Anpassungsfähigkeit, die D3.js bietet (vgl. \cite{sigmajs:Jacomy}). Trotz der Vorteile von Sigma.js wurde sich für D3.js entschieden, da es weiter verbreitet ist und mehr online Ressourcen zur Verfügung stehen.
 
 \subsubsection{Backend-Technologien}
 
-Das Backend des Graph Visualizer wird mit ASP.NET Core entwickelt. Diese Wahl bietet mehrere Vorteile, darunter eine hohe Performance, Plattformunabhängigkeit und eine gut Unterstützung für moderne Webtechnologien. Darüber hinaus wurde ASP.NET Core aufgrund der bereits vorhandenen Kenntnisse und Erfahrungen mit diesem Framework ausgewählt. ASP.NET Core wird verwendet, um die Webseite auszuliefern. Gleichzeitig dient die Anwendung als Schnittstelle zur Verarbeitung und Bereitstellung der Knowledge Graphen-Daten. Das Backend ist dafür verantwortlich, die Daten aus der zugrunde liegenden Knowledge Graph-Datenquelle zu laden und diese über einen \ac{API} Endpunkt zur Verfügung zu stellen, der von der Svelte-Anwendung im Frontend abgerufen wird.
+Das Backend des Graph Visualizers wird mit ASP.NET Core entwickelt. Diese Wahl bietet mehrere Vorteile, darunter eine hohe Performance, Plattformunabhängigkeit und eine gute Unterstützung für moderne Webtechnologien. Darüber hinaus wurde ASP.NET Core aufgrund der bereits vorhandenen Kenntnisse und Erfahrungen mit diesem Framework ausgewählt. ASP.NET Core wird verwendet, um die Webseite auszuliefern. Gleichzeitig dient die Anwendung als Schnittstelle zur Verarbeitung und Bereitstellung der Knowledge Graphen-Daten. Das Backend ist dafür verantwortlich, die Daten aus der zugrunde liegenden Knowledge Graph-Datenquelle zu laden und diese über einen \ac{API} Endpunkt zur Verfügung zu stellen, der von der Svelte-Anwendung im Frontend abgerufen wird.
 
 \subsubsection{Schnittstellen und Datenformate}
 
-Die Kommunikation zwischen dem Frontend und dem Backend des Graph Visualizer erfolgt über eine REST \ac{API}, die vom Backend bereitgestellt wird. Das Backend, entwickelt mit ASP.NET Core, übernimmt die Aufgabe, die Daten aus einer externen Knowledge Graph-Datenquelle abzurufen. Diese Daten werden über einen \ac{SPARQL} Endpunkt im \acs{RDF}-Format bezogen, einem Standardformat für die Darstellung von Metadaten in semantischen Netzwerken.
+Die Kommunikation zwischen dem Frontend und dem Backend des Graph Visualizers erfolgt über eine REST \ac{API}, die vom Backend bereitgestellt wird. Das Backend, entwickelt mit ASP.NET Core, übernimmt die Aufgabe, die Daten aus einer externen Knowledge Graph-Datenquelle abzurufen. Diese Daten werden über einen \ac{SPARQL} Endpunkt im \acs{RDF}-Format bezogen, einem Standardformat für die Darstellung von Metadaten in semantischen Netzwerken.
 
 \ac{RDF} ist ein Datenmodell, das zur Darstellung von Informationen im Web verwendet wird. Es stellt Informationen in Form von Triples dar, die aus Subjekt, Prädikat und Objekt bestehen. Ein Triple beschreibt eine Relation zwischen zwei Entitäten, wobei das Subjekt für die Entität, das Prädikat für die Beziehung und das Objekt für den Wert oder eine weitere Entität steht. \ac{RDF} wird häufig in semantischen Netzwerken und Knowledge Graphen verwendet, um komplexe Beziehungen zwischen Daten zu modellieren und miteinander zu verknüpfen (vgl. \cite{rdf:W3C}).
 
-Die ASP.NET Core Anwendung verarbeitet diese \ac{RDF}-Daten und bringt sie in eine für das Frontend verständliche Form. Die Svelte-Anwendung im Frontend erhält die aufbereiteten Daten dann im \ac{JSON}-Format. \ac{JSON} bietet die nötige Flexibilität und Einfachheit, um komplexe Datenstrukturen effizient darzustellen. Diese Struktur ermöglicht eine reibungslose Integration der Daten in die interaktiven Visualisierungen des Graph Visualizer. Durch diese Architektur wird eine klare Trennung zwischen den Datenformaten im Backend und der Datenpräsentation im Frontend gewährleistet, was die Wartbarkeit und Erweiterbarkeit des Systems verbessert.
+Die ASP.NET Core Anwendung verarbeitet diese \ac{RDF}-Daten und bringt sie in eine für das Frontend verständliche Form. Die Svelte-Anwendung im Frontend erhält die aufbereiteten Daten dann im \ac{JSON}-Format. \ac{JSON} bietet die nötige Flexibilität und Einfachheit, um komplexe Datenstrukturen effizient darzustellen. Diese Struktur ermöglicht eine reibungslose Integration der Daten in die interaktiven Visualisierungen des Graph Visualizers. Durch diese Architektur wird eine klare Trennung zwischen den Datenformaten im Backend und der Datenpräsentation im Frontend gewährleistet, was die Wartbarkeit und Erweiterbarkeit des Systems verbessert.
 
 \subsection{Zusammenfassung der Systemarchitektur}
 
-Die Systemarchitektur des Graph Visualizer ist in die Client-Seite und die Server-Seite unterteilt. Auf der Client-Seite läuft das Frontend als Single Page Application im Browser des Users. Als JavaScript-Framework wird Svelte eingesetzt. Es ist für die Benutzeroberfläche und die Präsentation der Visualisierungen verantwortlich, wobei D3.js zur Darstellung der Knowledge Graphen sowie TailwindCSS und DaisyUI für das Styling eingesetzt werden. Das Frontend kommuniziert über API-Anfragen mit dem Backend.
+Die Systemarchitektur des Graph Visualizers ist in die Client-Seite und die Server-Seite unterteilt. Auf der Client-Seite läuft das Frontend als Single Page Application im Browser des Users. Als JavaScript-Framework wird Svelte eingesetzt. Es ist für die Benutzeroberfläche und die Präsentation der Visualisierungen verantwortlich, wobei D3.js zur Darstellung der Knowledge Graphen sowie TailwindCSS und DaisyUI für das Styling eingesetzt werden. Das Frontend kommuniziert über API-Anfragen mit dem Backend.
 
 Das Backend, entwickelt mit ASP.NET Core, übernimmt die Geschäftslogik und den Datenzugriff. Es empfängt API-Anfragen vom Frontend, verarbeitet die Daten von DBpedia, die über einen SPARQL-Endpunkt im RDF-Format abgerufen werden, und wandelt sie in JSON um, das für das Frontend leicht verarbeitbar ist. Das Backend fungiert somit als zentrale Schnittstelle zwischen der Datenquelle und der Präsentationsebene.
 
@@ -197,13 +196,13 @@ Diese Struktur ist zur Verdeutlichung in der Abbildung \ref{fig:realization:conc
 
 \section{Implementierung}
 
-In diesem Kapitel wird die praktische Umsetzung des Graph Visualizer beschrieben. Aufbauend auf den in den vorherigen Kapiteln erarbeiteten Anforderungen, liegt der Schwerpunkt dieses Kapitels auf der konkreten Implementierung der Features. Das Kapitel ist nach den zentralen Funktionalitäten der Anwendung strukturiert. Innerhalb dieser Kapitel wird dann jeweils auf die Implementierung im Front- und Backend eingeganen, je nach relevanz. Ziel ist es, die Techniken und Ansätze zu erläutern, die verwendet wurden, um die Anwendung mit all ihren Anforderungen zu realisieren.
+In diesem Kapitel wird die praktische Umsetzung des Graph Visualizers beschrieben. Aufbauend auf den in den vorherigen Kapiteln erarbeiteten Anforderungen, liegt der Schwerpunkt dieses Kapitels auf der konkreten Implementierung der Features. Das Kapitel ist nach den zentralen Funktionalitäten der Anwendung strukturiert. Innerhalb dieser Kapitel wird dann jeweils auf die Implementierung im Front- und Backend eingegangen, je nach Relevanz. Ziel ist es, die Techniken und Ansätze zu erläutern, die verwendet wurden, um die Anwendung mit all ihren Anforderungen zu realisieren.
 
 \subsection{Initialisierung der Anwendung}
 
 Die Initialisierung der Anwendung begann mit der Einrichtung der beiden zentralen Komponenten. Der Svelte-Anwendung für das Frontend und der ASP.NET Core-Anwendung für das Backend.
 
-Zunächst wurde die Svelte-Anwendung erstellt, die als Frontend des Graph Visualizer dient. Hierfür wurde ein neues Svelte-Projekt mit dem Svelte-CLI-Tool initialisiert. Diese Initialisierung legte die grundlegende Verzeichnisstruktur und die erforderlichen Konfigurationsdateien fest, die für die Entwicklung einer Single Page Application (SPA) notwendig sind. Im Anschluss daran wurden die benötigten Abhängigkeiten installiert. Dazu gehörten TailwindCSS für das Styling und DaisyUI als ergänzende UI-Komponentenbibliothek. Zudem wurde D3.js integriert, um die Visualisierung der Knowledge Graphen zu ermöglichen. Diese Bibliotheken wurden hinzugefügt, um die Entwicklung einer interaktiven und benutzerfreundlichen Oberfläche zu unterstützen.
+Zunächst wurde die Svelte-Anwendung erstellt, die als Frontend des Graph Visualizers dient. Hierfür wurde ein neues Svelte-Projekt mit dem Svelte-CLI-Tool initialisiert. Diese Initialisierung legte die grundlegende Verzeichnisstruktur und die erforderlichen Konfigurationsdateien fest, die für die Entwicklung einer \ac{SPA} notwendig sind. Im Anschluss daran wurden die benötigten Abhängigkeiten installiert. Dazu gehörten TailwindCSS für das Styling und DaisyUI als ergänzende UI-Komponentenbibliothek. Zudem wurde D3.js integriert, um die Visualisierung der Knowledge Graphen zu ermöglichen. Diese Bibliotheken wurden hinzugefügt, um die Entwicklung einer interaktiven und benutzerfreundlichen Oberfläche zu unterstützen.
 
 Parallel dazu wurde eine ASP.NET Core-Anwendung initialisiert, die das Backend des Systems bildet. Diese Anwendung wurde mit dem .NET CLI-Tool erstellt, das eine Standard-Verzeichnisstruktur und grundlegende Konfigurationsdateien bereitstellt. Das Backend ist dafür verantwortlich, die Svelte-Anwendung auszuliefern und API-Endpunkte für die Datenverarbeitung bereitzustellen.
 
@@ -211,11 +210,11 @@ Um die Integration zwischen Frontend und Backend zu realisieren, wurde Vite so k
 
 Um die Auslieferung der statischen Dateien zu ermöglichen, wurden in der Startup.cs-Datei der ASP.NET Core-Anwendung die Middleware-Komponenten \textit{app.UseDefaultFiles()} und \textit{app.UseStaticFiles()} konfiguriert. Diese Middleware sorgt dafür, dass Anfragen an den Server automatisch die entsprechenden Dateien aus dem wwwroot-Verzeichnis laden und an den Client ausliefern.
 
-Nachdem die Konfiguration abgeschlossen war, wurde die ASP.NET Core-Anwendung gestartet, um sicherzustellen, dass die Svelte-Anwendung korrekt ausgeliefert wird. Bei einem Zugriff auf den Server durch den Browser wurde die Anwendung wie erwartet geladen, was den erfolgreichen Abschluss der Initialisierung bestätigte. Diese Schritte legten die Grundlage für die weitere Implementierung der spezifischen Features des Graph Visualizer.
+Nachdem die Konfiguration abgeschlossen war, wurde die ASP.NET Core-Anwendung gestartet, um sicherzustellen, dass die Svelte-Anwendung korrekt ausgeliefert wird. Bei einem Zugriff auf den Server durch den Browser wurde die Anwendung wie erwartet geladen, was den erfolgreichen Abschluss der Initialisierung bestätigte. Diese Schritte legten die Grundlage für die weitere Implementierung der spezifischen Features des Graph Visualizers.
 
 \subsection{Implementierung der Startseite}
 
-Die Implementierung der Startseite des Graph Visualizer legt besonderen Wert auf eine minimalistische und benutzerfreundliche Gestaltung, um den Nutzer sofort auf den Hauptzweck der Anwendung zu fokussieren. Dies entspricht der in den nicht-funktionalen Anforderungen (\hyperref[NFR05]{NFR05}) festgelegten Priorität auf Benutzerfreundlichkeit.
+Die Implementierung der Startseite des Graph Visualizers legt besonderen Wert auf eine minimalistische und benutzerfreundliche Gestaltung, um den Nutzer sofort auf den Hauptzweck der Anwendung zu fokussieren. Dies entspricht der in den nicht-funktionalen Anforderungen (\hyperref[NFR05]{NFR05}) festgelegten Priorität auf Benutzerfreundlichkeit.
 
 Als erstes wurde das Layout der Startseite so entworfen, dass die Benutzer nur mit den notwendigsten Elementen interagieren müssen. Im Zentrum der Seite befindet sich ein auffälliges Suchfeld, das zur Eingabe von Suchbegriffen dient. Diese Reduktion auf das Wesentliche soll sicherstellen, dass die Benutzer direkt zur Hauptfunktion der Anwendung geführt werden, nämlich der Visualisierung von Knowledge Graphen. Die Startseite ist in Abbildung \ref{fig:realization:implementation:homepage} dargestellt.
 
@@ -226,7 +225,7 @@ Als erstes wurde das Layout der Startseite so entworfen, dass die Benutzer nur m
     \label{fig:realization:implementation:homepage}
 \end{figure}
 
-Ein Feature der Startseite und der gesamten Anwendung ist die Unterstützung eines Dark Modes. Diese Funktion wurde implementiert, um den Komfort für die Benutzer zu erhöhen, insbesondere bei längeren Nutzungszeiten oder in Umgebungen mit schwacher Beleuchtung. Durch einen Schalter in der oberen rechten Ecke der Seite kann der Benutzer zwischen dem hellen und dunklen Modus wechseln. Dies sorgt für eine angenehmere visuelle Erfahrung und unterstützt das Ziel, einer anpassbaren und benutzerfreundlichen Oberfläche. Das Feature ist in Abbildung \ref{fig:realization:implementation:homepagedark} zu sehen.
+Ein Feature der Startseite und der gesamten Anwendung ist die Unterstützung eines Dark Modes. Diese Funktion wurde implementiert, um den Komfort für die Benutzer zu erhöhen, insbesondere bei längeren Nutzungszeiten oder in Umgebungen mit schwacher Beleuchtung. Durch einen Schalter in der oberen rechten Ecke der Seite kann der Benutzer zwischen dem hellen und dunklen Modus wechseln. Dies sorgt für eine angenehmere visuelle Erfahrung und unterstützt das Ziel einer anpassbaren und benutzerfreundlichen Oberfläche. Das Feature ist in Abbildung \ref{fig:realization:implementation:homepagedark} zu sehen.
 
 \begin{figure}[h]
     \centering
@@ -247,7 +246,7 @@ SELECT DISTINCT ?resource ?label WHERE {
 LIMIT 100
 \end{lstlisting}
 
-In der Abfrage aus Listing \ref{list:realization:implementation:searchquery} wird zunächst jede Ressource (\textit{?resource}) identifiziert, die ein Label (\textit{?label}) besitzt. Der FILTER-Ausdruck sorgt dafür, dass nur solche Labels berücksichtigt werden, die dem eingegebenen Suchbegriff entsprechen. Zusätzlich werden die Ergebnisse auf Labels in englischer Sprache eingeschränkt, um eine kontinuität für dieses Projekt zu erreichen. Schließlich wird die Anzahl der zurückgegebenen Ergebnisse auf 100 beschränkt, um die Performance der Abfrage zu verbessern.
+In der Abfrage aus Listing \ref{list:realization:implementation:searchquery} wird zunächst jede Ressource (\textit{?resource}) identifiziert, die ein Label (\textit{?label}) besitzt. Der FILTER-Ausdruck sorgt dafür, dass nur solche Labels berücksichtigt werden, die dem eingegebenen Suchbegriff entsprechen. Zusätzlich werden die Ergebnisse auf Labels in englischer Sprache eingeschränkt, um eine Kontinuität für dieses Projekt zu erreichen. Schließlich wird die Anzahl der zurückgegebenen Ergebnisse auf 100 beschränkt, um die Performance der Abfrage zu verbessern.
 
 Die Ergebnisse dieser Abfrage bestehen aus einer Liste von Ressourcen (URI) und ihren entsprechenden Labels, die dann in eine JSON-Struktur umgewandelt und an das Frontend übermittelt werden. Auf der Suchseite werden diese Ergebnisse als klickbare Links angezeigt, die den Benutzer weiter in die Exploration des Knowledge Graphen führen können. Diese Darstellung ist in der Abbildung \ref{fig:realization:implementation:searchpage} zu sehen.
 
@@ -260,7 +259,7 @@ Die Ergebnisse dieser Abfrage bestehen aus einer Liste von Ressourcen (URI) und 
 
 \subsection{Implementierung der Graph-View}
 
-Die Graph-View ist das zentrale Element des Graph Visualizer und ermöglicht dem Benutzer die interaktive Erkundung von Knowledge Graphen. Die Seite bietet dem Benutzer verschiedene Optionen, um die Darstellung des Graphen anzupassen und die Daten zu filtern, um eine möglichst intuitive und effiziente Visualisierung zu gewährleisten.
+Die Graph-View ist das zentrale Element des Graph Visualizers und ermöglicht dem Benutzer die interaktive Erkundung von Knowledge Graphen. Die Seite bietet dem Benutzer verschiedene Optionen, um die Darstellung des Graphen anzupassen und die Daten zu filtern, um eine möglichst intuitive und effiziente Visualisierung zu gewährleisten.
 
 \subsubsection{Aufbau der Graph-View}
 
@@ -273,9 +272,9 @@ Die Graph-View stellt den zentralen Bereich der Anwendung dar, in dem die Visual
     \label{fig:realization:implementation:graphview}
 \end{figure}
 
-In dem Menu auf der linken Seite gibt es mehrere Panels mit unterschiedlichen Einstellungen. Zu den Data Settings gehört die Möglichkeit, die Anzahl der Ladeiterationen sowie das Knotenlimit festzulegen. Diese Einstellungen bestimmen, wie tief der Graph geladen wird und wie viele Knoten gleichzeitig dargestellt werden. Diese Parameter erlauben es die Performance der Anwendung zu kontrollieren und zu testen, welche Techniken zu einer Leistungssteigerung der Anwendung führen.
+In dem Menu auf der linken Seite gibt es mehrere Panels mit unterschiedlichen Einstellungen. Zu den Data Settings gehört die Möglichkeit, die Anzahl der Ladeiterationen sowie das Knotenlimit festzulegen. Diese Einstellungen bestimmen, wie tief der Graph geladen wird und wie viele Knoten gleichzeitig dargestellt werden. Diese Parameter erlauben es, die Performance der Anwendung zu kontrollieren und zu testen, welche Techniken zu einer Leistungssteigerung der Anwendung führen.
 
-Der Graph selbst wird standardmäßig als Node-Link Diagramm dargestellt, da es eine intuitive Visualierung der Beziehungen und der Knoten bietet. Auf die Erstellung des Graphen wird in Kapitel \ref{realization:implementation:graphDrawing} noch genauer eingeganen.
+Der Graph selbst wird standardmäßig als Node-Link Diagramm dargestellt, da es eine intuitive Visualierung der Beziehungen und der Knoten bietet. Auf die Erstellung des Graphen wird in Kapitel \ref{realization:implementation:graphDrawing} noch genauer eingegangen.
 
 \subsubsection{Laden des Graphen}
 
@@ -298,7 +297,7 @@ Zusätzlich zum primären Graphen kann die Anwendung auch Subgraphen laden. Dies
     \label{fig:realization:implementation:simpleGraph}
 \end{figure}
 
-Diese Darstellung ist sicherlich nicht, das was man sich unter einem großen Knowledge Graphen vorgestellt. Um diesen zu erhalten, muss man die Ressourcen, mit welchen der Graph verbunden ist abgerufen und den originalen Graphen um diese Informationen erweitern.
+Diese Darstellung ist sicherlich nicht das, was man sich unter einem großen Knowledge Graphen vorgestellt. Um diesen zu erhalten, muss man die Ressourcen, mit welchen der Graph verbunden ist, abrufen und den originalen Graphen um diese Informationen erweitern.
 
 Die Methode LoadSubGraphsAsync wird verwendet, um diese weiterführenden Ressourcen zu laden und in den bestehenden Graphen zu integrieren. Diese Methode lädt die verknüpften Ressourcen, indem sie für jede verlinkte Ressource erneut die Get-Methode aufruft. Die geladenen Subgraphen werden dann in den ursprünglichen Graphen integriert. Dieser rekursive Prozess ermöglicht es dem Benutzer, die Exploration des Knowledge Graphen zu vertiefen und weitere Verbindungen und Zusammenhänge zu entdecken, ohne dabei die Übersichtlichkeit zu verlieren.
 
@@ -339,7 +338,7 @@ Ein solcher Knoten im JSON Format ist in Listing \ref{list:realization:implement
 }
 \end{lstlisting}
 
-Damit diese Daten von D3.js für die Visualisierung genutzt werden können, müssen sie zunächst in ein Format umgewandelt werden, das die Bibliothek versteht. Für das Node-Link Diagramm bedeutet dies, dass die Knoten und die Kanten extrahiert und entsprechend strukturiert werden müssen. Ein Beispiel für die Transformierten Daten ist in Listing \ref{list:realization:implementation:nodesAndLinksJson} dargestellt.
+Damit diese Daten von D3.js für die Visualisierung genutzt werden können, müssen sie zunächst in ein Format umgewandelt werden, das die Bibliothek versteht. Für das Node-Link Diagramm bedeutet dies, dass die Knoten und die Kanten extrahiert und entsprechend strukturiert werden müssen. Ein Beispiel für die transformierten Daten ist in Listing \ref{list:realization:implementation:nodesAndLinksJson} dargestellt.
 
 \begin{lstlisting}[caption={Informationen einer Node im JSON Format.}, label={list:realization:implementation:nodesAndLinksJson}]
     const nodes = [
@@ -358,7 +357,7 @@ Diese Datenstruktur ermöglicht es D3.js, Knoten und Verbindungen darzustellen, 
 
 \subsubsection{Node-Link Diagramm}
 
-Das Node-Link Diagramm ist eine der zentralen Visualisierungsformen des Graph Visualizer und stellt die Beziehungen zwischen den Entitäten eines Knowledge Graphen intuitiv und visuell ansprechend dar. Die Implementierung des Node-Link Diagramms erfolgt mittels D3.js. Die Knoten werden als Kreise dargestellt, deren Positionen durch ein Force-Directed Layout bestimmt werden. Dieses Layout modelliert die Knoten als physikalische Objekte, die durch Kräfte zueinander in Beziehung stehen, ähnlich wie Federn und Ladungen in einem physikalischen Modell. Knoten, die durch Kanten verbunden sind, werden durch diese Kräfte näher zusammengeführt, während unverbundene Knoten weiter auseinanderliegen. Die Oberfläche ist in Abbildung \ref{fig:realization:implementation:GraphViewWithSettings} dargestellt.
+Das Node-Link Diagramm ist eine der zentralen Visualisierungsformen des Graph Visualizers und stellt die Beziehungen zwischen den Entitäten eines Knowledge Graphen intuitiv und visuell ansprechend dar. Die Implementierung des Node-Link Diagramms erfolgt mittels D3.js. Die Knoten werden als Kreise dargestellt, deren Positionen durch ein Force-Directed Layout bestimmt werden. Dieses Layout modelliert die Knoten als physikalische Objekte, die durch Kräfte zueinander in Beziehung stehen, ähnlich wie Federn und Ladungen in einem physikalischen Modell. Knoten, die durch Kanten verbunden sind, werden durch diese Kräfte näher zusammengeführt, während unverbundene Knoten weiter auseinanderliegen. Die Oberfläche ist in Abbildung \ref{fig:realization:implementation:GraphViewWithSettings} dargestellt.
 
 \begin{figure}[h]
     \centering
@@ -372,20 +371,20 @@ Die Darstellung der Knoten und Kanten im Node-Link Diagramm kann durch verschied
 \begin{figure}[h]
     \centering
     \includegraphics[height=.5\textwidth]{images/03/NodeLinkChangedSettings.png}
-    \caption{Node Link Diagramm mit veänderten Einstellungen.}
+    \caption{Node-Link Diagramm mit veränderten Einstellungen.}
     \label{fig:realization:implementation:NodeLinkWithChangedSettings}
 \end{figure}
 
-Eine weitere Einstellung ist die Farbgebung der Knoten. Um die Visualisierung zugänglicher zu machen, wurde eine Option eingebaut, die es ermöglicht die Farbe der Knoten basierend auf der Anzahl Verbindungen berechnen zu lassen. Durch die Farbgebung können Benutzer auf einen Blick erkennen, welche Knoten besonders stark vernetzt sind oder spezifische Verbindungen aufweisen. Ein Beispiel hierfür ist in Abbildung \ref{fig:realization:implementation:ColorNodesByLinks} dargestellt.
+Eine weitere Einstellung ist die Farbgebung der Knoten. Um die Visualisierung zugänglicher zu machen, wurde eine Option eingebaut, die es ermöglicht, die Farbe der Knoten basierend auf der Anzahl Verbindungen berechnen zu lassen. Durch die Farbgebung können Benutzer auf einen Blick erkennen, welche Knoten besonders stark vernetzt sind oder spezifische Verbindungen aufweisen. Ein Beispiel hierfür ist in Abbildung \ref{fig:realization:implementation:ColorNodesByLinks} dargestellt.
 
 \begin{figure}[h]
     \centering
     \includegraphics[height=.5\textwidth]{images/03/ColorNodesByLinks.png}
-    \caption{Node Link Diagramm mit der Einstellung \enquote{Color Nodes by Links}.}
+    \caption{Node-Link Diagramm mit der Einstellung \enquote{Color Nodes by Links}.}
     \label{fig:realization:implementation:ColorNodesByLinks}
 \end{figure}
 
-Zusätzlich ist die Einstellung Alpha Decay ein wesentlicher Parameter, der die Stabilisierung des Force-Directed Layouts beeinflusst. Dieser Wert bestimmt, wie schnell das Layout konvergiert und zur Ruhe kommt. Ein hoher Alpha Decay-Wert sorgt dafür, dass sich das Layout schneller stabilisiert, was bei der Visualisierung großer Graphen von Vorteil sein kann, da die Knotenpositionen rascher endgültig festgelegt werden. Andererseits, kann die Darstellung dann unübersichtlicher sein, als bei einer Simulation die länger läuft. Diese Diskrepanz ist in den Abbildungen \ref{fig:realization:implementation:NodeLinkLowAlpha} und \ref{fig:realization:implementation:NodeLinkHighAlpha} dargestellt. In der linken Abbildung wurde der Simulation viel Zeit gegeben, während die rechte Darstellung einen hohen Alpha Decay hatte. Hier Zeigt sich deutlich, dass das Zentrum der rechten Darstellung deutlich unübersichtlicher ist.
+Zusätzlich ist die Einstellung Alpha Decay ein wesentlicher Parameter, der die Stabilisierung des Force-Directed Layouts beeinflusst. Dieser Wert bestimmt, wie schnell das Layout konvergiert und zur Ruhe kommt. Ein hoher Alpha Decay-Wert sorgt dafür, dass sich das Layout schneller stabilisiert, was bei der Visualisierung großer Graphen von Vorteil sein kann, da die Knotenpositionen rascher endgültig festgelegt werden. Andererseits kann die Darstellung dann unübersichtlicher sein als bei einer Simulation, die länger läuft. Diese Diskrepanz ist in den Abbildungen \ref{fig:realization:implementation:NodeLinkLowAlpha} und \ref{fig:realization:implementation:NodeLinkHighAlpha} dargestellt. In der linken Abbildung wurde der Simulation viel Zeit gegeben, während die rechte Darstellung einen hohen Alpha Decay hatte. Hier zeigt sich deutlich, dass das Zentrum der rechten Darstellung deutlich unübersichtlicher ist.
 
 \begin{figure}
     \centering
@@ -416,13 +415,13 @@ Die Adjazenzmatrix ist eine alternative Visualisierungsmethode, die sich besonde
     \label{fig:realization:implementation:AdjacencyMatrixView}
 \end{figure}
 
-Die Adjazenzmatrix im Graph Visualizer bietet nur eine Anpassungsmöglichkeit. Sie ermöglicht es die Umrandung der Zellen ein- oder auszuschalten. Die Anzeige der Umrandung hilft dabei, die einzelnen Zellen klar voneinander zu trennen, was besonders bei dichten Graphen nützlich ist. Die Darstellung der Trennlinien kostet aber auch Performance, weshalb dem Nutzer die Möglichkeit gegeben wird diese auszuschalten.
+Die Adjazenzmatrix im Graph Visualizer bietet nur eine Anpassungsmöglichkeit. Sie ermöglicht es, die Umrandung der Zellen ein- oder auszuschalten. Die Anzeige der Umrandung hilft dabei, die einzelnen Zellen klar voneinander zu trennen, was besonders bei dichten Graphen nützlich ist. Die Darstellung der Trennlinien kostet aber auch Performance, weshalb dem Nutzer die Möglichkeit gegeben wird, diese auszuschalten.
 
 Die Adjazenzmatrix erfüllt mehrere der im Projekt definierten Anforderungen, insbesondere in Bezug auf die Darstellung komplexer Netzwerkstrukturen und die Benutzerfreundlichkeit. Durch die klare und strukturierte Darstellung von Verbindungen ermöglicht die Adjazenzmatrix eine einfache Identifikation von Clustern und Mustern im Graphen, was die Analyse und das Verständnis der zugrunde liegenden Daten erheblich erleichtert.
 
 \subsection{Implementierung einer Clustering-Lösung}
 
-Die Implementierung einer Clustering-Lösung innerhalb für den Graph Visualizers stellt einen wichtigen Schritt dar. Sie ermöglicht es große und komplexe Netzwerke effizienter darzustellen. Cluster werden als Gruppen von Knoten verstanden, die innerhalb eines Netzwerks eng miteinander verbunden sind. Durch die visuelle Gruppierung solcher Knoten wird die Komplexität des Graphen reduziert und dem Benutzer ermöglicht, Muster und Strukturen innerhalb des Netzwerks leichter zu erkennen.
+Die Implementierung einer Clustering-Lösung innerhalb des Graph Visualizers stellt einen wichtigen Schritt dar. Sie ermöglicht es, große und komplexe Netzwerke effizienter darzustellen. Cluster werden als Gruppen von Knoten verstanden, die innerhalb eines Netzwerks eng miteinander verbunden sind. Durch die visuelle Gruppierung solcher Knoten wird die Komplexität des Graphen reduziert und dem Benutzer ermöglicht, Muster und Strukturen innerhalb des Netzwerks leichter zu erkennen.
 
 \subsubsection{Visualierung der Cluster im Node-Link Diagramm}
 
@@ -439,7 +438,7 @@ Nach der Berechnung der Cluster werden die Knoten in der Visualisierung entsprec
 
 \subsubsection{Zusammenfassung der Cluster-Nodes}
 
-Ein zusätzliches Feature, ist die Möglichkeit, Cluster aus einzelnen Knoten zu großen Nodes zusammen zu fassen. Dieses Feature verbessert die Übersichtlichkeit der Visualisierung, insbesondere bei der Analyse sehr großer und komplexer Netzwerke.
+Ein zusätzliches Feature ist die Möglichkeit, Cluster aus einzelnen Knoten zu großen Nodes zusammen zu fassen. Dieses Feature verbessert die Übersichtlichkeit der Visualisierung, insbesondere bei der Analyse sehr großer und komplexer Netzwerke.
 
 Die Zusammenfassung von Cluster-Nodes erfolgt, indem alle Knoten innerhalb eines Clusters zu einem einzigen großen Knoten zusammengefasst werden. Dieser neue, aggregierte Knoten repräsentiert alle ursprünglichen Knoten des Clusters und fasst ihre Verbindungen entsprechend zusammen. In der Benutzeroberfläche kann der Benutzer diese Funktion durch Aktivierung der Option \enquote{Combine Node Clusters} im \enquote{Graph Settings}-Panel nutzen.
 
@@ -452,7 +451,7 @@ Die Umsetzung dieser Funktion basiert auf der Berechnung der Cluster durch den L
     \label{fig:realization:implementation:NodeLinkCombinedCluster}
 \end{figure}
 
-Dieses Feature wurde entwickelt, um den Anforderungen nach besserer Performance (\hyperref[NFR01]{NFR01}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) gerecht zu werden. Insbesondere wenn Benutzer mit sehr großen Graphen arbeiten wird die Performance reduziert und die Übersichtlichkeit sinkt aufgrund der vielen Knoten und Verbindungen. Die Zusammenfassung reduziert die visuelle Komplexität und die Anzahl der Knoten, die dargestellt werden müssen. Dieses Feature stellt somit eine wertvolle Ergänzung zur bereits implementierten Clustererkennung dar und erweitert die Analysemöglichkeiten im Graph Visualizer.
+Dieses Feature wurde entwickelt, um den Anforderungen nach besserer Performance (\hyperref[NFR01]{NFR01}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) gerecht zu werden. Insbesondere wenn Benutzer mit sehr großen Graphen arbeiten, wird die Performance reduziert und die Übersichtlichkeit sinkt aufgrund der vielen Knoten und Verbindungen. Die Zusammenfassung reduziert die visuelle Komplexität und die Anzahl der Knoten, die dargestellt werden müssen. Dieses Feature stellt somit eine wertvolle Ergänzung zur bereits implementierten Clustererkennung dar und erweitert die Analysemöglichkeiten im Graph Visualizer.
 
 \subsection{Implementierung einer Detailansicht für Nodes}
 
@@ -467,7 +466,7 @@ Die Detailansicht für einzelne Nodes wird aufgerufen, wenn der Benutzer auf ein
     \label{fig:realization:implementation:NodeDetails}
 \end{figure}
 
-Bei der Auswahl eines Clusters von Knoten wird die Detailansicht für Node-Cluster aktiviert. Diese Ansicht zeigt eine Übersicht über die Knoten, die innerhalb des Clusters zusammengefasst sind. Das Cluster-Label gibt an, wie das Cluster vom Louvain-Algorithmus identifiziert wurde, und die Anzahl der Knoten im Cluster wird ebenfalls angezeigt. Die Knoten innerhalb des Clusters werden mit ihrer URI und ihrem Label aufgelistet, und der Benutzer kann auf einzelne Knoten klicken, um deren spezifische Detailansicht zu öffnen. Die Detailansicht für CLuster ist in Abbildung \ref{fig:realization:implementation:ClusterDetails} dargestellt.
+Bei der Auswahl eines Clusters von Knoten wird die Detailansicht für Node-Cluster aktiviert. Diese Ansicht zeigt eine Übersicht über die Knoten, die innerhalb des Clusters zusammengefasst sind. Das Cluster-Label gibt an, wie das Cluster vom Louvain-Algorithmus identifiziert wurde, und die Anzahl der Knoten im Cluster wird ebenfalls angezeigt. Die Knoten innerhalb des Clusters werden mit ihrer URI und ihrem Label aufgelistet, und der Benutzer kann auf einzelne Knoten klicken, um deren spezifische Detailansicht zu öffnen. Die Detailansicht für Cluster ist in Abbildung \ref{fig:realization:implementation:ClusterDetails} dargestellt.
 
 \begin{figure}[h]
     \centering
@@ -478,7 +477,7 @@ Bei der Auswahl eines Clusters von Knoten wird die Detailansicht für Node-Clust
 
 Durch die Implementierung der Detailansicht für Nodes und Cluster wird eine der Kernanforderungen des Projekts erfüllt: die Möglichkeit, große und komplexe Graphen effizient zu analysieren. Der Benutzer kann sich durch die intuitive und interaktive Detailansicht sowohl auf einzelner Knotenebene als auch auf Clusterebene durch die Daten navigieren. Dies trägt erheblich zur Verständlichkeit und Übersichtlichkeit der Visualisierung bei. Die klare und strukturierte Darstellung von Informationen unterstützt den Benutzer bei der Analyse und ermöglicht es ihm, tiefere Einblicke in die zugrunde liegenden Daten des Knowledge Graphs zu gewinnen.
 
-Zusammenfassend erfüllen die Detailansichten die funktionalen Anforderungen an die Bereitstellung von spezifischen und strukturierten Informationen über die Ressourcen im Knowledge Graph (\hyperref[FR02]{FR02}), sowie die nicht-funktionalen Anforderungen an Benutzerfreundlichkeit ( \hyperref[NFR05]{NFR05}), indem sie die Daten übersichtlich und interaktiv darstellen. Gleichzeitig werden die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Performance (\hyperref[NFR01]{NFR01}) durch die optimierte Verarbeitung und Darstellung der Knoten und Cluster im Backend gewährleistet.
+Zusammenfassend erfüllen die Detailansichten die funktionalen Anforderungen an die Bereitstellung von spezifischen und strukturierten Informationen über die Ressourcen im Knowledge Graph (\hyperref[FR02]{FR02}) sowie die nicht-funktionalen Anforderungen an Benutzerfreundlichkeit ( \hyperref[NFR05]{NFR05}), indem sie die Daten übersichtlich und interaktiv darstellen. Gleichzeitig werden die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Performance (\hyperref[NFR01]{NFR01}) durch die optimierte Verarbeitung und Darstellung der Knoten und Cluster im Backend gewährleistet.
 
 \section{Vergleich und Auswertung}
 \label{realization:comparison}
@@ -487,13 +486,13 @@ In diesem Kapitel werden die im Graph Visualizer implementierten Diagrammarten u
 
 Der Vergleich der Diagrammarten Node-Link Diagramm und Adjazenzmatrix soll zeigen, welche dieser Techniken sich besser für die Darstellung großer und komplexer Knowledge Graphen eignet. Dabei wird bewertet, wie gut die Diagramme die Übersichtlichkeit bewahren und wie effizient sie mit zunehmender Größe der Netzwerke umgehen.
 
-Die Auswertung der Visualisierungstechniken, wie das Force-Directed Layout und die Clustererkennung, fokussiert sich darauf, inwieweit diese Techniken den Nutzern ermöglichen, die Netzwerkstrukturen klar zu erkennen und zu analysieren. Auch hier stehen die Anforderungen an Anpassbarkeit und Performance im Vordergrund.
+Die Auswertung der Visualisierungstechniken wie das Force-Directed Layout und die Clustererkennung fokussiert sich darauf, inwieweit diese Techniken den Nutzern ermöglichen, die Netzwerkstrukturen klar zu erkennen und zu analysieren. Auch hier stehen die Anforderungen an Anpassbarkeit und Performance im Vordergrund.
 
 Insgesamt zielt dieses Kapitel darauf ab, auf Basis der praktischen Implementierung eine fundierte Bewertung der verwendeten Methoden vorzunehmen und daraus Schlüsse für künftige Entwicklungen zu ziehen.
 
 \subsection{Vergleich der Diagrammarten}
 
-Im Rahmen der Implementierung des Graph Visualizer wurden zwei verschiedene Diagrammarten zur Visualisierung von Knowledge Graphen verwendet: das Node-Link Diagramm und die Adjazenzmatrix. Beide Diagrammarten bieten unterschiedliche Ansätze zur Darstellung von Knoten und ihren Verbindungen und bringen jeweils spezifische Stärken und Schwächen mit sich. In diesem Kapitel werden die beiden Diagrammarten anhand ihrer Eignung für die jeweiligen Anforderungen verglichen und ihre Einsatzmöglichkeiten ausgewertet. Dabei werden die Erkenntnisse aus der Implementierung und den durchgeführten Tests einbezogen, um eine fundierte Bewertung vorzunehmen.
+Im Rahmen der Implementierung des Graph Visualizers wurden zwei verschiedene Diagrammarten zur Visualisierung von Knowledge Graphen verwendet: das Node-Link Diagramm und die Adjazenzmatrix. Beide Diagrammarten bieten unterschiedliche Ansätze zur Darstellung von Knoten und ihren Verbindungen und bringen jeweils spezifische Stärken und Schwächen mit sich. In diesem Kapitel werden die beiden Diagrammarten anhand ihrer Eignung für die jeweiligen Anforderungen verglichen und ihre Einsatzmöglichkeiten ausgewertet. Dabei werden die Erkenntnisse aus der Implementierung und den durchgeführten Tests einbezogen, um eine fundierte Bewertung vorzunehmen.
 
 \subsubsection{Node-Link Diagramm}
 
@@ -505,12 +504,12 @@ Allerdings zeigte sich, dass das Node-Link Diagramm bei Netzwerken mit mehreren 
 
 Die Adjazenzmatrix bietet eine strukturierte und effiziente Möglichkeit, Netzwerke darzustellen, indem Knoten sowohl in den Zeilen als auch in den Spalten einer Matrix angeordnet und Verbindungen durch markierte Zellen visualisiert werden. Diese Methode ist besonders nützlich, um Netzwerke mit vielen Verbindungen übersichtlich darzustellen, da Überlappungen vermieden werden. Dies spricht vor allem die Anforderungen an die Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Performance (\hyperref[NFR01]{NFR01}) an, da auch bei einer großen Anzahl von Verbindungen die Struktur des Graphen klar dargestellt wird.
 
-Eine überraschende Erkenntnis war jedoch, dass die Adjazenzmatrix schon bei Netzwerken mit einer geringeren Anzahl von Knoten als das Node-Link Diagramm an ihre Grenzen stößt. Während das Node-Link Diagramm mehrere Tausend Knoten handhaben kann, zeigt die Adjazenzmatrix bei größeren Netzwerken ab etwa 200 Knoten eine abnehmende Übersichtlichkeit. Dies könnte auf die Implementierung zurückzuführen sein und müsste mit anderen Technologien weiter untersucht werden. Dennoch zeigt die Adjazenzmatrix ihre Stärken insbesondere bei Netzwerken mit vielen Verbindungen, aber einer vergleichsweise geringen Anzahl an Knoten (bis zu etwa 200). In einem Test, bei dem statische Daten mit vielen Verbindungen im Adjenzmatrix Diagramm dargestellt wurden, konnte die Effizienz der Matrix bei stark verbundenen Netzwerken demonstriert werden. Eine Abbildung der Darstellung eines stark Verbundenen Graphen ist in Abbildung \ref{fig:realization:comparison:AdjacencyViewHighlyConnected} zu sehen.
+Eine überraschende Erkenntnis war jedoch, dass die Adjazenzmatrix schon bei Netzwerken mit einer geringeren Anzahl von Knoten als das Node-Link Diagramm an ihre Grenzen stößt. Während das Node-Link Diagramm mehrere Tausend Knoten handhaben kann, zeigt die Adjazenzmatrix bei größeren Netzwerken ab etwa 200 Knoten eine abnehmende Übersichtlichkeit. Dies könnte auf die Implementierung zurückzuführen sein und müsste mit anderen Technologien weiter untersucht werden. Dennoch zeigt die Adjazenzmatrix ihre Stärken insbesondere bei Netzwerken mit vielen Verbindungen, aber einer vergleichsweise geringen Anzahl an Knoten (bis zu etwa 200). In einem Test, bei dem statische Daten mit vielen Verbindungen im Adjazenzmatrix Diagramm dargestellt wurden, konnte die Effizienz der Matrix bei stark verbundenen Netzwerken demonstriert werden. Eine Abbildung der Darstellung eines stark verbundenen Graphen ist in Abbildung \ref{fig:realization:comparison:AdjacencyViewHighlyConnected} zu sehen.
 
 \begin{figure}[h]
     \centering
     \includegraphics[height=.8\textwidth]{images/03/AdjacencyViewHighlyConnected.png}
-    \caption{Beispiel für die Darstellung stark Verbundener Graphen in einem Adjenzmatrix Diagramm.}
+    \caption{Beispiel für die Darstellung stark Verbundener Graphen in einem Adjazenzmatrix Diagramm.}
     \label{fig:realization:comparison:AdjacencyViewHighlyConnected}
 \end{figure}
 
@@ -526,13 +525,13 @@ Die im Graph Visualizer eingesetzten Visualisierungstechniken spielen eine entsc
 
 Das Force-Directed Layout ist eine zentrale Technik im Node-Link Diagramm und sorgt dafür, dass Knoten durch physikalische Kräfte angeordnet werden. Diese Technik simuliert Knoten als Objekte, die durch anziehende und abstoßende Kräfte interagieren, was zu einer visuellen Darstellung führt, die verwandte Knoten näher zueinander positioniert. Dies erleichtert es dem Benutzer, die Beziehungen im Netzwerk zu erkennen, da Cluster und zentrale Knoten schnell erkennbar werden.
 
-In der Implementierung des Graph Visualizer wurden zahlreiche Anpassungsmöglichkeiten eingebaut, die es dem Benutzer ermöglichen, das Verhalten des Force-Directed Layouts individuell zu steuern. Dazu gehören Einstellungen wie Node-Größe, Kollisionsradius, Ladungsstärke und Link-Distanz. Diese Anpassungsmöglichkeiten ermöglichen eine flexible Darstellung und tragen zur Benutzerfreundlichkeit bei, da der Benutzer die Visualisierung an die jeweiligen Anforderungen und die Größe des Netzwerks anpassen kann.
+In der Implementierung des Graph Visualizers wurden zahlreiche Anpassungsmöglichkeiten eingebaut, die es dem Benutzer ermöglichen, das Verhalten des Force-Directed Layouts individuell zu steuern. Dazu gehören Einstellungen wie Node-Größe, Kollisionsradius, Ladungsstärke und Link-Distanz. Diese Anpassungsmöglichkeiten ermöglichen eine flexible Darstellung und tragen zur Benutzerfreundlichkeit bei, da der Benutzer die Visualisierung an die jeweiligen Anforderungen und die Größe des Netzwerks anpassen kann.
 
 In Tests zeigte sich, dass das Force-Directed Layout für Netzwerke mit moderater Knotenanzahl sehr effektiv ist. Bei großen Netzwerken nimmt jedoch die Performance ab, was sich in längeren Ladezeiten und einer langsameren Reaktion auf Benutzerinteraktionen äußert. Dennoch bleibt das Force-Directed Layout aufgrund seiner Anpassungsfähigkeit und intuitiven Darstellung eine der geeignetsten Techniken zur Visualisierung mittelgroßer Netzwerke.
 
 \subsubsection{Clustererkennung und -darstellung}
 
-Die Clustererkennung ermöglicht die Darstellung von Netzwerken mit mehreren zehntausend Knoten, indem Knoten, die eng miteinander verbunden sind, zu Clustern zusammengefasst werden. Diese Cluster werden dann im Graphen als größere Knoten dargestellt, was die Komplexität des Netzwerks erheblich verringert. Die Knoten im Cluster bleiben vorerst verborgen, und der Benutzer sieht nur die Cluster, wodurch das Netzwerk deutlich übersichtlicher wird. Die Darstellung der Cluster bietet dem Benutzer eine vereinfachte Sicht auf das Netzwerk und ermöglicht es, schnell die Verbindungen zwischen den Clustern zu erkennen. Dies erleichtert die Analyse großer Netzwerke und hilft dabei, Muster und Strukturen besser zu identifizieren. Ein großer Vorteil der Clusterdarstellung ist, dass die Benutzer je nach Bedarf in die Details einzelner Cluster betrachten können, um die darin enthaltenen Knoten und Verbindungen zu erkunden.
+Die Clustererkennung ermöglicht die Darstellung von Netzwerken mit mehreren zehntausend Knoten, indem Knoten, die eng miteinander verbunden sind, zu Clustern zusammengefasst werden. Diese Cluster werden dann im Graphen als größere Knoten dargestellt, was die Komplexität des Netzwerks erheblich verringert. Die Knoten im Cluster bleiben vorerst verborgen, und der Benutzer sieht nur die Cluster, wodurch das Netzwerk deutlich übersichtlicher wird. Die Darstellung der Cluster bietet dem Benutzer eine vereinfachte Sicht auf das Netzwerk und ermöglicht es, schnell die Verbindungen zwischen den Clustern zu erkennen. Dies erleichtert die Analyse großer Netzwerke und hilft dabei, Muster und Strukturen besser zu identifizieren. Ein großer Vorteil der Clusterdarstellung ist, dass die Benutzer je nach Bedarf die Details einzelner Cluster betrachten können, um die darin enthaltenen Knoten und Verbindungen zu erkunden.
 
 Diese Technik erfüllt die Anforderungen an die Skalierbarkeit (\hyperref[NFR03]{NFR03}), da sie die Komplexität des Netzwerks auf ein für den Benutzer handhabbares Maß reduziert, ohne wichtige Informationen zu verlieren. Netzwerke mit mehreren zehntausend Knoten lassen sich so auch bei großer Dichte der Verbindungen noch effektiv visualisieren und analysieren.
 
@@ -548,7 +547,7 @@ Allerdings stößt das Force-Directed Layout bei Netzwerken mit vielen Verbindun
 
 \subsection{Auswertung der Interaktivität und Benutzerfreundlichkeit}
 
-Die Interaktivität und Benutzerfreundlichkeit des Graph Visualizer sind entscheidend für die effektive Analyse von Netzwerken. In diesem Abschnitt werden die wichtigsten interaktiven Features und ihre Auswirkung auf die Benutzerfreundlichkeit sowie die Erfüllung der Anforderungen bewertet.
+Die Interaktivität und Benutzerfreundlichkeit des Graph Visualizers sind entscheidend für die effektive Analyse von Netzwerken. In diesem Abschnitt werden die wichtigsten interaktiven Features und ihre Auswirkung auf die Benutzerfreundlichkeit sowie die Erfüllung der Anforderungen bewertet.
 
 \subsubsection{Filterung und Detailansicht}
 
@@ -568,4 +567,4 @@ Bei sehr großen Netzwerken zeigt das Force-Directed Layout Schwächen in der Pe
 
 \subsubsection{Fazit}
 
-Die Interaktivität und Benutzerfreundlichkeit des Graph Visualizer sind insgesamt gut umgesetzt. Funktionen wie die Filterung, Detailansicht und Anpassungsmöglichkeiten bieten eine flexible und intuitive Nutzung, erfüllen die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) weitgehend. Schwächen bei der Performance großer Netzwerke sollten jedoch weiter optimiert werden.
+Die Interaktivität und Benutzerfreundlichkeit des Graph Visualizers sind insgesamt gut umgesetzt. Funktionen wie die Filterung, Detailansicht und Anpassungsmöglichkeiten bieten eine flexible und intuitive Nutzung, erfüllen die Anforderungen an Skalierbarkeit (\hyperref[NFR03]{NFR03}) und Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}) weitgehend. Schwächen bei der Performance großer Netzwerke sollten jedoch weiter optimiert werden.
