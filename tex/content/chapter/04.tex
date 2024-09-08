@@ -2,7 +2,7 @@
 
 \chapter{Zusammenfassung und Ausblick}
 
-Die vorliegende Arbeit hatte das Ziel, die geeignetste Visualisierungstechnik für Knowledge Graphen zu ermitteln und eine entsprechende Implementierung zu entwickeln. Die Visualisierung von Knowledge Graphen stellt eine besondere Herausforderung dar, da sowohl die Struktur der Daten als auch die Darstellung großer Netzwerke effizient und benutzerfreundlich sein müssen. In den vorangegangenen Kapiteln wurden verschiedene Visualisierungstechniken, wie das Node-Link Diagramm und die Adjazenzmatrix, analysiert und implementiert, um ihre Stärken und Schwächen im praktischen Einsatz zu bewerten. In diesem Kapitel werden die Ergebnisse der Arbeit zusammengefasst und wichtige Erkenntnisse reflektiert, bevor ein Ausblick auf mögliche Weiterentwicklungen und Optimierungen gegeben wird.
+Die vorliegende Arbeit hatte das Ziel, die geeignetste Visualisierungstechnik für Knowledge Graphen zu ermitteln und eine entsprechende Implementierung zu entwickeln. Die Visualisierung von Knowledge Graphen stellt eine besondere Herausforderung dar, da sowohl die Struktur der Daten als auch die Darstellung großer Netzwerke effizient und benutzerfreundlich sein müssen. In den vorangegangenen Kapiteln wurden verschiedene Visualisierungstechniken wie das Node-Link Diagramm und die Adjazenzmatrix analysiert und implementiert, um ihre Stärken und Schwächen im praktischen Einsatz zu bewerten. In diesem Kapitel werden die Ergebnisse der Arbeit zusammengefasst und wichtige Erkenntnisse reflektiert, bevor ein Ausblick auf mögliche Weiterentwicklungen und Optimierungen gegeben wird.
 
 \section{Zusammenfassung der Ergebnisse}
 
@@ -16,17 +16,17 @@ Die Adjazenzmatrix zeigte ihre Stärken bei Netzwerken mit vielen Verbindungen u
 
 \subsection{Erfüllung der Anforderungen}
 
-Die in Kapitel \ref{realization:requirements} festgelegten funktionalen  Anforderungen wurden vollständig erfüllt. Die nicht-funktionalen Anforderungen wurden größtenteils erfüllt:
+Die in Kapitel \ref{realization:requirements} festgelegten funktionalen Anforderungen wurden vollständig erfüllt. Die nicht-funktionalen Anforderungen wurden größtenteils erfüllt:
 
 \begin{itemize}
     \item Performance (\hyperref[NFR01]{NFR01}): Bei mittelgroßen Netzwerken war die Performance zufriedenstellend. Bei sehr großen Netzwerken mit vielen Verbindungen zwischen Clustern traten jedoch Instabilitäten im Force-Directed Layout auf, die zu längeren Ladezeiten und Zittern führten.
     \item Zuverlässigkeit (\hyperref[NFR02]{NFR02}): Die Anwendung erwies sich als stabil, abgesehen von den Performance-Einschränkungen bei großen Netzwerken. Kleinere bis mittelgroße Netzwerke wurden zuverlässig und ohne signifikante Probleme dargestellt.
     \item Kompatibilität (\hyperref[NFR03]{NFR03}): Die Verwendung von Svelte im Frontend und ASP.NET Core im Backend ermöglichte eine problemlose Ausführung der Anwendung in verschiedenen Umgebungen und stellte eine gute Grundlage für Erweiterbarkeit und zukünftige Anpassungen sicher.
-    \item Wartbarkeit (\hyperref[NFR04]{NFR04}): Die modulare Architektur des Graph Visualizer erleichtert zukünftige Wartung und Erweiterungen. Durch klare Trennung von Backend und Frontend sowie die Verwendung etablierter Frameworks wird eine hohe Wartbarkeit gewährleistet.
+    \item Wartbarkeit (\hyperref[NFR04]{NFR04}): Die modulare Architektur des Graph Visualizers erleichtert zukünftige Wartung und Erweiterungen. Durch klare Trennung von Backend und Frontend sowie die Verwendung etablierter Frameworks wird eine hohe Wartbarkeit gewährleistet.
     \item Benutzerfreundlichkeit (\hyperref[NFR05]{NFR05}): Die intuitive Benutzeroberfläche mit interaktiven Features wie Filterung, Detailansicht und flexiblen Anpassungsmöglichkeiten der Visualisierung erfüllte die Anforderungen an die Benutzerfreundlichkeit. Besonders die Möglichkeit, Cluster zu erkennen und die Visualisierung dynamisch zu modifizieren, trug zur positiven Benutzererfahrung bei.
 \end{itemize}
 
-Insgesamt konnte die Implementierung des Graph Visualizer die funktionalen und nicht-funktionalen Anforderungen weitgehend erfüllen. Besonders die Skalierbarkeit und Benutzerfreundlichkeit wurden durch die Clustererkennung und die flexiblen Visualisierungstechniken erfolgreich umgesetzt. Die Performance bei sehr großen Netzwerken mit vielen Verbindungen bleibt jedoch ein Bereich, der weiter optimiert werden muss.
+Insgesamt konnte die Implementierung des Graph Visualizers die funktionalen und nicht-funktionalen Anforderungen weitgehend erfüllen. Besonders die Skalierbarkeit und Benutzerfreundlichkeit wurden durch die Clustererkennung und die flexiblen Visualisierungstechniken erfolgreich umgesetzt. Die Performance bei sehr großen Netzwerken mit vielen Verbindungen bleibt jedoch ein Bereich, der weiter optimiert werden muss.
 
 \section{Erkenntnisse aus der Arbeit}
 
