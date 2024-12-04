@@ -3,15 +3,16 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Install Node.js on top of the .NET SDK image
-RUN apt-get update && apt-get install -y curl \
+RUN apt-get update && apt-get install -y curl build-essential \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
+    && apt-get install -y nodejs npm \
     && apt-get install -y build-essential
 
 # Copy package.json and package-lock.json for Node.js dependencies
 COPY package*.json ./
 
 # Install Node.js dependencies
+RUN node -v && npm -v
 RUN npm install
 
 # Copy the entire project (both frontend and backend)

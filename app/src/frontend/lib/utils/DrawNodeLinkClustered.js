@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
-import { hcs } from "./hcs";
-import { mclAlgorithm } from "./mcl";
+import { hcs } from "./Hcs.js";
+import { mclAlgorithm } from "./mcl.js";
 
 let originalLinksStore = [];
 
